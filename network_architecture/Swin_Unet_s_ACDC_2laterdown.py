@@ -109,8 +109,7 @@ class WindowAttention(nn.Module):
         relative_coords[:, :, 1] += self.window_size[1] - 1
         relative_coords[:, :, 2] += self.window_size[2] - 1
 
-        # �������˷��ҾͲ�����
-        #2d��1����3d��2��������0��Ҫ��
+       
         relative_coords[:, :, 0] *= 3 * self.window_size[1] - 1
         relative_coords[:, :, 1] *= 2 * self.window_size[1] - 1
 
@@ -141,7 +140,6 @@ class WindowAttention(nn.Module):
         
         q = q * self.scale
         attn = (q @ k.transpose(-2, -1))
-        # ��һ�°���˹̹�˷�
         relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
             self.window_size[0] * self.window_size[1] * self.window_size[2],
             self.window_size[0] * self.window_size[1] * self.window_size[2], -1)  # Wh*Ww,Wh*Ww,nH
@@ -733,7 +731,6 @@ class SwinTransformer(nn.Module):
         if self.ape:
             pretrain_img_size = to_3tuple(pretrain_img_size)
             patch_size = to_3tuple(patch_size)
-            # �м���patch
             patches_resolution = [pretrain_img_size[0] // patch_size[0], pretrain_img_size[1] // patch_size[1],
                                   pretrain_img_size[2] // patch_size[2]]
 
@@ -810,7 +807,6 @@ class SwinTransformer(nn.Module):
         Ws, Wh, Ww = x.size(2), x.size(3), x.size(4)
         if self.ape:
             # interpolate the position embedding to the corresponding size
-            # ���ɣ�����λ�ñ���ĳߴ粻���Ѿ�
             absolute_pos_embed = F.interpolate(self.absolute_pos_embed, size=(Ws, Wh, Ww), align_corners=True,
                                                mode='trilinear')
             x = (x + absolute_pos_embed).flatten(2).transpose(1, 2)  # B Ws*Wh*Ww C
@@ -821,7 +817,6 @@ class SwinTransformer(nn.Module):
       
         for i in range(self.num_layers):
             layer = self.layers[i]
-            #x_out��û�н����²������浽skip�������Ծ����
             x_out, S, H, W, x, Ws, Wh, Ww = layer(x, Ws, Wh, Ww)
             if i in self.out_indices:
                 norm_layer = getattr(self, f'norm{i}')
@@ -901,177 +896,15 @@ class encoder(nn.Module):
             
             layer = self.layers[i]
             
-            #x_out��û�н����²������浽skip�������Ծ����
             x, S, H, W,  = layer(x,skips[i], S, H, W)
             out = x.view(-1, S, H, W, self.num_features[i])
             outs.append(out)
         return outs
 
+   
 
 
-
-class ConvDropoutNormNonlin(nn.Module):
-    """
-    fixes a bug in ConvDropoutNormNonlin where lrelu was used regardless of nonlin. Bad.
-    """
-
-    def __init__(self, input_channels, output_channels,
-                 conv_op=nn.Conv2d, conv_kwargs=None,
-                 norm_op=nn.BatchNorm2d, norm_op_kwargs=None,
-                 dropout_op=nn.Dropout2d, dropout_op_kwargs=None,
-                 nonlin=nn.LeakyReLU, nonlin_kwargs=None):
-        super(ConvDropoutNormNonlin, self).__init__()
-        if nonlin_kwargs is None:
-            nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        if dropout_op_kwargs is None:
-            dropout_op_kwargs = {'p': 0.5, 'inplace': True}
-        if norm_op_kwargs is None:
-            norm_op_kwargs = {'eps': 1e-5, 'affine': True, 'momentum': 0.1}
-        if conv_kwargs is None:
-            conv_kwargs = {'kernel_size': 3, 'stride': 1, 'padding': 1, 'dilation': 1, 'bias': True}
-
-        self.nonlin_kwargs = nonlin_kwargs
-        self.nonlin = nonlin
-        self.dropout_op = dropout_op
-        self.dropout_op_kwargs = dropout_op_kwargs
-        self.norm_op_kwargs = norm_op_kwargs
-        self.conv_kwargs = conv_kwargs
-        self.conv_op = conv_op
-        self.norm_op = norm_op
-
-        self.conv = self.conv_op(input_channels, output_channels, **self.conv_kwargs)
-        if self.dropout_op is not None and self.dropout_op_kwargs['p'] is not None and self.dropout_op_kwargs[
-            'p'] > 0:
-            self.dropout = self.dropout_op(**self.dropout_op_kwargs)
-        else:
-            self.dropout = None
-        self.instnorm = self.norm_op(output_channels, **self.norm_op_kwargs)
-        self.lrelu = self.nonlin(**self.nonlin_kwargs)
-
-    def forward(self, x):
-        x = self.conv(x)
-        if self.dropout is not None:
-            x = self.dropout(x)
-        return self.lrelu(self.instnorm(x))
-
-
-class ConvDropoutNonlinNorm(ConvDropoutNormNonlin):
-    def forward(self, x):
-        x = self.conv(x)
-        if self.dropout is not None:
-            x = self.dropout(x)
-        return self.instnorm(self.lrelu(x))
-
-
-class StackedConvLayers(nn.Module):
-    def __init__(self, input_feature_channels, output_feature_channels, num_convs,
-                 conv_op=nn.Conv2d, conv_kwargs=None,
-                 norm_op=nn.BatchNorm2d, norm_op_kwargs=None,
-                 dropout_op=nn.Dropout2d, dropout_op_kwargs=None,
-                 nonlin=nn.LeakyReLU, nonlin_kwargs=None, first_stride=None, basic_block=ConvDropoutNormNonlin):
-        '''
-        stacks ConvDropoutNormLReLU layers. initial_stride will only be applied to first layer in the stack. The other parameters affect all layers
-        :param input_feature_channels:
-        :param output_feature_channels:
-        :param num_convs:
-        :param dilation:
-        :param kernel_size:
-        :param padding:
-        :param dropout:
-        :param initial_stride:
-        :param conv_op:
-        :param norm_op:
-        :param dropout_op:
-        :param inplace:
-        :param neg_slope:
-        :param norm_affine:
-        :param conv_bias:
-        '''
-        self.input_channels = input_feature_channels
-        self.output_channels = output_feature_channels
-
-        if nonlin_kwargs is None:
-            nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        if dropout_op_kwargs is None:
-            dropout_op_kwargs = {'p': 0.5, 'inplace': True}
-        if norm_op_kwargs is None:
-            norm_op_kwargs = {'eps': 1e-5, 'affine': True, 'momentum': 0.1}
-        if conv_kwargs is None:
-            conv_kwargs = {'kernel_size': 3, 'stride': 1, 'padding': 1, 'dilation': 1, 'bias': True}
-
-        self.nonlin_kwargs = nonlin_kwargs
-        self.nonlin = nonlin
-        self.dropout_op = dropout_op
-        self.dropout_op_kwargs = dropout_op_kwargs
-        self.norm_op_kwargs = norm_op_kwargs
-        self.conv_kwargs = conv_kwargs
-        self.conv_op = conv_op
-        self.norm_op = norm_op
-
-        if first_stride is not None:
-            self.conv_kwargs_first_conv = deepcopy(conv_kwargs)
-            self.conv_kwargs_first_conv['stride'] = first_stride
-        else:
-            self.conv_kwargs_first_conv = conv_kwargs
-
-        super(StackedConvLayers, self).__init__()
-        self.blocks = nn.Sequential(
-            *([basic_block(input_feature_channels, output_feature_channels, self.conv_op,
-                           self.conv_kwargs_first_conv,
-                           self.norm_op, self.norm_op_kwargs, self.dropout_op, self.dropout_op_kwargs,
-                           self.nonlin, self.nonlin_kwargs)] +
-              [basic_block(output_feature_channels, output_feature_channels, self.conv_op,
-                           self.conv_kwargs,
-                           self.norm_op, self.norm_op_kwargs, self.dropout_op, self.dropout_op_kwargs,
-                           self.nonlin, self.nonlin_kwargs) for _ in range(num_convs - 1)]))
-
-    def forward(self, x):
-        return self.blocks(x)
-
-
-def print_module_training_status(module):
-    if isinstance(module, nn.Conv2d) or isinstance(module, nn.Conv3d) or isinstance(module, nn.Dropout3d) or \
-            isinstance(module, nn.Dropout2d) or isinstance(module, nn.Dropout) or isinstance(module, nn.InstanceNorm3d) \
-            or isinstance(module, nn.InstanceNorm2d) or isinstance(module, nn.InstanceNorm1d) \
-            or isinstance(module, nn.BatchNorm2d) or isinstance(module, nn.BatchNorm3d) or isinstance(module,
-                                                                                                      nn.BatchNorm1d):
-        print(str(module), module.training)
-
-
-class Upsample(nn.Module):
-    def __init__(self, size=None, scale_factor=None, mode='nearest', align_corners=False):
-        super(Upsample, self).__init__()
-        self.align_corners = align_corners
-        self.mode = mode
-        self.scale_factor = scale_factor
-        self.size = size
-
-    def forward(self, x):
-        return nn.functional.interpolate(x, size=self.size, scale_factor=self.scale_factor, mode=self.mode,
-                                         align_corners=self.align_corners)
-class Permute(nn.Module):
-    def __init__(self, *args):
-        super(Permute, self).__init__()
-        self.permute=args
-    def forward(self, x):
-        
-        return x.permute(self.permute)
-
-class Reshape(nn.Module):
-    def __init__(self, *args):
-        super(Reshape, self).__init__()
-        self.shape=args
-    def forward(self, x):
-    
-        return x.reshape(self.shape)
-        
-class print_shape(nn.Module):
-    def __init__(self):
-        super(print_shape,self).__init__()
-    def forward(self,x):
-        print(x.shape)
-        return x
-        
+      
 class final_patch_expanding(nn.Module):
     def __init__(self,dim,num_class,patch_size):
         super().__init__()
