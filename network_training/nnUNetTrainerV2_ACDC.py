@@ -37,7 +37,7 @@ from nnunet.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
 
 
-class nnUNetTrainerV2_swin_s_ACDC_2laterdown(nnUNetTrainer):
+class nnUNetTrainerV2_ACDC(nnUNetTrainer):
     """
     Info for Fabian: same as internal nnUNetTrainerV2_2
     """
