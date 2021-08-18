@@ -69,8 +69,8 @@ train from scratch（从头训练）
 ./Pretrained_weight/
 
 把下载好的预训练权重放在里面
-./Pretrained_weight/ACDC.model
-./Pretrained_weight/Synapse.model
+./Pretrained_weight/pretrain_ACDC.model
+./Pretrained_weight/pretrain_Synapse.model
 
 模型训练命令：
 python ./run/run_training.py 3d_fullres nnUNetTrainerV2_ACDC 1 0 
