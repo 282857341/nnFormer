@@ -42,7 +42,11 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
     if network == '2d':
         plans_file = join(preprocessing_output_dir, task, plans_identifier + "_plans_2D.pkl")
     else:
-        plans_file = join(preprocessing_output_dir, task, plans_identifier + '_Swin_UNet_brats64_128_128'+"_plans_3D.pkl")
+        if task==1:
+            plans_file = join(preprocessing_output_dir, task, plans_identifier + '_ACDC'+"_plans_3D.pkl")
+        elif task==2:
+            plans_file = join(preprocessing_output_dir, task, plans_identifier + '_Synapse'+"_plans_3D.pkl")
+            
 #_oneplan
 #_Swin_UNet_64_96 
 #_Swin_UNet_brats64_128_128       
