@@ -39,7 +39,7 @@ python ./experiment_planning/nnUNet_plan_and_preprocess.py -t 2
 python ./change_plan_swin.py -t 1
 python ./change_plan_swin.py -t 2
 
-————————————————————————————————————————————————————————————————————
+——————————————————————————————————————————————————————————————
 
 
 
@@ -61,7 +61,7 @@ python ./Synapse_dice_and_hd/inference.py
 dice结果会保存在./infer/output内
 
 
-————————————————————————————————————————————————————————————————————
+——————————————————————————————————————————————————————————————
 
 若执行了推理已训练的模型，需要对./inferTs/output/的output文件夹改名，以免影响后续推理
 train from scratch（从头训练）
