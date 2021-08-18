@@ -3,6 +3,9 @@
 %cd nnUNet
 %pip install -e .
 
+数据地址：
+https://www.creatis.insa-lyon.fr/Challenge/acdc/
+https://www.synapse.org/#!Synapse:syn3193805/wiki/217789
 数据集格式
 https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_conversion.md
 
