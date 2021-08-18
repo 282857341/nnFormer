@@ -44,6 +44,10 @@ python ./change_plan_swin.py -t 2
 
 
 推理我们已训练好的模型
+百度网盘链接：
+链接：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
+提取码：yimv
+
 把下载好的模型文件放在
 ./Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task001_ACDC/nnUNetTrainerV2_ACDC__nnUNetPlansv2.1/model_best.model
 ./Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task002_Synapse/nnUNetTrainerV2_Synapse__nnUNetPlansv2.1/model_best.model
