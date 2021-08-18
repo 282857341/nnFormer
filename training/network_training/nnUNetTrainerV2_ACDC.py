@@ -37,7 +37,7 @@ from nnunet.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
 
 
-class nnUNetTrainerV2_swin_s_ACDC_2laterdown(nnUNetTrainer):
+class nnUNetTrainerV2_ACDC(nnUNetTrainer):
     """
     Info for Fabian: same as internal nnUNetTrainerV2_2
     """
@@ -164,7 +164,7 @@ class nnUNetTrainerV2_swin_s_ACDC_2laterdown(nnUNetTrainer):
                                     dropout_op_kwargs,
                                     net_nonlin, net_nonlin_kwargs, True, False, lambda x: x, InitWeights_He(1e-2),
                                     self.net_num_pool_op_kernel_sizes, self.net_conv_kernel_sizes, False, True, True)
-        checkpoint = torch.load("/home/xychen/jsguo/weight/swin_s_ACDC_2laterdown.model", map_location='cuda')
+        checkpoint = torch.load("./Pretrained_weight/ACDC.model", map_location='cuda')
         self.network.load_state_dict(checkpoint['state_dict'])
         print('I am using the pre_train weight!!')                                      
                            
