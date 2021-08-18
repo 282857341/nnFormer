@@ -164,7 +164,7 @@ class nnUNetTrainerV2_Synapse(nnUNetTrainer):
                                     dropout_op_kwargs,
                                     net_nonlin, net_nonlin_kwargs, True, False, lambda x: x, InitWeights_He(1e-2),
                                     self.net_num_pool_op_kernel_sizes, self.net_conv_kernel_sizes, False, True, True)
-        checkpoint = torch.load("./Pretrained_weight/Synapse.model", map_location='cuda')
+        checkpoint = torch.load("./Pretrained_weight/pretrain_Synapse.model", map_location='cuda')
         self.network.load_state_dict(checkpoint['state_dict'])
         print('I am using the pre_train weight!!')                                      
                            
