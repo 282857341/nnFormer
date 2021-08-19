@@ -1,4 +1,4 @@
-name: torch_ds
+name: nnFormer
 channels:
   - defaults
 dependencies:
