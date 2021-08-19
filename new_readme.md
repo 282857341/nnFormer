@@ -74,11 +74,52 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
 
 
 #### 3 Training and Testing the models
+##### A. Use the best model we have trained to infer the test set
+##### (1)、Put the downloaded the best training weights in the specified directory.
+the download link is 
+```
+Link：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
+Extraction code：yimv
+```
+
+the specified directory is
+```
+./Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task001_ACDC/nnUNetTrainerV2_ACDC__nnUNetPlansv2.1/fold_0/model_best.model
+./Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task002_Synapse/nnUNetTrainerV2_Synapse__nnUNetPlansv2.1/fold_0/model_best.model
+```
+##### (2)、Evaluating the models
+- ACDC
+
+Inference
+```
+python ./inference/predict_simple.py -i ./Dataset/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/imagesTs -o ./Dataset/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnUNetTrainerV2_ACDC
+```
+
+Calculate DICE
+
+```
+python ./ACDC_dice/inference.py
+```
+
+- The Synapse multi-organ CT dataset
+
+Inference
+```
+python ./inference/predict_simple.py -i ./Dataset/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/imagesTs -o ./Dataset/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnUNetTrainerV2_Synapse
+```
+Calculate DICE
+```
+python ./Synapse_dice_and_hd/inference.py
+```
+
+The dice result will be saved in ./infer/output
+
+##### B. The complete process of retraining the model and inference
 ##### (1)、Put the downloaded pre-training weights in the specified directory.
 the download link is 
 ```
-链接：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
-提取码：yimv
+Link：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
+Extraction code：yimv
 ```
 the specified directory is
 ```
@@ -121,3 +162,5 @@ Calculate DICE
 ```
 python ./Synapse_dice_and_hd/inference.py
 ```
+
+The dice result will be saved in ./infer/output
