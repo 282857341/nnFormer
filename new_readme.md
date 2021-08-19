@@ -10,7 +10,12 @@ This software was originally designed and run on a system running Ubuntu 18.01, 
 This software leverages graphical processing units (GPUs) to accelerate neural network training and evaluation; systems lacking a suitable GPU will likely take an extremely long time to train or evaluate models. The software was tested with the NVIDIA RTX 2080 TI GPU, though we anticipate that other GPUs will also work, provided that the unit offers sufficient memory. 
 
 #### 2、Installation guide
-We recommend installation of the required packages using the Conda package manager, available through the Anaconda Python distribution. Anaconda is available free of charge for non-commercial use through [Anaconda Inc](https://www.anaconda.com/products/individual). After installing Anaconda and cloning this repository, use the `conda` command to install necessary packages: `conda env create -f environment.yml` and use the `pip` command to install packages about nnUNet environments: ` pip install -e . `
+We recommend installation of the required packages using the Conda package manager, available through the Anaconda Python distribution. Anaconda is available free of charge for non-commercial use through [Anaconda Inc](https://www.anaconda.com/products/individual). After installing Anaconda and cloning this repository, For use as integrative framework：
+```
+cd transformer
+conda env create -f environment.yml
+pip install -e .
+```
 
 #### 3、The main downloaded file directory description 
 - ACDC_dice:
