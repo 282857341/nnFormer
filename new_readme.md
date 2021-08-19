@@ -78,9 +78,12 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
   ├── nnUNet_trained_models/
   ├── nnUNet_preprocessed/
 ```
-
-
-#### 3 Training and Testing the models
+#### 3 Generating plan files of our network
+```
+python ./nnunet/change_plan_swin.py 1
+python ./nnunet/change_plan_swin.py 2
+```
+#### 4 Training and Testing the models
 ##### A. Use the best model we have trained to infer the test set
 ##### (1)、Put the downloaded the best training weights in the specified directory.
 the download link is 
