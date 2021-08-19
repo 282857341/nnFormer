@@ -17,7 +17,23 @@ We recommend installation of the required packages using the Conda package manag
 - ACDC_dice:
 Calculate dice of ACDC dataset
 
-- Synapse_dice_and_hd
+- Synapse_dice_and_hd:
+Calulate dice of the Synapse dataset
+
+- data_list:
+About how to divide the training and test set
+
+- inference:
+The entry program of the infernece.
+
+- network_architecture:
+The models are stored here.
+
+- run:
+The entry program of the training.
+
+- training:
+The trainers are stored here, the training of the network is conducted by the trainer.
 
 - dataset_conversion
 
@@ -25,15 +41,7 @@ Calculate dice of ACDC dataset
 
 - experiment_planning
 
-- inference
-
-- network_architecture
-
 - postprocessing
-
-- run
-
-- training
 
 - utilities
 
