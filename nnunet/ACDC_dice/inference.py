@@ -57,7 +57,7 @@ def hd(pred,gt):
 
 
 def test(fold):
-    path='./DATASET/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/'
+    path='../DATASET/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/'
     label_list=sorted(glob.glob(os.path.join(path,'labelsTs','*nii.gz')))
     infer_list=sorted(glob.glob(os.path.join(path,'inferTs',fold,'*nii.gz')))
     print("loading success...")
