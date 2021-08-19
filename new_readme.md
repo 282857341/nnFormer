@@ -13,7 +13,7 @@ This software leverages graphical processing units (GPUs) to accelerate neural n
 We recommend installation of the required packages using the Conda package manager, available through the Anaconda Python distribution. Anaconda is available free of charge for non-commercial use through [Anaconda Inc](https://www.anaconda.com/products/individual). After installing Anaconda and cloning this repository, use the `conda` command to install necessary packages:
     `conda env create -f environment.yml` 
 
-#### 3、The downloaded file directory description 
+#### 3、The main downloaded file directory description 
 - ACDC_dice:
 Calculate dice of ACDC dataset
 
@@ -34,20 +34,6 @@ The entry program of the training.
 
 - training:
 The trainers are stored here, the training of the network is conducted by the trainer.
-
-- dataset_conversion
-
-- evaluation
-
-- experiment_planning
-
-- postprocessing
-
-- utilities
-
-- configuation.py
-
-- paths.py
 
 ---
 
