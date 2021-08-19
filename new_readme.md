@@ -86,8 +86,8 @@ Extraction code：yimv
 
 the specified directory is
 ```
-../Pretrained_weight/pretrain_ACDC.model
-../Pretrained_weight/pretrain_Synapse.model
+../Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task001_ACDC/nnUNetTrainerV2_ACDC__nnUNetPlansv2.1/fold_0/model_best.model
+../Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task002_Synapse/nnUNetTrainerV2_Synapse__nnUNetPlansv2.1/fold_0/model_best.model
 ```
 ##### (2)、Evaluating the models
 - ACDC
@@ -125,8 +125,8 @@ Extraction code：yimv
 ```
 the specified directory is
 ```
-../Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task001_ACDC/nnUNetTrainerV2_ACDC__nnUNetPlansv2.1/fold_0/model_best.model
-../Dataset/nnUNet_trained_models/nnUNet/3d_fullres/Task002_Synapse/nnUNetTrainerV2_Synapse__nnUNetPlansv2.1/fold_0/model_best.model
+../Pretrained_weight/pretrain_ACDC.model
+../Pretrained_weight/pretrain_Synapse.model
 ```
 
 ##### (2)、Training 
