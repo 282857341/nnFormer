@@ -14,7 +14,7 @@ We recommend installation of the required packages using the Conda package manag
     `conda env create -f environment.yml` 
 
 #### 3、The downloaded file directory description 
-- ACDC_dice
+- ACDC_dice:
 Calculate dice of ACDC dataset
 
 - Synapse_dice_and_hd
@@ -67,11 +67,13 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
               ├── imagesTs/
               ├── labelsTr/
               ├── labelsTs/
+              ├── dataset.json
           ├── Task02_Synapse/
               ├── imagesTr/
               ├── imagesTs/
               ├── labelsTr/
               ├── labelsTs/
+              ├── dataset.json
       ├── nnUNet_cropped_data/
   ├── nnUNet_trained_models/
   ├── nnUNet_preprocessed/
