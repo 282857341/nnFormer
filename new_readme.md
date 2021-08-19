@@ -59,7 +59,7 @@ While we provide code to load data for training a deep-learning model, you will 
 Regarding the downloaded data, I will not introduce too much here, you can go to the corresponding website to view it. Organize the downloaded DataProcessed as follows:
 
 ```
-./Pretrain_weight/
+./Pretrained_weight/
 ./transformer/
 ./Dataset/
   ├── nnUNet_raw/
