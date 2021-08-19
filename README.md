@@ -47,6 +47,8 @@ The trainers are stored here, the training of the network is conducted by the tr
 #### 1、Datasets
 Datasets can be downloaded at the following links:
 
+And the division of the dataset can be seen in the files in the ./dataset_json/
+
 **Dataset I**
 [ACDC](https://www.creatis.insa-lyon.fr/Challenge/acdc/)
 
