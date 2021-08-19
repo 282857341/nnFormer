@@ -15,6 +15,7 @@ We recommend installation of the required packages using the Conda package manag
 
 #### 3、The downloaded file directory description 
 - ACDC_dice
+Calculate dice of ACDC dataset
 
 - Synapse_dice_and_hd
 
