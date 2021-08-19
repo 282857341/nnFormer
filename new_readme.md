@@ -20,7 +20,7 @@ Calculate dice of ACDC dataset
 - Synapse_dice_and_hd:
 Calulate dice of the Synapse dataset
 
-- data_list:
+- dataset_json:
 About how to divide the training and test set
 
 - inference:
