@@ -13,9 +13,9 @@ This software leverages graphical processing units (GPUs) to accelerate neural n
 We recommend installation of the required packages using the Conda package manager, available through the Anaconda Python distribution. Anaconda is available free of charge for non-commercial use through [Anaconda Inc](https://www.anaconda.com/products/individual). After installing Anaconda and cloning this repository, For use as integrative framework：
 ```
 git clone https://github.com/282857341/transformer.git
-cd transformer
+cd nnFormer
 conda env create -f environment.yml
-source activate torch_ds
+source activate nnFormer
 pip install -e .
 ```
 
@@ -60,7 +60,7 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
 
 ```
 ./Pretrained_weight/
-./transformer/
+./nnFormer/
 ./DATASET/
   ├── nnUNet_raw/
       ├── nnUNet_raw_data/
