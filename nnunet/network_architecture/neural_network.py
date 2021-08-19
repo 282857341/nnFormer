@@ -139,8 +139,7 @@ class SegmentationNetwork(NeuralNetwork):
             context = autocast
         else:
             context = no_op
-        print('I set self.conv_op==nn.Conv3d')
-        self.conv_op =nn.Conv3d
+        
         with context():
             with torch.no_grad():
                 if self.conv_op == nn.Conv3d:
@@ -369,9 +368,7 @@ class SegmentationNetwork(NeuralNetwork):
                 add_for_nb_of_preds = self._gaussian_3d
             else:
                 add_for_nb_of_preds = np.ones(data.shape[1:], dtype=np.float32)
-            if self.num_classes==None:
-                print('I set self.num_classes==14 here')
-                self.num_classes=4
+            
             aggregated_results = np.zeros([self.num_classes] + list(data.shape[1:]), dtype=np.float32)
             aggregated_nb_of_predictions = np.zeros([self.num_classes] + list(data.shape[1:]), dtype=np.float32)
 
