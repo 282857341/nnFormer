@@ -56,7 +56,7 @@ And the division of the dataset can be seen in the files in the ./dataset_json/
 [The Synapse multi-organ CT dataset](https://www.synapse.org/#!Synapse:syn3193805/wiki/217789)
 
 #### 2、Setting up the datasets
-While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnFormer, so I won’t go into details here. You can see [nnFormer](https://github.com/MIC-DKFZ/nnFormer/blob/master/documentation/dataset_conversion.md) for specific operations. 
+While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnFormer, so I won’t go into details here. You can see [nnUNet](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_conversion.md) for specific operations. 
 
 Regarding the downloaded data, I will not introduce too much here, you can go to the corresponding website to view it. Organize the downloaded DataProcessed as follows:
 
