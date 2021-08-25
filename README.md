@@ -56,7 +56,7 @@ And the division of the dataset can be seen in the files in the ./dataset_json/
 [The Synapse multi-organ CT dataset](https://www.synapse.org/#!Synapse:syn3193805/wiki/217789)
 
 #### 2、Setting up the datasets
-While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnUNet, so I won’t go into details here. You can see [nnUNet](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_conversion.md) for specific operations. 
+While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnFormer, so I won’t go into details here. You can see [nnFormer](https://github.com/MIC-DKFZ/nnFormer/blob/master/documentation/dataset_conversion.md) for specific operations. 
 
 Regarding the downloaded data, I will not introduce too much here, you can go to the corresponding website to view it. Organize the downloaded DataProcessed as follows:
 
@@ -64,8 +64,8 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
 ./Pretrained_weight/
 ./nnFormer/
 ./DATASET/
-  ├── nnUNet_raw/
-      ├── nnUNet_raw_data/
+  ├── nnFormer_raw/
+      ├── nnFormer_raw_data/
           ├── Task01_ACDC/
               ├── imagesTr/
               ├── imagesTs/
@@ -78,14 +78,14 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
               ├── labelsTr/
               ├── labelsTs/
               ├── dataset.json
-      ├── nnUNet_cropped_data/
-  ├── nnUNet_trained_models/
-  ├── nnUNet_preprocessed/
+      ├── nnFormer_cropped_data/
+  ├── nnFormer_trained_models/
+  ├── nnFormer_preprocessed/
 ```
 #### 3 Generating plan files of our network
 ```
-python ./nnunet/change_plan_swin.py 1
-python ./nnunet/change_plan_swin.py 2
+python ./nnformer/change_plan_swin.py 1
+python ./nnformer/change_plan_swin.py 2
 ```
 #### 4 Training and Testing the models
 ##### A. Use the best model we have trained to infer the test set
@@ -98,38 +98,38 @@ Extraction code：yimv
 
 the specified directory is
 ```
-../DATASET/nnUNet_trained_models/nnUNet/3d_fullres/Task001_ACDC/nnUNetTrainerV2_ACDC__nnUNetPlansv2.1/fold_0/model_best.model
-../DATASET/nnUNet_trained_models/nnUNet/3d_fullres/Task001_ACDC/nnUNetTrainerV2_ACDC__nnUNetPlansv2.1/fold_0/model_best.model.pkl
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_ACDC__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_ACDC__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 
-../DATASET/nnUNet_trained_models/nnUNet/3d_fullres/Task002_Synapse/nnUNetTrainerV2_Synapse__nnUNetPlansv2.1/fold_0/model_best.model
-../DATASET/nnUNet_trained_models/nnUNet/3d_fullres/Task002_Synapse/nnUNetTrainerV2_Synapse__nnUNetPlansv2.1/fold_0/model_best.model.pkl
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_Synapse__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_Synapse__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 ```
 ##### (2)、Evaluating the models
 - ACDC
 
 Inference
 ```
-nnUNet_predict -i ../DATASET/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/imagesTs -o ../DATASET/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnUNetTrainerV2_ACDC
+nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnFormerTrainerV2_ACDC
 ```
 
 Calculate DICE
 
 ```
-python ./nnunet/ACDC_dice/inference.py
+python ./nnformer/ACDC_dice/inference.py
 ```
 
 - The Synapse multi-organ CT dataset
 
 Inference
 ```
-nnUNet_predict -i ../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/imagesTs -o ../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnUNetTrainerV2_Synapse
+nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnFormerTrainerV2_Synapse
 ```
 Calculate DICE
 ```
-python ./nnunet/Synapse_dice_and_hd/inference.py
+python ./nnformer/Synapse_dice_and_hd/inference.py
 ```
 
-The dice result will be saved in ../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/inferTs/output
+The dice result will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
 
 ##### B. The complete process of retraining the model and inference
 ##### (1)、Put the downloaded pre-training weights in the specified directory.
@@ -147,12 +147,12 @@ the specified directory is
 ##### (2)、Training 
 - ACDC
 ```
-nnUNet_train 3d_fullres nnUNetTrainerV2_ACDC 1 0 
+nnFormer_train 3d_fullres nnFormerTrainerV2_ACDC 1 0 
 ```
 
 - The Synapse multi-organ CT dataset
 ```
-nnUNet_train 3d_fullres nnUNetTrainerV2_Synapse 2 0 
+nnFormer_train 3d_fullres nnFormerTrainerV2_Synapse 2 0 
 ```
 
 ##### (3)、Evaluating the models
@@ -160,24 +160,24 @@ nnUNet_train 3d_fullres nnUNetTrainerV2_Synapse 2 0
 
 Inference
 ```
-nnUNet_predict -i ../DATASET/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/imagesTs -o ../DATASET/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnUNetTrainerV2_ACDC
+nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnFormerTrainerV2_ACDC
 ```
 
 Calculate DICE
 
 ```
-python ./nnunet/ACDC_dice/inference.py
+python ./nnformer/ACDC_dice/inference.py
 ```
 
 - The Synapse multi-organ CT dataset
 
 Inference
 ```
-nnUNet_predict -i ../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/imagesTs -o ../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnUNetTrainerV2_Synapse
+nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnFormerTrainerV2_Synapse
 ```
 Calculate DICE
 ```
-python ./nnunet/Synapse_dice_and_hd/inference.py
+python ./nnformer/Synapse_dice_and_hd/inference.py
 ```
 
-The dice result will be saved in ../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/inferTs/output
+The dice result will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
