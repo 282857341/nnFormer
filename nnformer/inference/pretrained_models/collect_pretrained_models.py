@@ -18,8 +18,8 @@ from multiprocessing.pool import Pool
 
 from batchgenerators.utilities.file_and_folder_operations import *
 import shutil
-from nnunet.paths import default_cascade_trainer, default_plans_identifier, default_trainer, network_training_output_dir
-from nnunet.utilities.task_name_id_conversion import convert_id_to_task_name
+from nnformer.paths import default_cascade_trainer, default_plans_identifier, default_trainer, network_training_output_dir
+from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
 from subprocess import call
 
 
@@ -56,11 +56,11 @@ def copy_model(directory: str, output_directory: str):
 
 def copy_pretrained_models_for_task(task_name: str, output_directory: str,
                                     models: tuple = ("2d", "3d_lowres", "3d_fullres", "3d_cascade_fullres"),
-                                    nnunet_trainer=default_trainer,
-                                    nnunet_trainer_cascade=default_cascade_trainer,
+                                    nnformer_trainer=default_trainer,
+                                    nnformer_trainer_cascade=default_cascade_trainer,
                                     plans_identifier=default_plans_identifier):
-    trainer_output_dir = nnunet_trainer + "__" + plans_identifier
-    trainer_output_dir_cascade = nnunet_trainer_cascade + "__" + plans_identifier
+    trainer_output_dir = nnformer_trainer + "__" + plans_identifier
+    trainer_output_dir_cascade = nnformer_trainer_cascade + "__" + plans_identifier
 
     for m in models:
         to = trainer_output_dir_cascade if m == "3d_cascade_fullres" else trainer_output_dir
@@ -131,24 +131,24 @@ def compress_folder(zip_file, folder):
             zipf.write(join(root, file), os.path.relpath(join(root, file), folder))
 
 
-def export_one_task(taskname, models, output_folder, nnunet_trainer=default_trainer,
-                    nnunet_trainer_cascade=default_cascade_trainer,
+def export_one_task(taskname, models, output_folder, nnformer_trainer=default_trainer,
+                    nnformer_trainer_cascade=default_cascade_trainer,
                     plans_identifier=default_plans_identifier):
-    copy_pretrained_models_for_task(taskname, output_folder, models, nnunet_trainer, nnunet_trainer_cascade,
+    copy_pretrained_models_for_task(taskname, output_folder, models, nnformer_trainer, nnformer_trainer_cascade,
                                     plans_identifier)
-    copy_ensembles(taskname, output_folder, models, (nnunet_trainer, nnunet_trainer_cascade), (plans_identifier,))
+    copy_ensembles(taskname, output_folder, models, (nnformer_trainer, nnformer_trainer_cascade), (plans_identifier,))
     compress_folder(join(output_folder, taskname + '.zip'), join(output_folder, taskname))
 
 
 def export_pretrained_model(task_name: str, output_file: str,
                             models: tuple = ("2d", "3d_lowres", "3d_fullres", "3d_cascade_fullres"),
-                            nnunet_trainer=default_trainer,
-                            nnunet_trainer_cascade=default_cascade_trainer,
+                            nnformer_trainer=default_trainer,
+                            nnformer_trainer_cascade=default_cascade_trainer,
                             plans_identifier=default_plans_identifier,
                             folds=(0, 1, 2, 3, 4), strict=True):
     zipf = zipfile.ZipFile(output_file, 'w', zipfile.ZIP_DEFLATED)
-    trainer_output_dir = nnunet_trainer + "__" + plans_identifier
-    trainer_output_dir_cascade = nnunet_trainer_cascade + "__" + plans_identifier
+    trainer_output_dir = nnformer_trainer + "__" + plans_identifier
+    trainer_output_dir_cascade = nnformer_trainer_cascade + "__" + plans_identifier
 
     for m in models:
         to = trainer_output_dir_cascade if m == "3d_cascade_fullres" else trainer_output_dir
@@ -188,7 +188,7 @@ def export_pretrained_model(task_name: str, output_file: str,
                    os.path.relpath(join(expected_output_folder, "plans.pkl"), network_training_output_dir))
         if not isfile(join(expected_output_folder, "postprocessing.json")):
             if strict:
-                raise RuntimeError('postprocessing.json missing. Run nnUNet_determine_postprocessing or disable strict')
+                raise RuntimeError('postprocessing.json missing. Run nnFormer_determine_postprocessing or disable strict')
             else:
                 print('WARNING: postprocessing.json missing')
         else:
@@ -202,7 +202,7 @@ def export_pretrained_model(task_name: str, output_file: str,
     subd = subdirs(ensemble_dir, join=False)
     valid = []
     for s in subd:
-        v = check_if_valid(s, models, (nnunet_trainer, nnunet_trainer_cascade), (plans_identifier))
+        v = check_if_valid(s, models, (nnformer_trainer, nnformer_trainer_cascade), (plans_identifier))
         if v:
             valid.append(s)
     for v in valid:
@@ -216,8 +216,8 @@ def export_entry_point():
     import argparse
     parser = argparse.ArgumentParser(description="Use this script to export models to a zip file for sharing with "
                                                  "others. You can upload the zip file and then either share the url "
-                                                 "for usage with nnUNet_download_pretrained_model_by_url, or share the "
-                                                 "zip for usage with nnUNet_install_pretrained_model_from_zip")
+                                                 "for usage with nnFormer_download_pretrained_model_by_url, or share the "
+                                                 "zip for usage with nnFormer_install_pretrained_model_from_zip")
     parser.add_argument('-t', type=str, help='task name or task id')
     parser.add_argument('-o', type=str, help='output file name. Should end with .zip')
     parser.add_argument('-m', nargs='+',
@@ -229,7 +229,7 @@ def export_entry_point():
     parser.add_argument('-trc', type=str, help='trainer class used for 3d_cascade_fullres. '
                                               'Default: %s' % default_cascade_trainer, required=False,
                         default=default_cascade_trainer)
-    parser.add_argument('-pl', type=str, help='nnunet plans identifier. Default: %s' % default_plans_identifier,
+    parser.add_argument('-pl', type=str, help='nnformer plans identifier. Default: %s' % default_plans_identifier,
                         required=False, default=default_plans_identifier)
     parser.add_argument('--disable_strict', action='store_true', help='set this if you want to allow skipping '
                                                                      'missing things', required=False)
@@ -255,7 +255,7 @@ def export_entry_point():
 
 
 def export_for_paper():
-    output_base = "/media/fabian/DeepLearningData/nnunet_trained_models"
+    output_base = "/media/fabian/DeepLearningData/nnformer_trained_models"
     task_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 17, 24, 27, 29, 35, 48, 55, 61, 38]
     for t in task_ids:
         if t == 61:

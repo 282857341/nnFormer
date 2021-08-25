@@ -21,11 +21,11 @@ from multiprocessing import Pool
 
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import join, isdir, maybe_mkdir_p, subfiles, subdirs, isfile
-from nnunet.configuration import default_num_threads
-from nnunet.experiment_planning.DatasetAnalyzer import DatasetAnalyzer
-from nnunet.experiment_planning.common_utils import split_4d_nifti
-from nnunet.paths import nnUNet_raw_data, nnUNet_cropped_data, preprocessing_output_dir
-from nnunet.preprocessing.cropping import ImageCropper
+from nnformer.configuration import default_num_threads
+from nnformer.experiment_planning.DatasetAnalyzer import DatasetAnalyzer
+from nnformer.experiment_planning.common_utils import split_4d_nifti
+from nnformer.paths import nnFormer_raw_data, nnFormer_cropped_data, preprocessing_output_dir
+from nnformer.preprocessing.cropping import ImageCropper
 
 
 def split_4d(input_folder, num_processes=default_num_threads, overwrite_task_output_id=None):
@@ -50,7 +50,7 @@ def split_4d(input_folder, num_processes=default_num_threads, overwrite_task_out
 
     task_name = full_task_name[7:]
 
-    output_folder = join(nnUNet_raw_data, "Task%03.0d_" % overwrite_task_output_id + task_name)
+    output_folder = join(nnFormer_raw_data, "Task%03.0d_" % overwrite_task_output_id + task_name)
 
     if isdir(output_folder):
         shutil.rmtree(output_folder)
@@ -120,37 +120,37 @@ def get_caseIDs_from_splitted_dataset_folder(folder):
 
 
 def crop(task_string, override=False, num_threads=default_num_threads):
-    cropped_out_dir = join(nnUNet_cropped_data, task_string)
+    cropped_out_dir = join(nnFormer_cropped_data, task_string)
     maybe_mkdir_p(cropped_out_dir)
 
     if override and isdir(cropped_out_dir):
         shutil.rmtree(cropped_out_dir)
         maybe_mkdir_p(cropped_out_dir)
 
-    splitted_4d_output_dir_task = join(nnUNet_raw_data, task_string)
+    splitted_4d_output_dir_task = join(nnFormer_raw_data, task_string)
     lists, _ = create_lists_from_splitted_dataset(splitted_4d_output_dir_task)
 
     imgcrop = ImageCropper(num_threads, cropped_out_dir)
     imgcrop.run_cropping(lists, overwrite_existing=override)
-    shutil.copy(join(nnUNet_raw_data, task_string, "dataset.json"), cropped_out_dir)
+    shutil.copy(join(nnFormer_raw_data, task_string, "dataset.json"), cropped_out_dir)
 
 
 def analyze_dataset(task_string, override=False, collect_intensityproperties=True, num_processes=default_num_threads):
-    cropped_out_dir = join(nnUNet_cropped_data, task_string)
+    cropped_out_dir = join(nnFormer_cropped_data, task_string)
     dataset_analyzer = DatasetAnalyzer(cropped_out_dir, overwrite=override, num_processes=num_processes)
     _ = dataset_analyzer.analyze_dataset(collect_intensityproperties)
 
 
 def plan_and_preprocess(task_string, processes_lowres=default_num_threads, processes_fullres=3, no_preprocessing=False):
-    from nnunet.experiment_planning.experiment_planner_baseline_2DUNet import ExperimentPlanner2D
-    from nnunet.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
+    from nnformer.experiment_planning.experiment_planner_baseline_2DUNet import ExperimentPlanner2D
+    from nnformer.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
 
     preprocessing_output_dir_this_task_train = join(preprocessing_output_dir, task_string)
-    cropped_out_dir = join(nnUNet_cropped_data, task_string)
+    cropped_out_dir = join(nnFormer_cropped_data, task_string)
     maybe_mkdir_p(preprocessing_output_dir_this_task_train)
 
     shutil.copy(join(cropped_out_dir, "dataset_properties.pkl"), preprocessing_output_dir_this_task_train)
-    shutil.copy(join(nnUNet_raw_data, task_string, "dataset.json"), preprocessing_output_dir_this_task_train)
+    shutil.copy(join(nnFormer_raw_data, task_string, "dataset.json"), preprocessing_output_dir_this_task_train)
 
     exp_planner = ExperimentPlanner(cropped_out_dir, preprocessing_output_dir_this_task_train)
     exp_planner.plan_experiment()

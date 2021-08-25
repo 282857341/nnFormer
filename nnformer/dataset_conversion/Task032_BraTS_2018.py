@@ -17,8 +17,8 @@ import numpy as np
 from collections import OrderedDict
 
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.dataset_conversion.Task043_BraTS_2019 import copy_BraTS_segmentation_and_convert_labels
-from nnunet.paths import nnUNet_raw_data
+from nnformer.dataset_conversion.Task043_BraTS_2019 import copy_BraTS_segmentation_and_convert_labels
+from nnformer.paths import nnFormer_raw_data
 import SimpleITK as sitk
 import shutil
 
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     task_name = "Task032_BraTS2018"
     downloaded_data_dir = "/home/fabian/Downloads/BraTS2018_train_val_test_data/MICCAI_BraTS_2018_Data_Training"
 
-    target_base = join(nnUNet_raw_data, task_name)
+    target_base = join(nnFormer_raw_data, task_name)
     target_imagesTr = join(target_base, "imagesTr")
     target_imagesVal = join(target_base, "imagesVal")
     target_imagesTs = join(target_base, "imagesTs")

@@ -16,7 +16,7 @@
 import numpy as np
 import subprocess
 from collections import OrderedDict
-from nnunet.paths import nnUNet_raw_data
+from nnformer.paths import nnFormer_raw_data
 from batchgenerators.utilities.file_and_folder_operations import *
 import shutil
 from skimage import io
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     foldername = "Task%03.0d_%s" % (task_id, task_name)
 
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     img_te_itk.SetSpacing((5, 5, 5))
     lab_te_itk.SetSpacing((5, 5, 5))
 
-    # 5 copies, otherwise we cannot run nnunet (5 fold cv needs that)
+    # 5 copies, otherwise we cannot run nnformer (5 fold cv needs that)
     sitk.WriteImage(img_tr_itk, join(imagestr, "training0_0000.nii.gz"))
     shutil.copy(join(imagestr, "training0_0000.nii.gz"), join(imagestr, "training1_0000.nii.gz"))
     shutil.copy(join(imagestr, "training0_0000.nii.gz"), join(imagestr, "training2_0000.nii.gz"))

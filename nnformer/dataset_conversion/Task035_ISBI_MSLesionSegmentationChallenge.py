@@ -33,7 +33,7 @@ def convert_for_submission(source_dir, target_dir):
         splitted = f.split("__")
         case_id = int(splitted[1])
         timestep = int(splitted[2][:-7])
-        t = join(target_dir, "test%02d_%02d_nnUNet.nii" % (case_id, timestep))
+        t = join(target_dir, "test%02d_%02d_nnFormer.nii" % (case_id, timestep))
         img = sitk.ReadImage(join(source_dir, f))
         sitk.WriteImage(img, t)
 
@@ -158,5 +158,5 @@ if __name__ == "__main__":
         remaining = [i for i in case_identifiers if i not in splits[-1]['val']]
         splits[-1]['train'] = np.array(remaining)
 
-    maybe_mkdir_p("/media/fabian/nnunet/Task035_ISBILesionSegmentation")
-    save_pickle(splits, join("/media/fabian/nnunet/Task035_ISBILesionSegmentation", "splits_final.pkl"))
+    maybe_mkdir_p("/media/fabian/nnformer/Task035_ISBILesionSegmentation")
+    save_pickle(splits, join("/media/fabian/nnformer/Task035_ISBILesionSegmentation", "splits_final.pkl"))

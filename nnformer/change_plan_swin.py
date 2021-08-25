@@ -9,8 +9,8 @@ if __name__ == '__main__':
     print(args.task==2)
     print(args.task)
     if args.task=='2':
-        input_file = '../DATASET/nnUNet_preprocessed/Task002_Synapse/nnUNetPlansv2.1_plans_3D.pkl'
-        output_file = '../DATASET/nnUNet_preprocessed/Task002_Synapse/nnUNetPlansv2.1_Synapse_plans_3D.pkl'
+        input_file = '../DATASET/nnFormer_preprocessed/Task002_Synapse/nnFormerPlansv2.1_plans_3D.pkl'
+        output_file = '../DATASET/nnFormer_preprocessed/Task002_Synapse/nnFormerPlansv2.1_Synapse_plans_3D.pkl'
         a = load_pickle(input_file)
         
         a['plans_per_stage'][1]['patch_size']=np.array([64,128,128])
@@ -20,8 +20,8 @@ if __name__ == '__main__':
         save_pickle(a, output_file)
         
     elif args.task==1:
-        input_file = './DATASET/nnUNet_preprocessed/Task001_ACDC/nnUNetPlansv2.1_plans_3D.pkl'
-        output_file = './DATASET/nnUNet_preprocessed/Task001_ACDC/nnUNetPlansv2.1_ACDC_plans_3D.pkl'
+        input_file = './DATASET/nnFormer_preprocessed/Task001_ACDC/nnFormerPlansv2.1_plans_3D.pkl'
+        output_file = './DATASET/nnFormer_preprocessed/Task001_ACDC/nnFormerPlansv2.1_ACDC_plans_3D.pkl'
         a = load_pickle(input_file)
         
         a['plans_per_stage'][0]['patch_size']=np.array([14,160,160])

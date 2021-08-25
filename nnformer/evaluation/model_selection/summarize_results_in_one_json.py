@@ -13,9 +13,9 @@
 #    limitations under the License.
 
 from collections import OrderedDict
-from nnunet.evaluation.add_mean_dice_to_json import foreground_mean
+from nnformer.evaluation.add_mean_dice_to_json import foreground_mean
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import network_training_output_dir
+from nnformer.paths import network_training_output_dir
 import numpy as np
 
 

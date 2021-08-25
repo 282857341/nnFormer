@@ -23,9 +23,9 @@ from batchgenerators.utilities.data_splitting import get_split_deterministic
 from batchgenerators.utilities.file_and_folder_operations import *
 from PIL import Image
 import SimpleITK as sitk
-from nnunet.paths import preprocessing_output_dir, nnUNet_raw_data
-from nnunet.utilities.sitk_stuff import copy_geometry
-from nnunet.inference.ensemble_predictions import merge
+from nnformer.paths import preprocessing_output_dir, nnFormer_raw_data
+from nnformer.utilities.sitk_stuff import copy_geometry
+from nnformer.inference.ensemble_predictions import merge
 
 
 def load_png_stack(folder):
@@ -74,16 +74,16 @@ def write_pngs_from_nifti(nifti, output_folder, converter=convert_seg_to_intensi
 
 
 def convert_variant2_predicted_test_to_submission_format(folder_with_predictions,
-                                                         output_folder="/home/fabian/drives/datasets/results/nnUNet/test_sets/Task038_CHAOS_Task_3_5_Variant2/ready_to_submit",
-                                                         postprocessing_file="/home/fabian/drives/datasets/results/nnUNet/ensembles/Task038_CHAOS_Task_3_5_Variant2/ensemble_2d__nnUNetTrainerV2__nnUNetPlansv2.1--3d_fullres__nnUNetTrainerV2__nnUNetPlansv2.1/postprocessing.json"):
+                                                         output_folder="/home/fabian/drives/datasets/results/nnFormer/test_sets/Task038_CHAOS_Task_3_5_Variant2/ready_to_submit",
+                                                         postprocessing_file="/home/fabian/drives/datasets/results/nnFormer/ensembles/Task038_CHAOS_Task_3_5_Variant2/ensemble_2d__nnFormerTrainerV2__nnFormerPlansv2.1--3d_fullres__nnFormerTrainerV2__nnFormerPlansv2.1/postprocessing.json"):
     """
     output_folder is where the extracted template is
     :param folder_with_predictions:
     :param output_folder:
     :return:
     """
-    postprocessing_file = "/media/fabian/Results/nnUNet/3d_fullres/Task039_CHAOS_Task_3_5_Variant2_highres/" \
-                          "nnUNetTrainerV2__nnUNetPlansfixed/postprocessing.json"
+    postprocessing_file = "/media/fabian/Results/nnFormer/3d_fullres/Task039_CHAOS_Task_3_5_Variant2_highres/" \
+                          "nnFormerTrainerV2__nnFormerPlansfixed/postprocessing.json"
 
     # variant 2 treats in and out phase as two training examples, so we need to ensemble these two again
     final_predictions_folder = join(output_folder, "final")
@@ -120,7 +120,7 @@ def convert_variant2_predicted_test_to_submission_format(folder_with_predictions
         shutil.copy(join(folder_with_predictions, t2), join(final_predictions_folder, t2))
 
     # apply postprocessing
-    from nnunet.postprocessing.connected_components import apply_postprocessing_to_folder, load_postprocessing
+    from nnformer.postprocessing.connected_components import apply_postprocessing_to_folder, load_postprocessing
     postprocessed_folder = join(output_folder, "final_postprocessed")
     for_which_classes, min_valid_obj_size = load_postprocessing(postprocessing_file)
     apply_postprocessing_to_folder(final_predictions_folder, postprocessed_folder,
@@ -176,7 +176,7 @@ if __name__ == "__main__":
 
     root = "/media/fabian/My Book/datasets/CHAOS_challenge/Train_Sets"
     root_test = "/media/fabian/My Book/datasets/CHAOS_challenge/Test_Sets"
-    out_base = nnUNet_raw_data
+    out_base = nnFormer_raw_data
     # CT
     # we ignore CT because
 

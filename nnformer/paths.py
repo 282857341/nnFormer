@@ -16,35 +16,35 @@ import os
 from batchgenerators.utilities.file_and_folder_operations import maybe_mkdir_p, join
 
 # do not modify these unless you know what you are doing
-my_output_identifier = "nnUNet"
-default_plans_identifier = "nnUNetPlansv2.1"
-default_data_identifier = 'nnUNetData_plans_v2.1'
-default_trainer = "nnUNetTrainerV2"
-default_cascade_trainer = "nnUNetTrainerV2CascadeFullRes"
+my_output_identifier = "nnFormer"
+default_plans_identifier = "nnFormerPlansv2.1"
+default_data_identifier = 'nnFormerData_plans_v2.1'
+default_trainer = "nnFormerTrainerV2"
+default_cascade_trainer = "nnFormerTrainerV2CascadeFullRes"
 
 """
 PLEASE READ paths.md FOR INFORMATION TO HOW TO SET THIS UP
 """
 
-base = os.environ['nnUNet_raw_data_base'] if "nnUNet_raw_data_base" in os.environ.keys() else None
-preprocessing_output_dir = os.environ['nnUNet_preprocessed'] if "nnUNet_preprocessed" in os.environ.keys() else None
+base = os.environ['nnFormer_raw_data_base'] if "nnFormer_raw_data_base" in os.environ.keys() else None
+preprocessing_output_dir = os.environ['nnFormer_preprocessed'] if "nnFormer_preprocessed" in os.environ.keys() else None
 network_training_output_dir_base = os.path.join(os.environ['RESULTS_FOLDER']) if "RESULTS_FOLDER" in os.environ.keys() else None
 
 if base is not None:
-    nnUNet_raw_data = join(base, "nnUNet_raw_data")
-    nnUNet_cropped_data = join(base, "nnUNet_cropped_data")
-    maybe_mkdir_p(nnUNet_raw_data)
-    maybe_mkdir_p(nnUNet_cropped_data)
+    nnFormer_raw_data = join(base, "nnFormer_raw_data")
+    nnFormer_cropped_data = join(base, "nnFormer_cropped_data")
+    maybe_mkdir_p(nnFormer_raw_data)
+    maybe_mkdir_p(nnFormer_cropped_data)
 else:
-    print("nnUNet_raw_data_base is not defined and nnU-Net can only be used on data for which preprocessed files "
+    print("nnFormer_raw_data_base is not defined and nnU-Net can only be used on data for which preprocessed files "
           "are already present on your system. nnU-Net cannot be used for experiment planning and preprocessing like "
           "this. If this is not intended, please read documentation/setting_up_paths.md for information on how to set this up properly.")
-    nnUNet_cropped_data = nnUNet_raw_data = None
+    nnFormer_cropped_data = nnFormer_raw_data = None
 
 if preprocessing_output_dir is not None:
     maybe_mkdir_p(preprocessing_output_dir)
 else:
-    print("nnUNet_preprocessed is not defined and nnU-Net can not be used for preprocessing "
+    print("nnFormer_preprocessed is not defined and nnU-Net can not be used for preprocessing "
           "or training. If this is not intended, please read documentation/setting_up_paths.md for information on how to set this up.")
     preprocessing_output_dir = None
 

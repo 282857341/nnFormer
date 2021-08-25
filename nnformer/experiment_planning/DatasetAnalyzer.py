@@ -15,11 +15,11 @@
 from batchgenerators.utilities.file_and_folder_operations import *
 from multiprocessing import Pool
 
-from nnunet.configuration import default_num_threads
-from nnunet.paths import nnUNet_raw_data, nnUNet_cropped_data
+from nnformer.configuration import default_num_threads
+from nnformer.paths import nnFormer_raw_data, nnFormer_cropped_data
 import numpy as np
 import pickle
-from nnunet.preprocessing.cropping import get_patient_identifiers_from_cropped_files
+from nnformer.preprocessing.cropping import get_patient_identifiers_from_cropped_files
 from skimage.morphology import label
 from collections import OrderedDict
 

@@ -76,7 +76,7 @@ def test(fold):
         else:
             return 0
     
-    path='../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/'
+    path='../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/'
     label_list=sorted(glob.glob(os.path.join(path,'labelsTs','*nii.gz')))
     infer_list=sorted(glob.glob(os.path.join(path,'inferTs',fold,'*nii.gz')))
     print("loading success...")

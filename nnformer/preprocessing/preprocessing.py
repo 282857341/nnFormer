@@ -16,8 +16,8 @@ from collections import OrderedDict
 from copy import deepcopy
 
 from batchgenerators.augmentations.utils import resize_segmentation
-from nnunet.configuration import default_num_threads, RESAMPLING_SEPARATE_Z_ANISO_THRESHOLD
-from nnunet.preprocessing.cropping import get_case_identifier_from_npz, ImageCropper
+from nnformer.configuration import default_num_threads, RESAMPLING_SEPARATE_Z_ANISO_THRESHOLD
+from nnformer.preprocessing.cropping import get_case_identifier_from_npz, ImageCropper
 from skimage.transform import resize
 from scipy.ndimage.interpolation import map_coordinates
 import numpy as np

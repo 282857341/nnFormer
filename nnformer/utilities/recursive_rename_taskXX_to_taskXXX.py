@@ -29,13 +29,13 @@ def recursive_rename(folder):
         recursive_rename(ss)
 
 if __name__ == "__main__":
-    recursive_rename("/media/fabian/Results/nnUNet")
-    recursive_rename("/media/fabian/nnunet")
+    recursive_rename("/media/fabian/Results/nnFormer")
+    recursive_rename("/media/fabian/nnformer")
     recursive_rename("/media/fabian/My Book/MedicalDecathlon")
-    recursive_rename("/home/fabian/drives/datasets/nnUNet_raw")
-    recursive_rename("/home/fabian/drives/datasets/nnUNet_preprocessed")
-    recursive_rename("/home/fabian/drives/datasets/nnUNet_testSets")
-    recursive_rename("/home/fabian/drives/datasets/results/nnUNet")
+    recursive_rename("/home/fabian/drives/datasets/nnFormer_raw")
+    recursive_rename("/home/fabian/drives/datasets/nnFormer_preprocessed")
+    recursive_rename("/home/fabian/drives/datasets/nnFormer_testSets")
+    recursive_rename("/home/fabian/drives/datasets/results/nnFormer")
     recursive_rename("/home/fabian/drives/e230-dgx2-1-data_fabian/Decathlon_raw")
-    recursive_rename("/home/fabian/drives/e230-dgx2-1-data_fabian/nnUNet_preprocessed")
+    recursive_rename("/home/fabian/drives/e230-dgx2-1-data_fabian/nnFormer_preprocessed")
 

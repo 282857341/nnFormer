@@ -20,24 +20,24 @@ from time import sleep
 from typing import Tuple, List
 
 import matplotlib
-import nnunet
+import nnformer
 import numpy as np
 import torch
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.configuration import default_num_threads
-from nnunet.evaluation.evaluator import aggregate_scores
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.network_architecture.initialization import InitWeights_He
-from nnunet.network_architecture.neural_network import SegmentationNetwork
-from nnunet.postprocessing.connected_components import determine_postprocessing
-from nnunet.training.data_augmentation.default_data_augmentation import default_3D_augmentation_params, \
+from nnformer.configuration import default_num_threads
+from nnformer.evaluation.evaluator import aggregate_scores
+from nnformer.inference.segmentation_export import save_segmentation_nifti_from_softmax
+from nnformer.network_architecture.generic_UNet import Generic_UNet
+from nnformer.network_architecture.initialization import InitWeights_He
+from nnformer.network_architecture.neural_network import SegmentationNetwork
+from nnformer.postprocessing.connected_components import determine_postprocessing
+from nnformer.training.data_augmentation.default_data_augmentation import default_3D_augmentation_params, \
     default_2D_augmentation_params, get_default_augmentation, get_patch_size
-from nnunet.training.dataloading.dataset_loading import load_dataset, DataLoader3D, DataLoader2D, unpack_dataset
-from nnunet.training.loss_functions.dice_loss import DC_and_CE_loss
-from nnunet.training.network_training.network_trainer import NetworkTrainer
-from nnunet.utilities.nd_softmax import softmax_helper
-from nnunet.utilities.tensor_utilities import sum_tensor
+from nnformer.training.dataloading.dataset_loading import load_dataset, DataLoader3D, DataLoader2D, unpack_dataset
+from nnformer.training.loss_functions.dice_loss import DC_and_CE_loss
+from nnformer.training.network_training.network_trainer import NetworkTrainer
+from nnformer.utilities.nd_softmax import softmax_helper
+from nnformer.utilities.tensor_utilities import sum_tensor
 from torch import nn
 from torch.optim import lr_scheduler
 
@@ -45,7 +45,7 @@ from torch.optim import lr_scheduler
 matplotlib.use("agg")
 
 
-class nnUNetTrainer(NetworkTrainer):
+class nnFormerTrainer(NetworkTrainer):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
                  unpack_data=True, deterministic=True, fp16=False):
         """
@@ -69,10 +69,10 @@ class nnUNetTrainer(NetworkTrainer):
         :param unpack_data: if False, npz preprocessed data will not be unpacked to npy. This consumes less space but
         is considerably slower! Running unpack_data=False with 2d should never be done!
 
-        IMPORTANT: If you inherit from nnUNetTrainer and the init args change then you need to redefine self.init_args
+        IMPORTANT: If you inherit from nnFormerTrainer and the init args change then you need to redefine self.init_args
         in your init accordingly. Otherwise checkpoints won't load properly!
         """
-        super(nnUNetTrainer, self).__init__(deterministic, fp16)
+        super(nnFormerTrainer, self).__init__(deterministic, fp16)
         self.unpack_data = unpack_data
         self.init_args = (plans_file, fold, output_folder, dataset_directory, batch_dice, stage, unpack_data,
                           deterministic, fp16)
@@ -316,7 +316,7 @@ class nnUNetTrainer(NetworkTrainer):
 
     def run_training(self):
         self.save_debug_information()
-        super(nnUNetTrainer, self).run_training()
+        super(nnFormerTrainer, self).run_training()
 
     def load_plans_file(self):
         """
@@ -422,7 +422,7 @@ class nnUNetTrainer(NetworkTrainer):
         :param input_files:
         :return:
         """
-        from nnunet.training.model_restore import recursive_find_python_class
+        from nnformer.training.model_restore import recursive_find_python_class
         preprocessor_name = self.plans.get('preprocessor_name')
         if preprocessor_name is None:
             if self.threeD:
@@ -431,10 +431,10 @@ class nnUNetTrainer(NetworkTrainer):
                 preprocessor_name = "PreprocessorFor2D"
 
         print("using preprocessor", preprocessor_name)
-        preprocessor_class = recursive_find_python_class([join(nnunet.__path__[0], "preprocessing")],
+        preprocessor_class = recursive_find_python_class([join(nnformer.__path__[0], "preprocessing")],
                                                          preprocessor_name,
-                                                         current_module="nnunet.preprocessing")
-        assert preprocessor_class is not None, "Could not find preprocessor %s in nnunet.preprocessing" % \
+                                                         current_module="nnformer.preprocessing")
+        assert preprocessor_class is not None, "Could not find preprocessor %s in nnformer.preprocessing" % \
                                                preprocessor_name
         preprocessor = preprocessor_class(self.normalization_schemes, self.use_mask_for_norm,
                                           self.transpose_forward, self.intensity_properties)
@@ -648,7 +648,7 @@ class nnUNetTrainer(NetworkTrainer):
                              json_task=task, num_threads=default_num_threads)
 
         if run_postprocessing_on_folds:
-            # in the old nnunet we would stop here. Now we add a postprocessing. This postprocessing can remove everything
+            # in the old nnformer we would stop here. Now we add a postprocessing. This postprocessing can remove everything
             # except the largest connected component for each class. To see if this improves results, we do this for all
             # classes and then rerun the evaluation. Those classes for which this resulted in an improved dice score will
             # have this applied during inference as well
@@ -726,7 +726,7 @@ class nnUNetTrainer(NetworkTrainer):
         self.online_eval_fn = []
 
     def save_checkpoint(self, fname, save_optimizer=True):
-        super(nnUNetTrainer, self).save_checkpoint(fname, save_optimizer)
+        super(nnFormerTrainer, self).save_checkpoint(fname, save_optimizer)
         info = OrderedDict()
         info['init'] = self.init_args
         info['name'] = self.__class__.__name__

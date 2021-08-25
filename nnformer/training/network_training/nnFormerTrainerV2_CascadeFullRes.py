@@ -16,19 +16,19 @@
 from multiprocessing.pool import Pool
 from time import sleep
 import matplotlib
-from nnunet.configuration import default_num_threads
-from nnunet.postprocessing.connected_components import determine_postprocessing
-from nnunet.training.data_augmentation.data_augmentation_moreDA import get_moreDA_augmentation
-from nnunet.training.dataloading.dataset_loading import DataLoader3D, unpack_dataset
-from nnunet.evaluation.evaluator import aggregate_scores
-from nnunet.network_architecture.neural_network import SegmentationNetwork
-from nnunet.paths import network_training_output_dir
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
+from nnformer.configuration import default_num_threads
+from nnformer.postprocessing.connected_components import determine_postprocessing
+from nnformer.training.data_augmentation.data_augmentation_moreDA import get_moreDA_augmentation
+from nnformer.training.dataloading.dataset_loading import DataLoader3D, unpack_dataset
+from nnformer.evaluation.evaluator import aggregate_scores
+from nnformer.network_architecture.neural_network import SegmentationNetwork
+from nnformer.paths import network_training_output_dir
+from nnformer.inference.segmentation_export import save_segmentation_nifti_from_softmax
 from batchgenerators.utilities.file_and_folder_operations import *
 import numpy as np
-from nnunet.training.loss_functions.deep_supervision import MultipleOutputLoss2
-from nnunet.training.network_training.nnUNetTrainerV2 import nnUNetTrainerV2
-from nnunet.utilities.one_hot_encoding import to_one_hot
+from nnformer.training.loss_functions.deep_supervision import MultipleOutputLoss2
+from nnformer.training.network_training.nnFormerTrainerV2 import nnFormerTrainerV2
+from nnformer.utilities.one_hot_encoding import to_one_hot
 import shutil
 
 from torch import nn
@@ -36,9 +36,9 @@ from torch import nn
 matplotlib.use("agg")
 
 
-class nnUNetTrainerV2CascadeFullRes(nnUNetTrainerV2):
+class nnFormerTrainerV2CascadeFullRes(nnFormerTrainerV2):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
-                 unpack_data=True, deterministic=True, previous_trainer="nnUNetTrainerV2", fp16=False):
+                 unpack_data=True, deterministic=True, previous_trainer="nnFormerTrainerV2", fp16=False):
         super().__init__(plans_file, fold, output_folder, dataset_directory,
                          batch_dice, stage, unpack_data, deterministic, fp16)
         self.init_args = (plans_file, fold, output_folder, dataset_directory, batch_dice, stage, unpack_data,
@@ -316,7 +316,7 @@ class nnUNetTrainerV2CascadeFullRes(nnUNetTrainerV2):
                              json_task=task, num_threads=default_num_threads)
 
         if run_postprocessing_on_folds:
-            # in the old nnunet we would stop here. Now we add a postprocessing. This postprocessing can remove everything
+            # in the old nnformer we would stop here. Now we add a postprocessing. This postprocessing can remove everything
             # except the largest connected component for each class. To see if this improves results, we do this for all
             # classes and then rerun the evaluation. Those classes for which this resulted in an improved dice score will
             # have this applied during inference as well

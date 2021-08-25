@@ -13,9 +13,9 @@
 #    limitations under the License.
 
 import numpy as np
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet_v21 import \
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet_v21 import \
     ExperimentPlanner3D_v21
-from nnunet.paths import *
+from nnformer.paths import *
 
 
 class ExperimentPlanner3D_v22(ExperimentPlanner3D_v21):
@@ -23,9 +23,9 @@ class ExperimentPlanner3D_v22(ExperimentPlanner3D_v21):
     """
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super().__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_plans_v2.2"
+        self.data_identifier = "nnFormerData_plans_v2.2"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlansv2.2_plans_3D.pkl")
+                                "nnFormerPlansv2.2_plans_3D.pkl")
 
     def get_target_spacing(self):
         spacings = self.dataset_properties['all_spacings']

@@ -15,9 +15,9 @@ from multiprocessing.pool import Pool
 
 import numpy as np
 import SimpleITK as sitk
-from nnunet.utilities.task_name_id_conversion import convert_task_name_to_id, convert_id_to_task_name
+from nnformer.utilities.task_name_id_conversion import convert_task_name_to_id, convert_id_to_task_name
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import *
+from nnformer.paths import *
 
 color_cycle = (
     "000000",
@@ -159,7 +159,7 @@ def generate_overlays_for_task(task_name_or_id, output_folder, num_processes=8, 
         task_name = convert_id_to_task_name(int(task_name_or_id))
 
     if not use_preprocessed:
-        folder = join(nnUNet_raw_data, task_name)
+        folder = join(nnFormer_raw_data, task_name)
 
         identifiers = [i[:-7] for i in subfiles(join(folder, 'labelsTr'), suffix='.nii.gz', join=False)]
 

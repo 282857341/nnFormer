@@ -16,11 +16,11 @@
 import shutil
 from copy import deepcopy
 
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
+from nnformer.inference.segmentation_export import save_segmentation_nifti_from_softmax
 from batchgenerators.utilities.file_and_folder_operations import *
 import numpy as np
 from multiprocessing import Pool
-from nnunet.postprocessing.connected_components import apply_postprocessing_to_folder, load_postprocessing
+from nnformer.postprocessing.connected_components import apply_postprocessing_to_folder, load_postprocessing
 
 
 def merge_files(files, properties_files, out_file, override, store_npz):

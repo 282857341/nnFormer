@@ -12,9 +12,9 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet_v21 import \
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet_v21 import \
     ExperimentPlanner3D_v21
-from nnunet.paths import *
+from nnformer.paths import *
 
 
 class ExperimentPlanner3D_v23(ExperimentPlanner3D_v21):
@@ -22,7 +22,7 @@ class ExperimentPlanner3D_v23(ExperimentPlanner3D_v21):
     """
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlanner3D_v23, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_plans_v2.3"
+        self.data_identifier = "nnFormerData_plans_v2.3"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlansv2.3_plans_3D.pkl")
+                                "nnFormerPlansv2.3_plans_3D.pkl")
         self.preprocessor_name = "Preprocessor3DDifferentResampling"

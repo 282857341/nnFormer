@@ -18,10 +18,10 @@ import SimpleITK as sitk
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
 
-from nnunet.dataset_conversion.utils import generate_dataset_json
-from nnunet.paths import nnUNet_raw_data
-from nnunet.paths import preprocessing_output_dir
-from nnunet.utilities.task_name_id_conversion import convert_id_to_task_name
+from nnformer.dataset_conversion.utils import generate_dataset_json
+from nnformer.paths import nnFormer_raw_data
+from nnformer.paths import preprocessing_output_dir
+from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
 
 
 def increase_batch_size(plans_file: str, save_as: str, bs_factor: int):
@@ -134,7 +134,7 @@ def manually_set_configurations():
     'pool_op_kernel_sizes': [[1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2], [1, 2, 2], [1, 2, 2]], 
     'conv_kernel_sizes': [[1, 3, 3], [1, 3, 3], [3, 3, 3], [3, 3, 3], [3, 3, 3], [3, 3, 3], [3, 3, 3]]}
     """
-    plans = load_pickle(join(task115_dir, 'nnUNetPlansv2.1_plans_3D.pkl'))
+    plans = load_pickle(join(task115_dir, 'nnFormerPlansv2.1_plans_3D.pkl'))
     fullres_stage = plans['plans_per_stage'][1]
     fullres_stage['patch_size'] = np.array([ 64, 320, 320])
     fullres_stage['num_pool_per_axis'] = [4, 6, 6]
@@ -152,12 +152,12 @@ def manually_set_configurations():
                                         [3, 3, 3],
                                         [3, 3, 3]]
 
-    save_pickle(plans, join(task115_dir, 'nnUNetPlansv2.1_custom_plans_3D.pkl'))
+    save_pickle(plans, join(task115_dir, 'nnFormerPlansv2.1_custom_plans_3D.pkl'))
 
     ## larger batch size
     # (default for all 3d trainings is batch size 2)
-    increase_batch_size(join(task115_dir, 'nnUNetPlansv2.1_plans_3D.pkl'), join(task115_dir, 'nnUNetPlansv2.1_bs3x_plans_3D.pkl'), 3)
-    increase_batch_size(join(task115_dir, 'nnUNetPlansv2.1_plans_3D.pkl'), join(task115_dir, 'nnUNetPlansv2.1_bs5x_plans_3D.pkl'), 5)
+    increase_batch_size(join(task115_dir, 'nnFormerPlansv2.1_plans_3D.pkl'), join(task115_dir, 'nnFormerPlansv2.1_bs3x_plans_3D.pkl'), 3)
+    increase_batch_size(join(task115_dir, 'nnFormerPlansv2.1_plans_3D.pkl'), join(task115_dir, 'nnFormerPlansv2.1_bs5x_plans_3D.pkl'), 5)
 
     # residual unet
     """
@@ -187,7 +187,7 @@ def manually_set_configurations():
      'num_blocks_encoder': (1, 2, 3, 4, 4, 4, 4),
      'num_blocks_decoder': (1, 1, 1, 1, 1, 1)}
     """
-    plans = load_pickle(join(task115_dir, 'nnUNetPlans_FabiansResUNet_v2.1_plans_3D.pkl'))
+    plans = load_pickle(join(task115_dir, 'nnFormerPlans_FabiansResUNet_v2.1_plans_3D.pkl'))
     fullres_stage = plans['plans_per_stage'][1]
     fullres_stage['patch_size'] = np.array([ 56, 256, 256])
     fullres_stage['num_pool_per_axis'] = [3, 6, 6]
@@ -205,7 +205,7 @@ def manually_set_configurations():
                                         [3, 3, 3],
                                         [3, 3, 3],
                                         [3, 3, 3]]
-    save_pickle(plans, join(task115_dir, 'nnUNetPlans_FabiansResUNet_v2.1_custom_plans_3D.pkl'))
+    save_pickle(plans, join(task115_dir, 'nnFormerPlans_FabiansResUNet_v2.1_custom_plans_3D.pkl'))
 
 
 def check_same(img1: str, img2: str):
@@ -278,7 +278,7 @@ if __name__ == '__main__':
 
     task_name = "Task115_COVIDSegChallenge"
 
-    target_base = join(nnUNet_raw_data, task_name)
+    target_base = join(nnFormer_raw_data, task_name)
 
     target_imagesTr = join(target_base, "imagesTr")
     target_imagesVal = join(target_base, "imagesVal")
@@ -324,21 +324,21 @@ if __name__ == '__main__':
     # performance summary (train set 5-fold cross-validation)
 
     # baselines
-    # 3d_fullres nnUNetTrainerV2__nnUNetPlans_v2.1						            0.7441
-    # 3d_lowres nnUNetTrainerV2__nnUNetPlans_v2.1						            0.745
+    # 3d_fullres nnFormerTrainerV2__nnFormerPlans_v2.1						            0.7441
+    # 3d_lowres nnFormerTrainerV2__nnFormerPlans_v2.1						            0.745
 
     # models used for test set prediction
-    # 3d_fullres nnUNetTrainerV2_ResencUNet_DA3__nnUNetPlans_FabiansResUNet_v2.1	0.7543
-    # 3d_fullres nnUNetTrainerV2_ResencUNet__nnUNetPlans_FabiansResUNet_v2.1		0.7527
-    # 3d_lowres nnUNetTrainerV2_ResencUNet_DA3_BN__nnUNetPlans_FabiansResUNet_v2.1	0.7513
-    # 3d_fullres nnUNetTrainerV2_DA3_BN__nnUNetPlans_v2.1					        0.7498
-    # 3d_fullres nnUNetTrainerV2_DA3__nnUNetPlans_v2.1					            0.7532
+    # 3d_fullres nnFormerTrainerV2_ResencUNet_DA3__nnFormerPlans_FabiansResUNet_v2.1	0.7543
+    # 3d_fullres nnFormerTrainerV2_ResencUNet__nnFormerPlans_FabiansResUNet_v2.1		0.7527
+    # 3d_lowres nnFormerTrainerV2_ResencUNet_DA3_BN__nnFormerPlans_FabiansResUNet_v2.1	0.7513
+    # 3d_fullres nnFormerTrainerV2_DA3_BN__nnFormerPlans_v2.1					        0.7498
+    # 3d_fullres nnFormerTrainerV2_DA3__nnFormerPlans_v2.1					            0.7532
 
     # Test set prediction
-    # nnUNet_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnUNetTrainerV2_ResencUNet_DA3__nnUNetPlans_FabiansResUNet_v2.1 -tr nnUNetTrainerV2_ResencUNet_DA3 -p nnUNetPlans_FabiansResUNet_v2.1 -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
-    # nnUNet_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnUNetTrainerV2_ResencUNet__nnUNetPlans_FabiansResUNet_v2.1 -tr nnUNetTrainerV2_ResencUNet -p nnUNetPlans_FabiansResUNet_v2.1 -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
-    # nnUNet_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_lowres/nnUNetTrainerV2_ResencUNet_DA3_BN__nnUNetPlans_FabiansResUNet_v2.1 -tr nnUNetTrainerV2_ResencUNet_DA3_BN -p nnUNetPlans_FabiansResUNet_v2.1 -m 3d_lowres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
-    # nnUNet_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnUNetTrainerV2_DA3_BN__nnUNetPlans_v2.1 -tr nnUNetTrainerV2_DA3_BN -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
-    # nnUNet_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnUNetTrainerV2_DA3__nnUNetPlans_v2.1 -tr nnUNetTrainerV2_DA3 -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
+    # nnFormer_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnFormerTrainerV2_ResencUNet_DA3__nnFormerPlans_FabiansResUNet_v2.1 -tr nnFormerTrainerV2_ResencUNet_DA3 -p nnFormerPlans_FabiansResUNet_v2.1 -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
+    # nnFormer_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnFormerTrainerV2_ResencUNet__nnFormerPlans_FabiansResUNet_v2.1 -tr nnFormerTrainerV2_ResencUNet -p nnFormerPlans_FabiansResUNet_v2.1 -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
+    # nnFormer_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_lowres/nnFormerTrainerV2_ResencUNet_DA3_BN__nnFormerPlans_FabiansResUNet_v2.1 -tr nnFormerTrainerV2_ResencUNet_DA3_BN -p nnFormerPlans_FabiansResUNet_v2.1 -m 3d_lowres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
+    # nnFormer_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnFormerTrainerV2_DA3_BN__nnFormerPlans_v2.1 -tr nnFormerTrainerV2_DA3_BN -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
+    # nnFormer_predict -i COVID-19-20_TestSet -o covid_testset_predictions/3d_fullres/nnFormerTrainerV2_DA3__nnFormerPlans_v2.1 -tr nnFormerTrainerV2_DA3 -m 3d_fullres -f 0 1 2 3 4 5 6 7 8 9 -t 115 -z
 
-    # nnUNet_ensemble -f 3d_lowres/nnUNetTrainerV2_ResencUNet_DA3_BN__nnUNetPlans_FabiansResUNet_v2.1/ 3d_fullres/nnUNetTrainerV2_ResencUNet__nnUNetPlans_FabiansResUNet_v2.1/ 3d_fullres/nnUNetTrainerV2_ResencUNet_DA3__nnUNetPlans_FabiansResUNet_v2.1/ 3d_fullres/nnUNetTrainerV2_DA3_BN__nnUNetPlans_v2.1/ 3d_fullres/nnUNetTrainerV2_DA3__nnUNetPlans_v2.1/ -o ensembled
+    # nnFormer_ensemble -f 3d_lowres/nnFormerTrainerV2_ResencUNet_DA3_BN__nnFormerPlans_FabiansResUNet_v2.1/ 3d_fullres/nnFormerTrainerV2_ResencUNet__nnFormerPlans_FabiansResUNet_v2.1/ 3d_fullres/nnFormerTrainerV2_ResencUNet_DA3__nnFormerPlans_FabiansResUNet_v2.1/ 3d_fullres/nnFormerTrainerV2_DA3_BN__nnFormerPlans_v2.1/ 3d_fullres/nnFormerTrainerV2_DA3__nnFormerPlans_v2.1/ -o ensembled

@@ -18,7 +18,7 @@ from typing import Tuple
 
 import matplotlib
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.network_architecture.neural_network import SegmentationNetwork
+from nnformer.network_architecture.neural_network import SegmentationNetwork
 from sklearn.model_selection import KFold
 from torch import nn
 from torch.cuda.amp import GradScaler, autocast
@@ -36,7 +36,7 @@ import torch.backends.cudnn as cudnn
 from abc import abstractmethod
 from datetime import datetime
 from tqdm import trange
-from nnunet.utilities.to_torch import maybe_to_torch, to_cuda
+from nnformer.utilities.to_torch import maybe_to_torch, to_cuda
 
 
 class NetworkTrainer(object):
@@ -115,8 +115,8 @@ class NetworkTrainer(object):
         self.deterministic = deterministic
 
         self.use_progress_bar = False
-        if 'nnunet_use_progress_bar' in os.environ.keys():
-            self.use_progress_bar = bool(int(os.environ['nnunet_use_progress_bar']))
+        if 'nnformer_use_progress_bar' in os.environ.keys():
+            self.use_progress_bar = bool(int(os.environ['nnformer_use_progress_bar']))
 
         ################# Settings for saving checkpoints ##################################
         self.save_every = 50
@@ -430,7 +430,7 @@ class NetworkTrainer(object):
 
     def plot_network_architecture(self):
         """
-        can be implemented (see nnUNetTrainer) but does not have to. Not implemented here because it imposes stronger
+        can be implemented (see nnFormerTrainer) but does not have to. Not implemented here because it imposes stronger
         assumptions on the presence of class variables
         :return:
         """

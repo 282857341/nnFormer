@@ -13,7 +13,7 @@
 #    limitations under the License.
 
 import numpy as np
-from nnunet.preprocessing.preprocessing import PreprocessorFor2D, resample_patient
+from nnformer.preprocessing.preprocessing import PreprocessorFor2D, resample_patient
 
 
 class GenericPreprocessor_scale_uint8_to_0_1(PreprocessorFor2D):

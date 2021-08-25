@@ -15,18 +15,18 @@
 
 import shutil
 
-import nnunet
+import nnformer
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import load_pickle, subfiles
 from multiprocessing.pool import Pool
-from nnunet.configuration import default_num_threads
-from nnunet.experiment_planning.common_utils import get_pool_and_conv_props
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
-from nnunet.experiment_planning.utils import add_classes_in_slice_info
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.paths import *
-from nnunet.preprocessing.preprocessing import PreprocessorFor2D
-from nnunet.training.model_restore import recursive_find_python_class
+from nnformer.configuration import default_num_threads
+from nnformer.experiment_planning.common_utils import get_pool_and_conv_props
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
+from nnformer.experiment_planning.utils import add_classes_in_slice_info
+from nnformer.network_architecture.generic_UNet import Generic_UNet
+from nnformer.paths import *
+from nnformer.preprocessing.preprocessing import PreprocessorFor2D
+from nnformer.training.model_restore import recursive_find_python_class
 
 
 class ExperimentPlanner2D(ExperimentPlanner):
@@ -34,7 +34,7 @@ class ExperimentPlanner2D(ExperimentPlanner):
         super(ExperimentPlanner2D, self).__init__(folder_with_cropped_data,
                                                   preprocessed_output_folder)
         self.data_identifier = default_data_identifier + "_2D"
-        self.plans_fname = join(self.preprocessed_output_folder, "nnUNetPlans" + "_plans_2D.pkl")
+        self.plans_fname = join(self.preprocessed_output_folder, "nnFormerPlans" + "_plans_2D.pkl")
 
         self.unet_base_num_features = 30
         self.unet_max_num_filters = 512

@@ -22,7 +22,7 @@ from multiprocessing.pool import Pool
 import numpy as np
 import pandas as pd
 import SimpleITK as sitk
-from nnunet.evaluation.metrics import ConfusionMatrix, ALL_METRICS
+from nnformer.evaluation.metrics import ConfusionMatrix, ALL_METRICS
 from batchgenerators.utilities.file_and_folder_operations import save_json, subfiles, join
 from collections import OrderedDict
 
@@ -461,7 +461,7 @@ def evaluate_folder(folder_with_gts: str, folder_with_predictions: str, labels: 
     return res
 
 
-def nnunet_evaluate_folder():
+def nnformer_evaluate_folder():
     import argparse
     parser = argparse.ArgumentParser("Evaluates the segmentations located in the folder pred. Output of this script is "
                                      "a json file. At the very bottom of the json file is going to be a 'mean' "

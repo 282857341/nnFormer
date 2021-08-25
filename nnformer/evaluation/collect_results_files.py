@@ -41,8 +41,8 @@ def crawl_and_copy(current_folder, out_folder, prefix="fabian_", suffix="ummary.
 
 
 if __name__ == "__main__":
-    from nnunet.paths import network_training_output_dir
-    output_folder = "/home/fabian/PhD/results/nnUNetV2/leaderboard"
+    from nnformer.paths import network_training_output_dir
+    output_folder = "/home/fabian/PhD/results/nnFormerV2/leaderboard"
     crawl_and_copy(network_training_output_dir, output_folder)
-    from nnunet.evaluation.add_mean_dice_to_json import run_in_folder
+    from nnformer.evaluation.add_mean_dice_to_json import run_in_folder
     run_in_folder(output_folder)

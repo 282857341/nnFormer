@@ -17,14 +17,14 @@ import numpy as np
 from collections import OrderedDict
 
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import nnUNet_raw_data
+from nnformer.paths import nnFormer_raw_data
 import SimpleITK as sitk
 import shutil
 
 
 def copy_BraTS_segmentation_and_convert_labels(in_file, out_file):
     # use this for segmentation only!!!
-    # nnUNet wants the labels to be continuous. BraTS is 0, 1, 2, 4 -> we make that into 0, 1, 2, 3
+    # nnFormer wants the labels to be continuous. BraTS is 0, 1, 2, 4 -> we make that into 0, 1, 2, 3
     img = sitk.ReadImage(in_file)
     img_npy = sitk.GetArrayFromImage(img)
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     task_name = "Task043_BraTS2019"
     downloaded_data_dir = "/home/sdp/MLPERF/Brats2019_DATA/MICCAI_BraTS_2019_Data_Training"
 
-    target_base = join(nnUNet_raw_data, task_name)
+    target_base = join(nnFormer_raw_data, task_name)
     target_imagesTr = join(target_base, "imagesTr")
     target_imagesVal = join(target_base, "imagesVal")
     target_imagesTs = join(target_base, "imagesTs")

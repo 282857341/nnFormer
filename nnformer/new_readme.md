@@ -48,14 +48,14 @@ Datasets can be downloaded at the following links:
 [The Synapse multi-organ CT dataset](https://www.synapse.org/#!Synapse:syn3193805/wiki/217789)
 
 #### 2、Setting up the datasets
-While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnUNet, so I won’t go into details here. You can see [nnUNet](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_conversion.md) for specific operations. 
+While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnFormer, so I won’t go into details here. You can see [nnFormer](https://github.com/MIC-DKFZ/nnFormer/blob/master/documentation/dataset_conversion.md) for specific operations. 
 
 Regarding the downloaded data, I will not introduce too much here, you can go to the corresponding website to view it. Organize the downloaded DataProcessed as follows:
 
 ```
 ./Dataset/
-  ├── nnUNet_raw/
-      ├── nnUNet_raw_data/
+  ├── nnFormer_raw/
+      ├── nnFormer_raw_data/
           ├── Task01_ACDC/
               ├── imagesTr/
               ├── imagesTs/
@@ -68,9 +68,9 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
               ├── labelsTr/
               ├── labelsTs/
               ├── dataset.json
-      ├── nnUNet_cropped_data/
-  ├── nnUNet_trained_models/
-  ├── nnUNet_preprocessed/
+      ├── nnFormer_cropped_data/
+  ├── nnFormer_trained_models/
+  ├── nnFormer_preprocessed/
 ```
 
 
@@ -90,12 +90,12 @@ the specified directory is
 ##### (2)、Training
 - ACDC
 ```
-python ./run/run_training.py 3d_fullres nnUNetTrainerV2_ACDC 1 0 
+python ./run/run_training.py 3d_fullres nnFormerTrainerV2_ACDC 1 0 
 ```
 
 - The Synapse multi-organ CT dataset
 ```
-python ./run/run_training.py 3d_fullres nnUNetTrainerV2_Synapse 2 0 
+python ./run/run_training.py 3d_fullres nnFormerTrainerV2_Synapse 2 0 
 ```
 
 ##### (3)、Evaluating the models
@@ -103,7 +103,7 @@ python ./run/run_training.py 3d_fullres nnUNetTrainerV2_Synapse 2 0
 
 Inference
 ```
-python ./inference/predict_simple.py -i ./Dataset/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/imagesTs -o ./Dataset/nnUNet_raw/nnUNet_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnUNetTrainerV2_ACDC
+python ./inference/predict_simple.py -i ./Dataset/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/imagesTs -o ./Dataset/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnFormerTrainerV2_ACDC
 ```
 
 Calculate DICE
@@ -116,7 +116,7 @@ python ./ACDC_dice/inference.py
 
 Inference
 ```
-python ./inference/predict_simple.py -i ./Dataset/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/imagesTs -o ./Dataset/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnUNetTrainerV2_Synapse
+python ./inference/predict_simple.py -i ./Dataset/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/imagesTs -o ./Dataset/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnFormerTrainerV2_Synapse
 ```
 Calculate DICE
 ```

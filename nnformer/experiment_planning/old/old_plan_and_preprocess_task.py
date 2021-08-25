@@ -12,9 +12,9 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-from nnunet.experiment_planning.utils import split_4d, crop, analyze_dataset, plan_and_preprocess
+from nnformer.experiment_planning.utils import split_4d, crop, analyze_dataset, plan_and_preprocess
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import nnUNet_raw_data
+from nnformer.paths import nnFormer_raw_data
 
 if __name__ == "__main__":
     import argparse
@@ -74,13 +74,13 @@ if __name__ == "__main__":
         raise ValueError("only 0 or 1 allowed for use_splitted")
 
     if task == "all":
-        all_tasks = subdirs(nnUNet_raw_data, prefix="Task", join=False)
+        all_tasks = subdirs(nnFormer_raw_data, prefix="Task", join=False)
         for t in all_tasks:
             crop(t, override=override, num_threads=processes_lowres)
             analyze_dataset(t, override=override, collect_intensityproperties=True, num_processes=processes_lowres)
             plan_and_preprocess(t, processes_lowres, processes_fullres, no_preprocessing)
     else:
-        if not use_splitted or not isdir(join(nnUNet_raw_data, task)):
+        if not use_splitted or not isdir(join(nnFormer_raw_data, task)):
             print("splitting task ", task)
             split_4d(task)
 

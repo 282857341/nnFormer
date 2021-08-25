@@ -12,8 +12,8 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
-from nnunet.evaluation.model_selection.summarize_results_in_one_json import summarize2
-from nnunet.paths import network_training_output_dir
+from nnformer.evaluation.model_selection.summarize_results_in_one_json import summarize2
+from nnformer.paths import network_training_output_dir
 from batchgenerators.utilities.file_and_folder_operations import *
 
 if __name__ == "__main__":

@@ -14,10 +14,10 @@
 
 
 import torch
-from nnunet.training.loss_functions.TopK_loss import TopKLoss
-from nnunet.training.loss_functions.crossentropy import RobustCrossEntropyLoss
-from nnunet.utilities.nd_softmax import softmax_helper
-from nnunet.utilities.tensor_utilities import sum_tensor
+from nnformer.training.loss_functions.TopK_loss import TopKLoss
+from nnformer.training.loss_functions.crossentropy import RobustCrossEntropyLoss
+from nnformer.utilities.nd_softmax import softmax_helper
+from nnformer.utilities.tensor_utilities import sum_tensor
 from torch import nn
 import numpy as np
 

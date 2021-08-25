@@ -18,28 +18,27 @@ from typing import Tuple
 
 import numpy as np
 import torch
-from nnunet.training.data_augmentation.data_augmentation_moreDA import get_moreDA_augmentation
-from nnunet.training.loss_functions.deep_supervision import MultipleOutputLoss2
-from nnunet.utilities.to_torch import maybe_to_torch, to_cuda
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.network_architecture.Swin_Unet_l_gelunorm import swintransformer
-from nnunet.network_architecture.initialization import InitWeights_He
-from nnunet.network_architecture.neural_network import SegmentationNetwork
-from nnunet.training.data_augmentation.default_data_augmentation import default_2D_augmentation_params, \
+from nnformer.training.data_augmentation.data_augmentation_moreDA import get_moreDA_augmentation
+from nnformer.training.loss_functions.deep_supervision import MultipleOutputLoss2
+from nnformer.utilities.to_torch import maybe_to_torch, to_cuda
+from nnformer.network_architecture.generic_UNet import Generic_UNet
+from nnformer.network_architecture.initialization import InitWeights_He
+from nnformer.network_architecture.neural_network import SegmentationNetwork
+from nnformer.training.data_augmentation.default_data_augmentation import default_2D_augmentation_params, \
     get_patch_size, default_3D_augmentation_params
-from nnunet.training.dataloading.dataset_loading import unpack_dataset
-from nnunet.training.network_training.nnUNetTrainer import nnUNetTrainer
-from nnunet.utilities.nd_softmax import softmax_helper
+from nnformer.training.dataloading.dataset_loading import unpack_dataset
+from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.utilities.nd_softmax import softmax_helper
 from sklearn.model_selection import KFold
 from torch import nn
 from torch.cuda.amp import autocast
-from nnunet.training.learning_rate.poly_lr import poly_lr
+from nnformer.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
 
 
-class nnUNetTrainerV2_Synapse(nnUNetTrainer):
+class nnFormerTrainerV2(nnFormerTrainer):
     """
-    Info for Fabian: same as internal nnUNetTrainerV2_2
+    Info for Fabian: same as internal nnFormerTrainerV2_2
     """
 
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
@@ -152,22 +151,15 @@ class nnUNetTrainerV2_Synapse(nnUNetTrainer):
         dropout_op_kwargs = {'p': 0, 'inplace': True}
         net_nonlin = nn.LeakyReLU
         net_nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        #self.network = Generic_UNet(self.num_input_channels, self.base_num_features, self.num_classes,
-        #                            len(self.net_num_pool_op_kernel_sizes),
-        #                            self.conv_per_stage, 2, conv_op, norm_op, norm_op_kwargs, dropout_op,
-        #                            dropout_op_kwargs,
-        #                            net_nonlin, net_nonlin_kwargs, True, False, lambda x: x, InitWeights_He(1e-2),
-        #                            self.net_num_pool_op_kernel_sizes, self.net_conv_kernel_sizes, False, True, True)
-        self.network = swintransformer(self.num_input_channels, self.base_num_features, self.num_classes,
+        self.network = Generic_UNet(self.num_input_channels, self.base_num_features, self.num_classes,
                                     len(self.net_num_pool_op_kernel_sizes),
                                     self.conv_per_stage, 2, conv_op, norm_op, norm_op_kwargs, dropout_op,
                                     dropout_op_kwargs,
                                     net_nonlin, net_nonlin_kwargs, True, False, lambda x: x, InitWeights_He(1e-2),
                                     self.net_num_pool_op_kernel_sizes, self.net_conv_kernel_sizes, False, True, True)
-        checkpoint = torch.load("../Pretrained_weight/pretrain_Synapse.model", map_location='cuda')
-        self.network.load_state_dict(checkpoint['state_dict'])
-        print('I am using the pre_train weight!!')                                      
-                           
+        #for layer,param in self.network.state_dict().items():
+        #    print(layer)
+        
         if torch.cuda.is_available():
             self.network.cuda()
         self.network.inference_apply_nonlin = softmax_helper
@@ -426,7 +418,7 @@ class nnUNetTrainerV2_Synapse(nnUNetTrainer):
         super().on_epoch_end()
         continue_training = self.epoch < self.max_num_epochs
 
-        # it can rarely happen that the momentum of nnUNetTrainerV2 is too high for some dataset. If at epoch 100 the
+        # it can rarely happen that the momentum of nnFormerTrainerV2 is too high for some dataset. If at epoch 100 the
         # estimated validation Dice is still 0 then we reduce the momentum from 0.99 to 0.95
         if self.epoch == 100:
             if self.all_val_eval_metrics[-1] == 0:

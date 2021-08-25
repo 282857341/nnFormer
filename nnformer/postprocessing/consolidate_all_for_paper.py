@@ -13,7 +13,7 @@
 #    limitations under the License.
 
 
-from nnunet.utilities.folder_names import get_output_folder_name
+from nnformer.utilities.folder_names import get_output_folder_name
 
 
 def get_datasets():
@@ -41,8 +41,8 @@ def get_datasets():
     return configurations_all
 
 
-def get_commands(configurations, regular_trainer="nnUNetTrainerV2", cascade_trainer="nnUNetTrainerV2CascadeFullRes",
-                 plans="nnUNetPlansv2.1"):
+def get_commands(configurations, regular_trainer="nnFormerTrainerV2", cascade_trainer="nnFormerTrainerV2CascadeFullRes",
+                 plans="nnFormerPlansv2.1"):
 
     node_pool = ["hdf18-gpu%02.0d" % i for i in range(1, 21)] + ["hdf19-gpu%02.0d" % i for i in range(1, 8)] + ["hdf19-gpu%02.0d" % i for i in range(11, 16)]
     ctr = 0
@@ -54,7 +54,7 @@ def get_commands(configurations, regular_trainer="nnUNetTrainerV2", cascade_trai
             else:
                 trainer = regular_trainer
 
-            folder = get_output_folder_name(m, task, trainer, plans, overwrite_training_output_dir="/datasets/datasets_fabian/results/nnUNet")
+            folder = get_output_folder_name(m, task, trainer, plans, overwrite_training_output_dir="/datasets/datasets_fabian/results/nnFormer")
             node = node_pool[ctr % len(node_pool)]
             print("bsub -m %s -q gputest -L /bin/bash \"source ~/.bashrc && python postprocessing/"
                   "consolidate_postprocessing.py -f" % node, folder, "\"")

@@ -37,7 +37,7 @@ def get_mnms_data(data_root):
     return files_raw, files_gt
 
 
-def generate_filename_for_nnunet(pat_id, ts, pat_folder=None, add_zeros=False, vendor=None, centre=None, mode='mnms',
+def generate_filename_for_nnformer(pat_id, ts, pat_folder=None, add_zeros=False, vendor=None, centre=None, mode='mnms',
                                  data_format='nii.gz'):
     if not vendor or not centre:
         if add_zeros:
@@ -73,15 +73,15 @@ def select_annotated_frames_mms(data_folder, out_folder, add_zeros=False, mode='
         if vendor != "C":
 
             # generate old filename (w/o vendor and centre)
-            filename_ed_original = generate_filename_for_nnunet(pat_id=idx, ts=ed, pat_folder=data_folder,
+            filename_ed_original = generate_filename_for_nnformer(pat_id=idx, ts=ed, pat_folder=data_folder,
                                                        vendor=None, centre=None, add_zeros=False)
-            filename_es_original = generate_filename_for_nnunet(pat_id=idx, ts=es, pat_folder=data_folder,
+            filename_es_original = generate_filename_for_nnformer(pat_id=idx, ts=es, pat_folder=data_folder,
                                                        vendor=None, centre=None, add_zeros=False)
 
             # generate new filename with vendor and centre
-            filename_ed = generate_filename_for_nnunet(pat_id=idx, ts=ed, pat_folder=out_folder,
+            filename_ed = generate_filename_for_nnformer(pat_id=idx, ts=ed, pat_folder=out_folder,
                                                        vendor=vendor, centre=centre, add_zeros=add_zeros, mode=mode)
-            filename_es = generate_filename_for_nnunet(pat_id=idx, ts=es, pat_folder=out_folder,
+            filename_es = generate_filename_for_nnformer(pat_id=idx, ts=es, pat_folder=out_folder,
                                                        vendor=vendor, centre=centre, add_zeros=add_zeros, mode=mode)
 
             shutil.copy(filename_ed_original, filename_ed)
@@ -90,7 +90,7 @@ def select_annotated_frames_mms(data_folder, out_folder, add_zeros=False, mode='
 
 def create_custom_splits_for_experiments(task_path):
     data_keys = [i[:-4] for i in
-                 subfiles(os.path.join(task_path, "nnUNetData_plans_v2.1_2D_stage0"),
+                 subfiles(os.path.join(task_path, "nnFormerData_plans_v2.1_2D_stage0"),
                           join=False, suffix='npz')]
     existing_splits = os.path.join(task_path, "splits_final.pkl")
 
@@ -183,9 +183,9 @@ def split_4d_for_all_pat(files_paths, split_folder):
 
 if __name__ == "__main__":
     task_name = "Task114_heart_MNMs"
-    train_dir = "/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/nnUnet_raw/nnUNet_raw_data/{}/imagesTr".format(task_name)
-    test_dir = "/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/nnUnet_raw/nnUNet_raw_data/{}/imagesTs".format(task_name)
-    #out_dir='/media/full/tera2/output_nnUNet/preprocessed_data/Task114_heart_mnms'
+    train_dir = "/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/nnUnet_raw/nnFormer_raw_data/{}/imagesTr".format(task_name)
+    test_dir = "/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/nnUnet_raw/nnFormer_raw_data/{}/imagesTs".format(task_name)
+    #out_dir='/media/full/tera2/output_nnFormer/preprocessed_data/Task114_heart_mnms'
     out_dir='/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/tmp'
 
     # train
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     split_4d_for_all_pat(files_raw, split_path_raw)
     split_4d_for_all_pat(files_gt, split_path_gt)
 
-    out_dir = '/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/nnUnet_raw/nnUNet_raw_data/{}/'.format(task_name)
+    out_dir = '/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/nnUnet_raw/nnFormer_raw_data/{}/'.format(task_name)
 
     maybe_mkdir_p(join(out_dir, "imagesTr"))
     maybe_mkdir_p(join(out_dir, "imagesTs"))
@@ -244,16 +244,16 @@ if __name__ == "__main__":
 
     # then preprocess data and plan training.
     # run in terminal
-    # > nnUNet_plan_and_preprocess -t <TaskID> --verify_dataset_integrity
+    # > nnFormer_plan_and_preprocess -t <TaskID> --verify_dataset_integrity
 
     # start training and stop it immediately to get a split.pkl file
-    # > nnUNet_train 2d nnUNetTrainerV2_MMS <TaskID> 0
+    # > nnFormer_train 2d nnFormerTrainerV2_MMS <TaskID> 0
 
     #
     # then create custom splits as used for the final M&Ms submission
     #
 
-    split_file_path = '/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/output_nnUNet/preprocessed_data/{}/'.format(task_name)
+    split_file_path = '/media/full/97d8d6e1-1aa1-4761-9dd1-fc6a62cf6264/output_nnFormer/preprocessed_data/{}/'.format(task_name)
 
     create_custom_splits_for_experiments(split_file_path)
 

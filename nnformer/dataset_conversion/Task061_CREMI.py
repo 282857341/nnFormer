@@ -17,7 +17,7 @@ from collections import OrderedDict
 
 from batchgenerators.utilities.file_and_folder_operations import *
 import numpy as np
-from nnunet.paths import nnUNet_raw_data, preprocessing_output_dir
+from nnformer.paths import nnFormer_raw_data, preprocessing_output_dir
 import shutil
 import SimpleITK as sitk
 
@@ -51,7 +51,7 @@ def prepare_submission():
     from cremi.io import CremiFile
     from cremi.Volume import Volume
 
-    base = "/home/fabian/drives/datasets/results/nnUNet/test_sets/Task061_CREMI/"
+    base = "/home/fabian/drives/datasets/results/nnFormer/test_sets/Task061_CREMI/"
     # a+
     pred = sitk.GetArrayFromImage(sitk.ReadImage(join(base, 'results_3d_fullres', "sample_a+.nii.gz"))).astype(np.uint64)
     pred[pred == 0] = 0xffffffffffffffff
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     assert h5py is not None, "you need h5py for this. Install with 'pip install h5py'"
 
     foldername = "Task061_CREMI"
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")

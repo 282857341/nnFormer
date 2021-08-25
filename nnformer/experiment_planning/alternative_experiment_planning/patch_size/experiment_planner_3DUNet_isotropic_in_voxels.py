@@ -16,10 +16,10 @@
 from copy import deepcopy
 
 import numpy as np
-from nnunet.experiment_planning.common_utils import get_pool_and_conv_props_poolLateV2
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.paths import *
+from nnformer.experiment_planning.common_utils import get_pool_and_conv_props_poolLateV2
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
+from nnformer.network_architecture.generic_UNet import Generic_UNet
+from nnformer.paths import *
 
 
 class ExperimentPlanner3D_IsoPatchesInVoxels(ExperimentPlanner):
@@ -32,8 +32,8 @@ class ExperimentPlanner3D_IsoPatchesInVoxels(ExperimentPlanner):
     """
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlanner3D_IsoPatchesInVoxels, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_isoPatchesInVoxels"
-        self.plans_fname = join(self.preprocessed_output_folder, "nnUNetPlans" + "fixedisoPatchesInVoxels_plans_3D.pkl")
+        self.data_identifier = "nnFormerData_isoPatchesInVoxels"
+        self.plans_fname = join(self.preprocessed_output_folder, "nnFormerPlans" + "fixedisoPatchesInVoxels_plans_3D.pkl")
 
     def get_properties_for_stage(self, current_spacing, original_spacing, original_shape, num_cases,
                                      num_modalities, num_classes):

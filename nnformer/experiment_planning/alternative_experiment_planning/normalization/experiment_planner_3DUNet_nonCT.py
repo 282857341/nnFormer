@@ -15,8 +15,8 @@
 
 from collections import OrderedDict
 
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
-from nnunet.paths import *
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
+from nnformer.paths import *
 
 
 class ExperimentPlannernonCT(ExperimentPlanner):
@@ -26,8 +26,8 @@ class ExperimentPlannernonCT(ExperimentPlanner):
     """
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlannernonCT, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNet_nonCT"
-        self.plans_fname = join(self.preprocessed_output_folder, "nnUNetPlans" + "nonCT_plans_3D.pkl")
+        self.data_identifier = "nnFormer_nonCT"
+        self.plans_fname = join(self.preprocessed_output_folder, "nnFormerPlans" + "nonCT_plans_3D.pkl")
 
     def determine_normalization_scheme(self):
         schemes = OrderedDict()

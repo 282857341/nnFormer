@@ -16,8 +16,8 @@ from multiprocessing import Pool
 import SimpleITK as sitk
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import nnUNet_raw_data
-from nnunet.paths import preprocessing_output_dir
+from nnformer.paths import nnFormer_raw_data
+from nnformer.paths import preprocessing_output_dir
 from skimage.io import imread
 
 
@@ -40,7 +40,7 @@ def prepare_task(base, task_id, task_name, spacing):
 
     foldername = "Task%03.0d_%s" % (task_id, task_name)
 
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     prepare_task(base, task_id, task_name, spacing)
 
     task_name = "Task075_Fluo_C3DH_A549_ManAndSim"
-    labelsTr = join(nnUNet_raw_data, task_name, "labelsTr")
+    labelsTr = join(nnFormer_raw_data, task_name, "labelsTr")
     cases = subfiles(labelsTr, suffix='.nii.gz', join=False)
     splits = []
     splits.append(

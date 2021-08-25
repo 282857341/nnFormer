@@ -13,16 +13,16 @@
 #    limitations under the License.
 
 import numpy as np
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
-from nnunet.paths import *
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
+from nnformer.paths import *
 
 
 class ExperimentPlannerTargetSpacingForAnisoAxis(ExperimentPlanner):
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super().__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_targetSpacingForAnisoAxis"
+        self.data_identifier = "nnFormerData_targetSpacingForAnisoAxis"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlans" + "targetSpacingForAnisoAxis_plans_3D.pkl")
+                                "nnFormerPlans" + "targetSpacingForAnisoAxis_plans_3D.pkl")
 
     def get_target_spacing(self):
         """

@@ -5,8 +5,8 @@ from batchgenerators.utilities.file_and_folder_operations import *
 from medpy import metric
 import SimpleITK as sitk
 import numpy as np
-from nnunet.configuration import default_num_threads
-from nnunet.postprocessing.consolidate_postprocessing import collect_cv_niftis
+from nnformer.configuration import default_num_threads
+from nnformer.postprocessing.consolidate_postprocessing import collect_cv_niftis
 
 
 def get_brats_regions():

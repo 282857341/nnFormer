@@ -19,7 +19,7 @@ import SimpleITK as sitk
 import nibabel as nib
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.configuration import default_num_threads
+from nnformer.configuration import default_num_threads
 
 
 def verify_all_same_orientation(folder):
@@ -248,7 +248,7 @@ if __name__ == "__main__":
 
     # load image
     gt_itk = sitk.ReadImage(
-        "/media/fabian/Results/nnUNet/3d_fullres/Task064_KiTS_labelsFixed/nnUNetTrainerV2__nnUNetPlansv2.1/gt_niftis/case_00085.nii.gz")
+        "/media/fabian/Results/nnFormer/3d_fullres/Task064_KiTS_labelsFixed/nnFormerTrainerV2__nnFormerPlansv2.1/gt_niftis/case_00085.nii.gz")
 
     # get numpy array
     pred_npy = sitk.GetArrayFromImage(gt_itk)
@@ -264,7 +264,7 @@ if __name__ == "__main__":
 
     # load images in nib
     gt = nib.load(
-        "/media/fabian/Results/nnUNet/3d_fullres/Task064_KiTS_labelsFixed/nnUNetTrainerV2__nnUNetPlansv2.1/gt_niftis/case_00085.nii.gz")
+        "/media/fabian/Results/nnFormer/3d_fullres/Task064_KiTS_labelsFixed/nnFormerTrainerV2__nnFormerPlansv2.1/gt_niftis/case_00085.nii.gz")
     pred_nib = nib.load("test.mnc")
 
     new_img_sitk = sitk.ReadImage("test.mnc")

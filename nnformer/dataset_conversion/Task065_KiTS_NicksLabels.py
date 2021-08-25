@@ -16,7 +16,7 @@
 import shutil
 
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import nnUNet_raw_data
+from nnformer.paths import nnFormer_raw_data
 
 if __name__ == "__main__":
     """
@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
     foldername = "Task%03.0d_%s" % (task_id, task_name)
 
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     json_dict['name'] = "KiTS"
     json_dict['description'] = "kidney and kidney tumor segmentation"
     json_dict['tensorImageSize'] = "4D"
-    json_dict['reference'] = "KiTS data for nnunet"
+    json_dict['reference'] = "KiTS data for nnformer"
     json_dict['licence'] = ""
     json_dict['release'] = "0.0"
     json_dict['modality'] = {

@@ -14,7 +14,7 @@
 
 
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import network_training_output_dir
+from nnformer.paths import network_training_output_dir
 
 
 def get_output_folder_name(model: str, task: str = None, trainer: str = None, plans: str = None, fold: int = None,

@@ -18,14 +18,14 @@ from copy import deepcopy
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
 import argparse
-from nnunet.preprocessing.preprocessing import resample_data_or_seg
+from nnformer.preprocessing.preprocessing import resample_data_or_seg
 from batchgenerators.utilities.file_and_folder_operations import maybe_mkdir_p
-import nnunet
-from nnunet.run.default_configuration import get_default_configuration
+import nnformer
+from nnformer.run.default_configuration import get_default_configuration
 from multiprocessing import Pool
 
-from nnunet.training.model_restore import recursive_find_python_class
-from nnunet.training.network_training.nnUNetTrainer import nnUNetTrainer
+from nnformer.training.model_restore import recursive_find_python_class
+from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
 
 
 def resample_and_save(predicted, target_shape, output_file, force_separate_z=False,
@@ -110,15 +110,15 @@ if __name__ == "__main__":
     plans_file, folder_with_preprocessed_data, output_folder_name, dataset_directory, batch_dice, stage = \
         get_default_configuration("3d_lowres", task)
 
-    trainer_class = recursive_find_python_class([join(nnunet.__path__[0], "training", "network_training")],
+    trainer_class = recursive_find_python_class([join(nnformer.__path__[0], "training", "network_training")],
                                                 trainerclass,
-                                                "nnunet.training.network_training")
+                                                "nnformer.training.network_training")
 
     if trainer_class is None:
-        raise RuntimeError("Could not find trainer class in nnunet.training.network_training")
+        raise RuntimeError("Could not find trainer class in nnformer.training.network_training")
     else:
         assert issubclass(trainer_class,
-                          nnUNetTrainer), "network_trainer was found but is not derived from nnUNetTrainer"
+                          nnFormerTrainer), "network_trainer was found but is not derived from nnFormerTrainer"
 
     trainer = trainer_class(plans_file, fold, folder_with_preprocessed_data, output_folder=output_folder_name,
                             dataset_directory=dataset_directory, batch_dice=batch_dice, stage=stage)

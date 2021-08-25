@@ -24,7 +24,7 @@ from skimage.morphology import disk
 from skimage.morphology import erosion
 from skimage.transform import resize
 
-from nnunet.paths import nnUNet_raw_data
+from nnformer.paths import nnFormer_raw_data
 
 
 def load_bmp_convert_to_nifti_borders_2d(img_file, lab_file, img_out_base, anno_out, spacing, border_thickness=0.7):
@@ -70,7 +70,7 @@ def prepare_task(base, task_id, task_name, spacing, border_thickness: float = 15
 
     foldername = "Task%03.0d_%s" % (task_id, task_name)
 
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")
@@ -244,11 +244,11 @@ if __name__ == "__main__":
     additional_time_steps = 4
     task_name = 'Fluo-N2DH-SIM_thickborder_time'
     full_taskname = 'Task%03.0d_' % task_id + task_name
-    output_raw = join(nnUNet_raw_data, full_taskname)
+    output_raw = join(nnFormer_raw_data, full_taskname)
     shutil.rmtree(output_raw)
-    shutil.copytree(join(nnUNet_raw_data, 'Task999_Fluo-N2DH-SIM_thickborder'), output_raw)
+    shutil.copytree(join(nnFormer_raw_data, 'Task999_Fluo-N2DH-SIM_thickborder'), output_raw)
 
-    shutil.rmtree(join(nnUNet_raw_data, 'Task999_Fluo-N2DH-SIM_thickborder'))
+    shutil.rmtree(join(nnFormer_raw_data, 'Task999_Fluo-N2DH-SIM_thickborder'))
 
     # now add additional time information
     for fld in ['imagesTr', 'imagesTs']:

@@ -17,7 +17,7 @@ import SimpleITK as sitk
 from batchgenerators.utilities.file_and_folder_operations import *
 from multiprocessing import Pool
 import numpy as np
-from nnunet.configuration import default_num_threads
+from nnformer.configuration import default_num_threads
 from scipy.ndimage import label
 
 

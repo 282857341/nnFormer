@@ -15,10 +15,10 @@
 from copy import deepcopy
 
 import numpy as np
-from nnunet.experiment_planning.common_utils import get_pool_and_conv_props
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.paths import *
+from nnformer.experiment_planning.common_utils import get_pool_and_conv_props
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet import ExperimentPlanner
+from nnformer.network_architecture.generic_UNet import Generic_UNet
+from nnformer.paths import *
 
 
 class ExperimentPlanner3D_v21(ExperimentPlanner):
@@ -30,9 +30,9 @@ class ExperimentPlanner3D_v21(ExperimentPlanner):
     """
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlanner3D_v21, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_plans_v2.1"
+        self.data_identifier = "nnFormerData_plans_v2.1"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlansv2.1_plans_3D.pkl")
+                                "nnFormerPlansv2.1_plans_3D.pkl")
         self.unet_base_num_features = 32
 
     def get_target_spacing(self):

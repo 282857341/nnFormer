@@ -15,7 +15,7 @@
 
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import network_training_output_dir
+from nnformer.paths import network_training_output_dir
 
 if __name__ == "__main__":
     # run collect_all_fold0_results_and_summarize_in_one_csv.py first
@@ -27,23 +27,23 @@ if __name__ == "__main__":
     for f in folds:
         folds_str += str(f)
 
-    plans = "nnUNetPlansv2.1"
+    plans = "nnFormerPlansv2.1"
 
     overwrite_plans = {
-        'nnUNetTrainerCascadeFullRes': ['nnUNetPlans'],
+        'nnFormerTrainerCascadeFullRes': ['nnFormerPlans'],
     }
 
     trainers = [
-        'nnUNetTrainerCascadeFullRes',
-        'nnUNetTrainerV2CascadeFullRes_EducatedGuess',
-        'nnUNetTrainerV2CascadeFullRes_EducatedGuess2',
-        'nnUNetTrainerV2CascadeFullRes_EducatedGuess3',
-        'nnUNetTrainerV2CascadeFullRes_lowerLR',
-        'nnUNetTrainerV2CascadeFullRes',
-        'nnUNetTrainerV2CascadeFullRes_noConnComp',
-        'nnUNetTrainerV2CascadeFullRes_shorter_lowerLR',
-        'nnUNetTrainerV2CascadeFullRes_shorter',
-        'nnUNetTrainerV2CascadeFullRes_smallerBinStrel',
+        'nnFormerTrainerCascadeFullRes',
+        'nnFormerTrainerV2CascadeFullRes_EducatedGuess',
+        'nnFormerTrainerV2CascadeFullRes_EducatedGuess2',
+        'nnFormerTrainerV2CascadeFullRes_EducatedGuess3',
+        'nnFormerTrainerV2CascadeFullRes_lowerLR',
+        'nnFormerTrainerV2CascadeFullRes',
+        'nnFormerTrainerV2CascadeFullRes_noConnComp',
+        'nnFormerTrainerV2CascadeFullRes_shorter_lowerLR',
+        'nnFormerTrainerV2CascadeFullRes_shorter',
+        'nnFormerTrainerV2CascadeFullRes_smallerBinStrel',
         #'',
         #'',
         #'',

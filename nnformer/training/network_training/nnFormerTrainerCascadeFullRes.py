@@ -17,26 +17,26 @@ from multiprocessing.pool import Pool
 from time import sleep
 
 import matplotlib
-from nnunet.postprocessing.connected_components import determine_postprocessing
-from nnunet.training.data_augmentation.default_data_augmentation import get_default_augmentation
-from nnunet.training.dataloading.dataset_loading import DataLoader3D, unpack_dataset
-from nnunet.evaluation.evaluator import aggregate_scores
-from nnunet.training.network_training.nnUNetTrainer import nnUNetTrainer
-from nnunet.network_architecture.neural_network import SegmentationNetwork
-from nnunet.paths import network_training_output_dir
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
+from nnformer.postprocessing.connected_components import determine_postprocessing
+from nnformer.training.data_augmentation.default_data_augmentation import get_default_augmentation
+from nnformer.training.dataloading.dataset_loading import DataLoader3D, unpack_dataset
+from nnformer.evaluation.evaluator import aggregate_scores
+from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.network_architecture.neural_network import SegmentationNetwork
+from nnformer.paths import network_training_output_dir
+from nnformer.inference.segmentation_export import save_segmentation_nifti_from_softmax
 from batchgenerators.utilities.file_and_folder_operations import *
 import numpy as np
-from nnunet.utilities.one_hot_encoding import to_one_hot
+from nnformer.utilities.one_hot_encoding import to_one_hot
 import shutil
 
 matplotlib.use("agg")
 
 
-class nnUNetTrainerCascadeFullRes(nnUNetTrainer):
+class nnFormerTrainerCascadeFullRes(nnFormerTrainer):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
-                 unpack_data=True, deterministic=True, previous_trainer="nnUNetTrainer", fp16=False):
-        super(nnUNetTrainerCascadeFullRes, self).__init__(plans_file, fold, output_folder, dataset_directory,
+                 unpack_data=True, deterministic=True, previous_trainer="nnFormerTrainer", fp16=False):
+        super(nnFormerTrainerCascadeFullRes, self).__init__(plans_file, fold, output_folder, dataset_directory,
                                                           batch_dice, stage, unpack_data, deterministic, fp16)
         self.init_args = (plans_file, fold, output_folder, dataset_directory, batch_dice, stage, unpack_data,
                           deterministic, previous_trainer, fp16)
@@ -58,7 +58,7 @@ class nnUNetTrainerCascadeFullRes(nnUNetTrainer):
             self.folder_with_segs_from_prev_stage = None
 
     def do_split(self):
-        super(nnUNetTrainerCascadeFullRes, self).do_split()
+        super(nnFormerTrainerCascadeFullRes, self).do_split()
         for k in self.dataset:
             self.dataset[k]['seg_from_prev_stage_file'] = join(self.folder_with_segs_from_prev_stage,
                                                                k + "_segFromPrevStage.npz")
@@ -84,7 +84,7 @@ class nnUNetTrainerCascadeFullRes(nnUNetTrainer):
         return dl_tr, dl_val
 
     def process_plans(self, plans):
-        super(nnUNetTrainerCascadeFullRes, self).process_plans(plans)
+        super(nnFormerTrainerCascadeFullRes, self).process_plans(plans)
         self.num_input_channels += (self.num_classes - 1)  # for seg from prev stage
 
     def setup_DA_params(self):
@@ -258,7 +258,7 @@ class nnUNetTrainerCascadeFullRes(nnUNetTrainer):
                              json_task=task)
 
         if run_postprocessing_on_folds:
-            # in the old nnunet we would stop here. Now we add a postprocessing. This postprocessing can remove everything
+            # in the old nnformer we would stop here. Now we add a postprocessing. This postprocessing can remove everything
             # except the largest connected component for each class. To see if this improves results, we do this for all
             # classes and then rerun the evaluation. Those classes for which this resulted in an improved dice score will
             # have this applied during inference as well

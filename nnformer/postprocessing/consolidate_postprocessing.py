@@ -16,9 +16,9 @@ import shutil
 from typing import Tuple
 
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.configuration import default_num_threads
-from nnunet.evaluation.evaluator import aggregate_scores
-from nnunet.postprocessing.connected_components import determine_postprocessing
+from nnformer.configuration import default_num_threads
+from nnformer.evaluation.evaluator import aggregate_scores
+from nnformer.postprocessing.connected_components import determine_postprocessing
 import argparse
 
 

@@ -12,9 +12,9 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.configuration import default_num_threads
-from nnunet.experiment_planning.utils import split_4d
-from nnunet.utilities.file_endings import remove_trailing_slash
+from nnformer.configuration import default_num_threads
+from nnformer.experiment_planning.utils import split_4d
+from nnformer.utilities.file_endings import remove_trailing_slash
 
 
 def crawl_and_remove_hidden_from_decathlon(folder):

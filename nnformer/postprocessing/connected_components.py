@@ -18,11 +18,11 @@ from copy import deepcopy
 from multiprocessing.pool import Pool
 
 import numpy as np
-from nnunet.configuration import default_num_threads
-from nnunet.evaluation.evaluator import aggregate_scores
+from nnformer.configuration import default_num_threads
+from nnformer.evaluation.evaluator import aggregate_scores
 from scipy.ndimage import label
 import SimpleITK as sitk
-from nnunet.utilities.sitk_stuff import copy_geometry
+from nnformer.utilities.sitk_stuff import copy_geometry
 from batchgenerators.utilities.file_and_folder_operations import *
 import shutil
 

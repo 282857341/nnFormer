@@ -14,7 +14,7 @@
 
 import numpy as np
 from copy import deepcopy
-from nnunet.network_architecture.generic_UNet import Generic_UNet
+from nnformer.network_architecture.generic_UNet import Generic_UNet
 import SimpleITK as sitk
 import shutil
 from batchgenerators.utilities.file_and_folder_operations import join
@@ -261,7 +261,7 @@ def get_network_numpool(patch_size, maxpool_cap=999, min_feature_map_size=4):
 
 
 if __name__ == '__main__':
-    # trying to fix https://github.com/MIC-DKFZ/nnUNet/issues/261
+    # trying to fix https://github.com/MIC-DKFZ/nnFormer/issues/261
     median_shape = [24, 504, 512]
     spacing = [5.9999094, 0.50781202, 0.50781202]
     num_pool_per_axis, net_num_pool_op_kernel_sizes, net_conv_kernel_sizes, patch_size, must_be_divisible_by = get_pool_and_conv_props_poolLateV2(median_shape, min_feature_map_size=4, max_numpool=999, spacing=spacing)

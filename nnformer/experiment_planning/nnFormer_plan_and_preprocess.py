@@ -13,15 +13,15 @@
 #    limitations under the License.
 
 
-import nnunet
+import nnformer
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.experiment_planning.DatasetAnalyzer import DatasetAnalyzer
-from nnunet.experiment_planning.utils import crop
-from nnunet.paths import *
+from nnformer.experiment_planning.DatasetAnalyzer import DatasetAnalyzer
+from nnformer.experiment_planning.utils import crop
+from nnformer.paths import *
 import shutil
-from nnunet.utilities.task_name_id_conversion import convert_id_to_task_name
-from nnunet.preprocessing.sanity_checks import verify_dataset_integrity
-from nnunet.training.model_restore import recursive_find_python_class
+from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
+from nnformer.preprocessing.sanity_checks import verify_dataset_integrity
+from nnformer.training.model_restore import recursive_find_python_class
 
 
 def main():
@@ -74,35 +74,35 @@ def main():
         task_name = convert_id_to_task_name(i)
 
         if args.verify_dataset_integrity:
-            verify_dataset_integrity(join(nnUNet_raw_data, task_name))
+            verify_dataset_integrity(join(nnFormer_raw_data, task_name))
 
         crop(task_name, False, tf)
 
         tasks.append(task_name)
 
-    search_in = join(nnunet.__path__[0], "experiment_planning")
+    search_in = join(nnformer.__path__[0], "experiment_planning")
 
     if planner_name3d is not None:
-        planner_3d = recursive_find_python_class([search_in], planner_name3d, current_module="nnunet.experiment_planning")
+        planner_3d = recursive_find_python_class([search_in], planner_name3d, current_module="nnformer.experiment_planning")
         if planner_3d is None:
             raise RuntimeError("Could not find the Planner class %s. Make sure it is located somewhere in "
-                               "nnunet.experiment_planning" % planner_name3d)
+                               "nnformer.experiment_planning" % planner_name3d)
     else:
         planner_3d = None
 
     if planner_name2d is not None:
-        planner_2d = recursive_find_python_class([search_in], planner_name2d, current_module="nnunet.experiment_planning")
+        planner_2d = recursive_find_python_class([search_in], planner_name2d, current_module="nnformer.experiment_planning")
         if planner_2d is None:
             raise RuntimeError("Could not find the Planner class %s. Make sure it is located somewhere in "
-                               "nnunet.experiment_planning" % planner_name2d)
+                               "nnformer.experiment_planning" % planner_name2d)
     else:
         planner_2d = None
 
     for t in tasks:
         print("\n\n\n", t)
-        cropped_out_dir = os.path.join(nnUNet_cropped_data, t)
+        cropped_out_dir = os.path.join(nnFormer_cropped_data, t)
         preprocessing_output_dir_this_task = os.path.join(preprocessing_output_dir, t)
-        #splitted_4d_output_dir_task = os.path.join(nnUNet_raw_data, t)
+        #splitted_4d_output_dir_task = os.path.join(nnFormer_raw_data, t)
         #lists, modalities = create_lists_from_splitted_dataset(splitted_4d_output_dir_task)
 
         # we need to figure out if we need the intensity propoerties. We collect them only if one of the modalities is CT
@@ -115,7 +115,7 @@ def main():
 
         maybe_mkdir_p(preprocessing_output_dir_this_task)
         shutil.copy(join(cropped_out_dir, "dataset_properties.pkl"), preprocessing_output_dir_this_task)
-        shutil.copy(join(nnUNet_raw_data, t, "dataset.json"), preprocessing_output_dir_this_task)
+        shutil.copy(join(nnFormer_raw_data, t, "dataset.json"), preprocessing_output_dir_this_task)
 
         threads = (tl, tf)
 

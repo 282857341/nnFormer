@@ -103,4 +103,4 @@ if __name__ == "__main__":
         val_patients = patients[val]
         splits[-1]['val'] = [i[:-12] for i in all_train_files if i[:10] in val_patients]
 
-    save_pickle(splits, "/media/fabian/nnunet/Task027_ACDC/splits_final.pkl")
+    save_pickle(splits, "/media/fabian/nnformer/Task027_ACDC/splits_final.pkl")

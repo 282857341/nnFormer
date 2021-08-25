@@ -29,7 +29,7 @@ def process_label(label):
     return spleen,right_kidney,left_kidney,gallbladder,esophagus,liver,stomach,aorta,inferior_vena_cava,portal_vein_splenic_vein,pancreas,right_adrenal_gland,left_adrenal_gland
 
 def test(fold):
-    path='../DATASET/nnUNet_raw/nnUNet_raw_data/Task002_Synapse/'
+    path='../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/'
     label_list=sorted(glob.glob(os.path.join(path,'labelsTs','*nii.gz')))
     infer_list=sorted(glob.glob(os.path.join(path,'inferTs',fold,'*nii.gz')))
     print("loading success...")

@@ -15,8 +15,8 @@
 
 from batchgenerators.utilities.file_and_folder_operations import *
 import os
-from nnunet.evaluation.model_selection.summarize_results_in_one_json import summarize
-from nnunet.paths import network_training_output_dir
+from nnformer.evaluation.model_selection.summarize_results_in_one_json import summarize
+from nnformer.paths import network_training_output_dir
 import numpy as np
 
 
@@ -57,30 +57,30 @@ def write_plans_to_file(f, plans_file, stage=0, do_linebreak_at_end=True, overri
 if __name__ == "__main__":
     summarize((1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 24, 27), output_dir=join(network_training_output_dir, "summary_fold0"), folds=(0,))
     base_dir = os.environ['RESULTS_FOLDER']
-    nnunets = ['nnUNetV2', 'nnUNetV2_zspacing']
+    nnformers = ['nnFormerV2', 'nnFormerV2_zspacing']
     task_ids = list(range(99))
     with open("summary.csv", 'w') as f:
         f.write("identifier;stage;batch_size;num_pool_per_axis;patch_size;patch_size(mm);median_patient_size_in_voxels;median_patient_size_in_mm;current_spacing;original_spacing;pool_op_kernel_sizes;conv_kernel_sizes;patient_dc;global_dc\n")
         for i in task_ids:
-            for nnunet in nnunets:
+            for nnformer in nnformers:
                 try:
-                    summary_folder = join(base_dir, nnunet, "summary_fold0")
+                    summary_folder = join(base_dir, nnformer, "summary_fold0")
                     if isdir(summary_folder):
                         summary_files = subfiles(summary_folder, join=False, prefix="Task%03.0d_" % i, suffix=".json", sort=True)
                         for s in summary_files:
                             tmp = s.split("__")
                             trainer = tmp[2]
 
-                            expected_output_folder = join(base_dir, nnunet, tmp[1], tmp[0], tmp[2].split(".")[0])
-                            name = tmp[0] + "__" + nnunet + "__" + tmp[1] + "__" + tmp[2].split(".")[0]
-                            global_dice_json = join(base_dir, nnunet, tmp[1], tmp[0], tmp[2].split(".")[0], "fold_0", "validation_tiledTrue_doMirror_True", "global_dice.json")
+                            expected_output_folder = join(base_dir, nnformer, tmp[1], tmp[0], tmp[2].split(".")[0])
+                            name = tmp[0] + "__" + nnformer + "__" + tmp[1] + "__" + tmp[2].split(".")[0]
+                            global_dice_json = join(base_dir, nnformer, tmp[1], tmp[0], tmp[2].split(".")[0], "fold_0", "validation_tiledTrue_doMirror_True", "global_dice.json")
 
                             if not isdir(expected_output_folder) or len(tmp) > 3:
                                 if len(tmp) == 2:
                                     continue
-                                expected_output_folder = join(base_dir, nnunet, tmp[1], tmp[0], tmp[2] + "__" + tmp[3].split(".")[0])
-                                name = tmp[0] + "__" + nnunet + "__" + tmp[1] + "__" + tmp[2] + "__" + tmp[3].split(".")[0]
-                                global_dice_json = join(base_dir, nnunet, tmp[1], tmp[0], tmp[2] + "__" + tmp[3].split(".")[0], "fold_0", "validation_tiledTrue_doMirror_True", "global_dice.json")
+                                expected_output_folder = join(base_dir, nnformer, tmp[1], tmp[0], tmp[2] + "__" + tmp[3].split(".")[0])
+                                name = tmp[0] + "__" + nnformer + "__" + tmp[1] + "__" + tmp[2] + "__" + tmp[3].split(".")[0]
+                                global_dice_json = join(base_dir, nnformer, tmp[1], tmp[0], tmp[2] + "__" + tmp[3].split(".")[0], "fold_0", "validation_tiledTrue_doMirror_True", "global_dice.json")
 
                             assert isdir(expected_output_folder), "expected output dir not found"
                             plans_file = join(expected_output_folder, "plans.pkl")

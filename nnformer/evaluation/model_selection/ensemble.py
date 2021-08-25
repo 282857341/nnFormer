@@ -16,11 +16,11 @@ from multiprocessing.pool import Pool
 
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.configuration import default_num_threads
-from nnunet.evaluation.evaluator import aggregate_scores
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
-from nnunet.paths import network_training_output_dir, preprocessing_output_dir
-from nnunet.postprocessing.connected_components import determine_postprocessing
+from nnformer.configuration import default_num_threads
+from nnformer.evaluation.evaluator import aggregate_scores
+from nnformer.inference.segmentation_export import save_segmentation_nifti_from_softmax
+from nnformer.paths import network_training_output_dir, preprocessing_output_dir
+from nnformer.postprocessing.connected_components import determine_postprocessing
 
 
 def merge(args):
@@ -60,15 +60,15 @@ def ensemble(training_output_folder1, training_output_folder2, output_folder, ta
         validation_folder_net2 = join(training_output_folder2, "fold_%d" % f, validation_folder)
 
         if not isdir(validation_folder_net1):
-            raise AssertionError("Validation directory missing: %s. Please rerun validation with `nnUNet_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net1)
+            raise AssertionError("Validation directory missing: %s. Please rerun validation with `nnFormer_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net1)
         if not isdir(validation_folder_net2):
-            raise AssertionError("Validation directory missing: %s. Please rerun validation with `nnUNet_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net2)
+            raise AssertionError("Validation directory missing: %s. Please rerun validation with `nnFormer_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net2)
 
         # we need to ensure the validation was successful. We can verify this via the presence of the summary.json file
         if not isfile(join(validation_folder_net1, 'summary.json')):
-            raise AssertionError("Validation directory incomplete: %s. Please rerun validation with `nnUNet_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net1)
+            raise AssertionError("Validation directory incomplete: %s. Please rerun validation with `nnFormer_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net1)
         if not isfile(join(validation_folder_net2, 'summary.json')):
-            raise AssertionError("Validation directory missing: %s. Please rerun validation with `nnUNet_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net2)
+            raise AssertionError("Validation directory missing: %s. Please rerun validation with `nnFormer_train CONFIG TRAINER TASK FOLD -val --npz`" % validation_folder_net2)
 
         patient_identifiers1_npz = [i[:-4] for i in subfiles(validation_folder_net1, False, None, 'npz', True)]
         patient_identifiers2_npz = [i[:-4] for i in subfiles(validation_folder_net2, False, None, 'npz', True)]

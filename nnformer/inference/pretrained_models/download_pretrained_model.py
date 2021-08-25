@@ -17,7 +17,7 @@ from time import time
 import requests
 from batchgenerators.utilities.file_and_folder_operations import join, isfile
 
-from nnunet.paths import network_training_output_dir
+from nnformer.paths import network_training_output_dir
 
 
 def get_available_models():
@@ -166,7 +166,7 @@ def get_available_models():
                            "Input modalities are 0: fluorescence_microscopy\n"
                            "Also see http://celltrackingchallenge.net/\n"
                            "Note that the segmentation output of the models are cell center and cell border. These outputs mus tbe converted to an instance segmentation for the challenge. \n"
-                           "See https://github.com/MIC-DKFZ/nnUNet/blob/master/nnunet/dataset_conversion/Task076_Fluo_N3DH_SIM.py",
+                           "See https://github.com/MIC-DKFZ/nnFormer/blob/master/nnformer/dataset_conversion/Task076_Fluo_N3DH_SIM.py",
             'url': "https://zenodo.org/record/4003545/files/Task076_Fluo_N3DH_SIM.zip?download=1"
         },
         "Task082_BraTS2020": {
@@ -175,10 +175,10 @@ def get_available_models():
                            "Input modalities are 0: T1, 1: T1ce, 2: T2, 3: FLAIR (MRI images)\n"
                            "Also see https://www.med.upenn.edu/cbica/brats2020/",
             'url': (
-                "https://zenodo.org/record/4635763/files/Task082_nnUNetTrainerV2__nnUNetPlansv2.1_5fold.zip?download=1",
-                "https://zenodo.org/record/4635763/files/Task082_nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold.zip?download=1",
-                "https://zenodo.org/record/4635763/files/Task082_nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold.zip?download=1",
-                "https://zenodo.org/record/4635763/files/Task082_nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold.zip?download=1",
+                "https://zenodo.org/record/4635763/files/Task082_nnFormerTrainerV2__nnFormerPlansv2.1_5fold.zip?download=1",
+                "https://zenodo.org/record/4635763/files/Task082_nnFormerTrainerV2BraTSRegions_DA3_BN_BD__nnFormerPlansv2.1_bs5_5fold.zip?download=1",
+                "https://zenodo.org/record/4635763/files/Task082_nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold.zip?download=1",
+                "https://zenodo.org/record/4635763/files/Task082_nnFormerTrainerV2BraTSRegions_DA4_BN_BD__nnFormerPlansv2.1_bs5_5fold.zip?download=1",
             )
         },
         "Task089_Fluo-N2DH-SIM_thickborder_time": {
@@ -186,7 +186,7 @@ def get_available_models():
                            "Input modalities are 0: t minus 4, 0: t minus 3, 0: t minus 2, 0: t minus 1, 0: frame of interest\n"
                            "Note that the input channels are different time steps from a time series acquisition\n"
                            "Note that the segmentation output of the models are cell center and cell border. These outputs mus tbe converted to an instance segmentation for the challenge. \n"
-                           "See https://github.com/MIC-DKFZ/nnUNet/blob/master/nnunet/dataset_conversion/Task089_Fluo-N2DH-SIM.py\n"
+                           "See https://github.com/MIC-DKFZ/nnFormer/blob/master/nnformer/dataset_conversion/Task089_Fluo-N2DH-SIM.py\n"
                            "Also see http://celltrackingchallenge.net/",
             'url': "https://zenodo.org/record/4003545/files/Task089_Fluo-N2DH-SIM_thickborder_time.zip?download=1"
         },
@@ -195,7 +195,7 @@ def get_available_models():
                             "Input modalities are 0: MRI \n"
                             "See also https://www.ub.edu/mnms/ \n"
                             "Note: Labels of the M&Ms Challenge are not in the same order as for the ACDC challenge. \n"
-                            "See https://github.com/MIC-DKFZ/nnUNet/blob/master/nnunet/dataset_conversion/Task114_heart_mnms.py",
+                            "See https://github.com/MIC-DKFZ/nnFormer/blob/master/nnformer/dataset_conversion/Task114_heart_mnms.py",
             'url': "https://zenodo.org/record/4288464/files/Task114_heart_MNMs.zip?download=1"
         },
         "Task115_COVIDSegChallenge": {
@@ -204,11 +204,11 @@ def get_available_models():
                            "Input modalities are 0: CT \n"
                            "See also https://covid-segmentation.grand-challenge.org/",
             'url': (
-                "https://zenodo.org/record/4635822/files/Task115_nnUNetTrainerV2_DA3__nnUNetPlans_v2.1__3d_fullres__10folds.zip?download=1",
-                "https://zenodo.org/record/4635822/files/Task115_nnUNetTrainerV2_DA3_BN__nnUNetPlans_v2.1__3d_fullres__10folds.zip?download=1",
-                "https://zenodo.org/record/4635822/files/Task115_nnUNetTrainerV2_ResencUNet__nnUNetPlans_FabiansResUNet_v2.1__3d_fullres__10folds.zip?download=1",
-                "https://zenodo.org/record/4635822/files/Task115_nnUNetTrainerV2_ResencUNet_DA3__nnUNetPlans_FabiansResUNet_v2.1__3d_fullres__10folds.zip?download=1",
-                "https://zenodo.org/record/4635822/files/Task115_nnUNetTrainerV2_ResencUNet_DA3_BN__nnUNetPlans_FabiansResUNet_v2.1__3d_lowres__10folds.zip?download=1",
+                "https://zenodo.org/record/4635822/files/Task115_nnFormerTrainerV2_DA3__nnFormerPlans_v2.1__3d_fullres__10folds.zip?download=1",
+                "https://zenodo.org/record/4635822/files/Task115_nnFormerTrainerV2_DA3_BN__nnFormerPlans_v2.1__3d_fullres__10folds.zip?download=1",
+                "https://zenodo.org/record/4635822/files/Task115_nnFormerTrainerV2_ResencUNet__nnFormerPlans_FabiansResUNet_v2.1__3d_fullres__10folds.zip?download=1",
+                "https://zenodo.org/record/4635822/files/Task115_nnFormerTrainerV2_ResencUNet_DA3__nnFormerPlans_FabiansResUNet_v2.1__3d_fullres__10folds.zip?download=1",
+                "https://zenodo.org/record/4635822/files/Task115_nnFormerTrainerV2_ResencUNet_DA3_BN__nnFormerPlans_FabiansResUNet_v2.1__3d_lowres__10folds.zip?download=1",
             )
         },
 
@@ -253,7 +253,7 @@ def download_and_install_from_url(url):
     import os
     home = os.path.expanduser('~')
     random_number = int(time() * 1e7)
-    tempfile = join(home, '.nnunetdownload_%s' % str(random_number))
+    tempfile = join(home, '.nnformerdownload_%s' % str(random_number))
 
     try:
         with open(tempfile, 'wb') as f:
@@ -301,7 +301,7 @@ def print_license_warning():
     print('######################################################')
     print("Using the pretrained model weights is subject to the license of the dataset they were trained on. Some "
           "allow commercial use, others don't. It is your responsibility to make sure you use them appropriately! Use "
-          "nnUNet_print_pretrained_model_info(task_name) to see a summary of the dataset and where to find its license!")
+          "nnFormer_print_pretrained_model_info(task_name) to see a summary of the dataset and where to find its license!")
     print('######################################################')
     print('')
 
@@ -313,7 +313,7 @@ def download_by_name():
                                                  "existing models (if they share the same trainer class and plans as "
                                                  "the pretrained model")
     parser.add_argument("task_name", type=str, help='Task name of the pretrained model. To see '
-                                                                   'available task names, run nnUNet_print_available_'
+                                                                   'available task names, run nnFormer_print_available_'
                                                                    'pretrained_models')
     args = parser.parse_args()
     taskname = args.task_name
@@ -325,7 +325,7 @@ def download_by_url():
     import argparse
     parser = argparse.ArgumentParser(
         description="Use this to download pretrained models. This script is intended to download models via url only. "
-                    "If you want to download one of our pretrained models, please use nnUNet_download_pretrained_model. "
+                    "If you want to download one of our pretrained models, please use nnFormer_download_pretrained_model. "
                     "CAREFUL: This script will overwrite "
                     "existing models (if they share the same trainer class and plans as "
                     "the pretrained model.")
@@ -350,14 +350,14 @@ def print_pretrained_model_requirements():
     parser = argparse.ArgumentParser(description="Use this to see the properties of a pretrained model, especially "
                                                  "what input modalities it requires")
     parser.add_argument("task_name", type=str, help='Task name of the pretrained model. To see '
-                                                                   'available task names, run nnUNet_print_available_'
+                                                                   'available task names, run nnFormer_print_available_'
                                                                    'pretrained_models')
     args = parser.parse_args()
     taskname = args.task_name
     av = get_available_models()
     if taskname not in av.keys():
         raise RuntimeError("Invalid task name. This pretrained model does not exist. To see available task names, "
-                           "run nnUNet_print_available_pretrained_models")
+                           "run nnFormer_print_available_pretrained_models")
     print(av[taskname]['description'])
 
 

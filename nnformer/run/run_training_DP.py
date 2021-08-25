@@ -15,13 +15,13 @@
 
 import argparse
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.run.default_configuration import get_default_configuration
-from nnunet.paths import default_plans_identifier
-from nnunet.run.load_pretrained_weights import load_pretrained_weights
-from nnunet.training.cascade_stuff.predict_next_stage import predict_next_stage
-from nnunet.training.network_training.nnUNetTrainer import nnUNetTrainer
-from nnunet.training.network_training.nnUNetTrainerCascadeFullRes import nnUNetTrainerCascadeFullRes
-from nnunet.utilities.task_name_id_conversion import convert_id_to_task_name
+from nnformer.run.default_configuration import get_default_configuration
+from nnformer.paths import default_plans_identifier
+from nnformer.run.load_pretrained_weights import load_pretrained_weights
+from nnformer.training.cascade_stuff.predict_next_stage import predict_next_stage
+from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.training.network_training.nnFormerTrainerCascadeFullRes import nnFormerTrainerCascadeFullRes
+from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
 
 
 def main():
@@ -54,13 +54,13 @@ def main():
                                                                                           "model will have batch_size "
                                                                                           "for a total of "
                                                                                           "GPUs*batch_size")
-    parser.add_argument("--npz", required=False, default=False, action="store_true", help="if set then nnUNet will "
+    parser.add_argument("--npz", required=False, default=False, action="store_true", help="if set then nnFormer will "
                                                                                           "export npz files of "
                                                                                           "predicted segmentations "
                                                                                           "in the vlaidation as well. "
                                                                                           "This is needed to run the "
                                                                                           "ensembling step so unless "
-                                                                                          "you are developing nnUNet "
+                                                                                          "you are developing nnFormer "
                                                                                           "you should enable this")
     parser.add_argument("--valbest", required=False, default=False, action="store_true", help="")
     parser.add_argument("--find_lr", required=False, default=False, action="store_true", help="")
@@ -75,7 +75,7 @@ def main():
                         help="Running postprocessing on each fold only makes sense when developing with nnU-Net and "
                              "closely observing the model performance on specific configurations. You do not need it "
                              "when applying nnU-Net because the postprocessing for this will be determined only once "
-                             "all five folds have been trained and nnUNet_find_best_configuration is called. Usually "
+                             "all five folds have been trained and nnFormer_find_best_configuration is called. Usually "
                              "running postprocessing on each fold is computationally cheap, but some users have "
                              "reported issues with very large images. If your images are large (>600x600x600 voxels) "
                              "you should consider setting this flag.")
@@ -139,12 +139,12 @@ def main():
         raise RuntimeError("Could not find trainer class")
 
     if network == "3d_cascade_fullres":
-        assert issubclass(trainer_class, nnUNetTrainerCascadeFullRes), "If running 3d_cascade_fullres then your " \
+        assert issubclass(trainer_class, nnFormerTrainerCascadeFullRes), "If running 3d_cascade_fullres then your " \
                                                                        "trainer class must be derived from " \
-                                                                       "nnUNetTrainerCascadeFullRes"
+                                                                       "nnFormerTrainerCascadeFullRes"
     else:
-        assert issubclass(trainer_class, nnUNetTrainer), "network_trainer was found but is not derived from " \
-                                                         "nnUNetTrainer"
+        assert issubclass(trainer_class, nnFormerTrainer), "network_trainer was found but is not derived from " \
+                                                         "nnFormerTrainer"
 
     trainer = trainer_class(plans_file, fold, output_folder=output_folder_name,
                             dataset_directory=dataset_directory, batch_dice=batch_dice, stage=stage,

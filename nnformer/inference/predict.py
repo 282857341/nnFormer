@@ -19,17 +19,17 @@ from typing import Tuple, Union, List
 
 import numpy as np
 from batchgenerators.augmentations.utils import resize_segmentation
-from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax, save_segmentation_nifti
+from nnformer.inference.segmentation_export import save_segmentation_nifti_from_softmax, save_segmentation_nifti
 from batchgenerators.utilities.file_and_folder_operations import *
 from multiprocessing import Process, Queue
 import torch
 import SimpleITK as sitk
 import shutil
 from multiprocessing import Pool
-from nnunet.postprocessing.connected_components import load_remove_save, load_postprocessing
-from nnunet.training.model_restore import load_model_and_checkpoint_files
-from nnunet.training.network_training.nnUNetTrainer import nnUNetTrainer
-from nnunet.utilities.one_hot_encoding import to_one_hot
+from nnformer.postprocessing.connected_components import load_remove_save, load_postprocessing
+from nnformer.training.model_restore import load_model_and_checkpoint_files
+from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.utilities.one_hot_encoding import to_one_hot
 
 
 def preprocess_save_to_queue(preprocess_fn, q, list_of_lists, output_files, segs_from_prev_stage, classes,
@@ -97,7 +97,7 @@ def preprocess_multithreaded(trainer, list_of_lists, output_files, num_processes
     num_processes = min(len(list_of_lists), num_processes)
 
     classes = list(range(1, trainer.num_classes))
-    assert isinstance(trainer, nnUNetTrainer)
+    assert isinstance(trainer, nnFormerTrainer)
     q = Queue(1)
     processes = []
     for i in range(num_processes):

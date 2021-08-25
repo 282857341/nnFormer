@@ -22,15 +22,15 @@ from meddec.paper_plot.nature_methods.challenge_visualization_stuff.own_implemen
     rank_then_aggregate
 import scipy.stats as ss
 
-from nnunet.dataset_conversion.Task032_BraTS_2018 import convert_labels_back_to_BraTS_2018_2019_convention
-from nnunet.dataset_conversion.Task043_BraTS_2019 import copy_BraTS_segmentation_and_convert_labels
-from nnunet.evaluation.region_based_evaluation import get_brats_regions, evaluate_regions
-from nnunet.paths import nnUNet_raw_data
+from nnformer.dataset_conversion.Task032_BraTS_2018 import convert_labels_back_to_BraTS_2018_2019_convention
+from nnformer.dataset_conversion.Task043_BraTS_2019 import copy_BraTS_segmentation_and_convert_labels
+from nnformer.evaluation.region_based_evaluation import get_brats_regions, evaluate_regions
+from nnformer.paths import nnFormer_raw_data
 import SimpleITK as sitk
 import shutil
 from medpy.metric import dc, hd95
 
-from nnunet.postprocessing.consolidate_postprocessing import collect_cv_niftis
+from nnformer.postprocessing.consolidate_postprocessing import collect_cv_niftis
 from typing import Tuple
 
 
@@ -127,7 +127,7 @@ def collect_and_prepare(base_dir, num_processes = 12, clean=False):
     """
     out = join(base_dir, 'cv_results')
     out_pp = join(base_dir, 'cv_results_pp')
-    experiments = subfolders(base_dir, join=False, prefix='nnUNetTrainer')
+    experiments = subfolders(base_dir, join=False, prefix='nnFormerTrainer')
     regions = get_brats_regions()
     gt_dir = join(base_dir, 'gt_niftis')
     replace_with = 2
@@ -235,19 +235,19 @@ def collect_and_prepare(base_dir, num_processes = 12, clean=False):
             print(e, 'has no valset predictions')
             missing_valset.append(e)
 
-    # 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold' needs special treatment
-    e = 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5'
-    currdir = join(base_dir, 'predVal', 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold')
-    output_folder = join(base_dir, 'predVal_PP', 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold')
+    # 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold' needs special treatment
+    e = 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5'
+    currdir = join(base_dir, 'predVal', 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold')
+    output_folder = join(base_dir, 'predVal_PP', 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold')
     maybe_mkdir_p(output_folder)
     threshold = load_pickle(join(out_pp, e, 'threshold.pkl'))[2]
     if threshold > 1000: threshold = 750  # don't make it too big!
     apply_threshold_to_folder(currdir, output_folder, threshold, replace_with, num_processes)
 
-    # 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold' needs special treatment
-    e = 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5'
-    currdir = join(base_dir, 'predVal', 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold')
-    output_folder = join(base_dir, 'predVal_PP', 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold')
+    # 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold' needs special treatment
+    e = 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5'
+    currdir = join(base_dir, 'predVal', 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold')
+    output_folder = join(base_dir, 'predVal_PP', 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold')
     maybe_mkdir_p(output_folder)
     threshold = load_pickle(join(out_pp, e, 'threshold.pkl'))[2]
     if threshold > 1000: threshold = 750  # don't make it too big!
@@ -257,7 +257,7 @@ def collect_and_prepare(base_dir, num_processes = 12, clean=False):
     output_converted = join(base_dir, 'converted_valSet')
 
     for source in ['predVal', 'predVal_PP']:
-        for e in has_val_pred + ['nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold', 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold']:
+        for e in has_val_pred + ['nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold', 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold']:
             expected_source_folder = join(base_dir, source, e)
             if not isdir(expected_source_folder):
                 print(e, 'has no', source)
@@ -448,7 +448,7 @@ def score_and_postprocess_model_based_on_rank_then_aggregate():
     so let's hope this still works
     :return:
     """
-    base = "/media/fabian/Results/nnUNet/3d_fullres/Task082_BraTS2020"
+    base = "/media/fabian/Results/nnFormer/3d_fullres/Task082_BraTS2020"
     replace_with = 2
     num_processes = 24
     expected_num_cases_val = 125
@@ -459,7 +459,7 @@ def score_and_postprocess_model_based_on_rank_then_aggregate():
 
     # collect cv niftis and compute metrics with evaluate_BraTS_folder to ensure we work with the same metrics as brats
     out = join(output_base_here, 'cv_results')
-    experiments = subfolders(base, join=False, prefix='nnUNetTrainer')
+    experiments = subfolders(base, join=False, prefix='nnFormerTrainer')
     gt_dir = join(base, 'gt_niftis')
 
     experiments_with_full_cv = []
@@ -558,29 +558,29 @@ def score_and_postprocess_model_based_on_rank_then_aggregate():
         else:
             print(e, 'not found in ranking')
 
-    # apply nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5 to nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold
-    e = 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5'
+    # apply nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5 to nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold
+    e = 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5'
     pp_models = [j for j, i in enumerate(experiment_names) if i.split("___")[0] == e and i != e]
     ranks = [final_ranks[i] for i in pp_models]
     best_idx = np.argmin(ranks)
     best = experiment_names[pp_models[best_idx]]
     best_avg_rank = average_rank[pp_models[best_idx]]
     best_threshold = int(best.split('___')[-1])
-    predicted_val = join(base, 'predVal', 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold')
-    apply_threshold_to_folder(predicted_val, join(pred_val_base, 'nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold'), best_threshold, replace_with, num_processes)
-    has_val_pred.append('nnUNetTrainerV2BraTSRegions_DA3_BN__nnUNetPlansv2.1_bs5_15fold')
+    predicted_val = join(base, 'predVal', 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold')
+    apply_threshold_to_folder(predicted_val, join(pred_val_base, 'nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold'), best_threshold, replace_with, num_processes)
+    has_val_pred.append('nnFormerTrainerV2BraTSRegions_DA3_BN__nnFormerPlansv2.1_bs5_15fold')
 
-    # apply nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5 to nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold
-    e = 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5'
+    # apply nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5 to nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold
+    e = 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5'
     pp_models = [j for j, i in enumerate(experiment_names) if i.split("___")[0] == e and i != e]
     ranks = [final_ranks[i] for i in pp_models]
     best_idx = np.argmin(ranks)
     best = experiment_names[pp_models[best_idx]]
     best_avg_rank = average_rank[pp_models[best_idx]]
     best_threshold = int(best.split('___')[-1])
-    predicted_val = join(base, 'predVal', 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold')
-    apply_threshold_to_folder(predicted_val, join(pred_val_base, 'nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold'), best_threshold, replace_with, num_processes)
-    has_val_pred.append('nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold')
+    predicted_val = join(base, 'predVal', 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold')
+    apply_threshold_to_folder(predicted_val, join(pred_val_base, 'nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold'), best_threshold, replace_with, num_processes)
+    has_val_pred.append('nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold')
 
     # convert valsets
     output_converted = join(base, 'converted_valSet')
@@ -634,7 +634,7 @@ if __name__ == "__main__":
     downloaded_data_dir = "/home/fabian/Downloads/MICCAI_BraTS2020_TrainingData"
     downloaded_data_dir_val = "/home/fabian/Downloads/MICCAI_BraTS2020_ValidationData"
 
-    target_base = join(nnUNet_raw_data, task_name)
+    target_base = join(nnFormer_raw_data, task_name)
     target_imagesTr = join(target_base, "imagesTr")
     target_imagesVal = join(target_base, "imagesVal")
     target_imagesTs = join(target_base, "imagesTs")
@@ -746,11 +746,11 @@ if __name__ == "__main__":
             shutil.copy(flair, join(target_imagesTs, patient_name + "_0003.nii.gz"))
 
     # test set
-    #  nnUNet_ensemble -f nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold -o ensembled_nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold
-    # apply_threshold_to_folder('ensembled_nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold/', 'ensemble_PP200/', 200, 2)
+    #  nnFormer_ensemble -f nnFormerTrainerV2BraTSRegions_DA3_BN_BD__nnFormerPlansv2.1_bs5_5fold nnFormerTrainerV2BraTSRegions_DA4_BN_BD__nnFormerPlansv2.1_bs5_5fold nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold -o ensembled_nnFormerTrainerV2BraTSRegions_DA3_BN_BD__nnFormerPlansv2.1_bs5_5fold__nnFormerTrainerV2BraTSRegions_DA4_BN_BD__nnFormerPlansv2.1_bs5_5fold__nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold
+    # apply_threshold_to_folder('ensembled_nnFormerTrainerV2BraTSRegions_DA3_BN_BD__nnFormerPlansv2.1_bs5_5fold__nnFormerTrainerV2BraTSRegions_DA4_BN_BD__nnFormerPlansv2.1_bs5_5fold__nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold/', 'ensemble_PP200/', 200, 2)
     # convert_labels_back_to_BraTS_2018_2019_convention('ensemble_PP200/', 'ensemble_PP200_converted')
 
     # export for publication of weights
-    # nnUNet_export_model_to_zip -tr nnUNetTrainerV2BraTSRegions_DA4_BN -pl nnUNetPlansv2.1_bs5 -f 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 -t 82 -o nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold.zip --disable_strict
-    # nnUNet_export_model_to_zip -tr nnUNetTrainerV2BraTSRegions_DA3_BN_BD -pl nnUNetPlansv2.1_bs5 -f 0 1 2 3 4 -t 82 -o nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold.zip --disable_strict
-    # nnUNet_export_model_to_zip -tr nnUNetTrainerV2BraTSRegions_DA4_BN_BD -pl nnUNetPlansv2.1_bs5 -f 0 1 2 3 4 -t 82 -o nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold.zip --disable_strict
+    # nnFormer_export_model_to_zip -tr nnFormerTrainerV2BraTSRegions_DA4_BN -pl nnFormerPlansv2.1_bs5 -f 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 -t 82 -o nnFormerTrainerV2BraTSRegions_DA4_BN__nnFormerPlansv2.1_bs5_15fold.zip --disable_strict
+    # nnFormer_export_model_to_zip -tr nnFormerTrainerV2BraTSRegions_DA3_BN_BD -pl nnFormerPlansv2.1_bs5 -f 0 1 2 3 4 -t 82 -o nnFormerTrainerV2BraTSRegions_DA3_BN_BD__nnFormerPlansv2.1_bs5_5fold.zip --disable_strict
+    # nnFormer_export_model_to_zip -tr nnFormerTrainerV2BraTSRegions_DA4_BN_BD -pl nnFormerPlansv2.1_bs5 -f 0 1 2 3 4 -t 82 -o nnFormerTrainerV2BraTSRegions_DA4_BN_BD__nnFormerPlansv2.1_bs5_5fold.zip --disable_strict

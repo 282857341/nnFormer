@@ -25,8 +25,8 @@ from skimage.morphology import ball
 from skimage.morphology import erosion
 from skimage.transform import resize
 
-from nnunet.paths import nnUNet_raw_data
-from nnunet.paths import preprocessing_output_dir
+from nnformer.paths import nnFormer_raw_data
+from nnformer.paths import preprocessing_output_dir
 
 
 def load_bmp_convert_to_nifti_borders(img_file, lab_file, img_out_base, anno_out, spacing, border_thickness=0.7):
@@ -78,7 +78,7 @@ def prepare_task(base, task_id, task_name, spacing, border_thickness: float = 15
 
     foldername = "Task%03.0d_%s" % (task_id, task_name)
 
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")
@@ -288,7 +288,7 @@ if __name__ == "__main__":
 
     # we need custom splits
     task_name = "Task076_Fluo_N3DH_SIM"
-    labelsTr = join(nnUNet_raw_data, task_name, "labelsTr")
+    labelsTr = join(nnFormer_raw_data, task_name, "labelsTr")
     cases = subfiles(labelsTr, suffix='.nii.gz', join=False)
     splits = []
     splits.append(

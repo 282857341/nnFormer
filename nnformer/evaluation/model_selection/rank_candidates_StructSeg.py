@@ -15,7 +15,7 @@
 
 import numpy as np
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.paths import network_training_output_dir
+from nnformer.paths import network_training_output_dir
 
 if __name__ == "__main__":
     # run collect_all_fold0_results_and_summarize_in_one_csv.py first
@@ -27,31 +27,31 @@ if __name__ == "__main__":
     for f in folds:
         folds_str += str(f)
 
-    plans = "nnUNetPlans"
+    plans = "nnFormerPlans"
 
     overwrite_plans = {
-        'nnUNetTrainerV2_2': ["nnUNetPlans", "nnUNetPlans_customClip"], # r
-        'nnUNetTrainerV2_2_noMirror': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_lessMomentum_noMirror': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_2_structSeg_noMirror': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_2_structSeg': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_lessMomentum_noMirror_structSeg': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_FabiansResUNet_structSet_NoMirror_leakyDecoder': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_FabiansResUNet_structSet_NoMirror': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
-        'nnUNetTrainerV2_FabiansResUNet_structSet': ["nnUNetPlans", "nnUNetPlans_customClip"],  # r
+        'nnFormerTrainerV2_2': ["nnFormerPlans", "nnFormerPlans_customClip"], # r
+        'nnFormerTrainerV2_2_noMirror': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_lessMomentum_noMirror': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_2_structSeg_noMirror': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_2_structSeg': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_lessMomentum_noMirror_structSeg': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_FabiansResUNet_structSet_NoMirror_leakyDecoder': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_FabiansResUNet_structSet_NoMirror': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
+        'nnFormerTrainerV2_FabiansResUNet_structSet': ["nnFormerPlans", "nnFormerPlans_customClip"],  # r
 
     }
 
-    trainers = ['nnUNetTrainer'] + [
-        'nnUNetTrainerV2_2',
-        'nnUNetTrainerV2_lessMomentum_noMirror',
-        'nnUNetTrainerV2_2_noMirror',
-        'nnUNetTrainerV2_2_structSeg_noMirror',
-        'nnUNetTrainerV2_2_structSeg',
-        'nnUNetTrainerV2_lessMomentum_noMirror_structSeg',
-        'nnUNetTrainerV2_FabiansResUNet_structSet_NoMirror_leakyDecoder',
-        'nnUNetTrainerV2_FabiansResUNet_structSet_NoMirror',
-        'nnUNetTrainerV2_FabiansResUNet_structSet',
+    trainers = ['nnFormerTrainer'] + [
+        'nnFormerTrainerV2_2',
+        'nnFormerTrainerV2_lessMomentum_noMirror',
+        'nnFormerTrainerV2_2_noMirror',
+        'nnFormerTrainerV2_2_structSeg_noMirror',
+        'nnFormerTrainerV2_2_structSeg',
+        'nnFormerTrainerV2_lessMomentum_noMirror_structSeg',
+        'nnFormerTrainerV2_FabiansResUNet_structSet_NoMirror_leakyDecoder',
+        'nnFormerTrainerV2_FabiansResUNet_structSet_NoMirror',
+        'nnFormerTrainerV2_FabiansResUNet_structSet',
     ]
 
     datasets = \

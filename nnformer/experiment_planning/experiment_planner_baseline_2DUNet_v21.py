@@ -13,19 +13,19 @@
 #    limitations under the License.
 from copy import deepcopy
 
-from nnunet.experiment_planning.common_utils import get_pool_and_conv_props
-from nnunet.experiment_planning.experiment_planner_baseline_2DUNet import ExperimentPlanner2D
-from nnunet.network_architecture.generic_UNet import Generic_UNet
-from nnunet.paths import *
+from nnformer.experiment_planning.common_utils import get_pool_and_conv_props
+from nnformer.experiment_planning.experiment_planner_baseline_2DUNet import ExperimentPlanner2D
+from nnformer.network_architecture.generic_UNet import Generic_UNet
+from nnformer.paths import *
 import numpy as np
 
 
 class ExperimentPlanner2D_v21(ExperimentPlanner2D):
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlanner2D_v21, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_plans_v2.1_2D"
+        self.data_identifier = "nnFormerData_plans_v2.1_2D"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlansv2.1_plans_2D.pkl")
+                                "nnFormerPlansv2.1_plans_2D.pkl")
         self.unet_base_num_features = 32
 
     def get_properties_for_stage(self, current_spacing, original_spacing, original_shape, num_cases,

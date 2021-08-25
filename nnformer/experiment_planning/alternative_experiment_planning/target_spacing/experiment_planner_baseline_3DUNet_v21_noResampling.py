@@ -13,19 +13,19 @@
 #    limitations under the License.
 
 import numpy as np
-from nnunet.experiment_planning.alternative_experiment_planning.experiment_planner_baseline_3DUNet_v21_16GB import \
+from nnformer.experiment_planning.alternative_experiment_planning.experiment_planner_baseline_3DUNet_v21_16GB import \
     ExperimentPlanner3D_v21_16GB
-from nnunet.experiment_planning.experiment_planner_baseline_3DUNet_v21 import \
+from nnformer.experiment_planning.experiment_planner_baseline_3DUNet_v21 import \
     ExperimentPlanner3D_v21
-from nnunet.paths import *
+from nnformer.paths import *
 
 
 class ExperimentPlanner3D_v21_noResampling(ExperimentPlanner3D_v21):
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlanner3D_v21_noResampling, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_noRes_plans_v2.1"
+        self.data_identifier = "nnFormerData_noRes_plans_v2.1"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlansv2.1_noRes_plans_3D.pkl")
+                                "nnFormerPlansv2.1_noRes_plans_3D.pkl")
         self.preprocessor_name = "PreprocessorFor3D_NoResampling"
 
     def plan_experiment(self):
@@ -74,7 +74,7 @@ class ExperimentPlanner3D_v21_noResampling(ExperimentPlanner3D_v21):
                                                                   len(self.list_of_cropped_npz_files),
                                                                   num_modalities, len(all_classes) + 1))
 
-        # thanks Zakiyi (https://github.com/MIC-DKFZ/nnUNet/issues/61) for spotting this bug :-)
+        # thanks Zakiyi (https://github.com/MIC-DKFZ/nnFormer/issues/61) for spotting this bug :-)
         # if np.prod(self.plans_per_stage[-1]['median_patient_size_in_voxels'], dtype=np.int64) / \
         #        architecture_input_voxels < HOW_MUCH_OF_A_PATIENT_MUST_THE_NETWORK_SEE_AT_STAGE0:
         architecture_input_voxels_here = np.prod(self.plans_per_stage[-1]['patch_size'], dtype=np.int64)
@@ -121,9 +121,9 @@ class ExperimentPlanner3D_v21_noResampling(ExperimentPlanner3D_v21):
 class ExperimentPlanner3D_v21_noResampling_16GB(ExperimentPlanner3D_v21_16GB):
     def __init__(self, folder_with_cropped_data, preprocessed_output_folder):
         super(ExperimentPlanner3D_v21_noResampling_16GB, self).__init__(folder_with_cropped_data, preprocessed_output_folder)
-        self.data_identifier = "nnUNetData_noRes_plans_16GB_v2.1"
+        self.data_identifier = "nnFormerData_noRes_plans_16GB_v2.1"
         self.plans_fname = join(self.preprocessed_output_folder,
-                                "nnUNetPlansv2.1_noRes_16GB_plans_3D.pkl")
+                                "nnFormerPlansv2.1_noRes_16GB_plans_3D.pkl")
         self.preprocessor_name = "PreprocessorFor3D_NoResampling"
 
     def plan_experiment(self):
@@ -172,7 +172,7 @@ class ExperimentPlanner3D_v21_noResampling_16GB(ExperimentPlanner3D_v21_16GB):
                                                                   len(self.list_of_cropped_npz_files),
                                                                   num_modalities, len(all_classes) + 1))
 
-        # thanks Zakiyi (https://github.com/MIC-DKFZ/nnUNet/issues/61) for spotting this bug :-)
+        # thanks Zakiyi (https://github.com/MIC-DKFZ/nnFormer/issues/61) for spotting this bug :-)
         # if np.prod(self.plans_per_stage[-1]['median_patient_size_in_voxels'], dtype=np.int64) / \
         #        architecture_input_voxels < HOW_MUCH_OF_A_PATIENT_MUST_THE_NETWORK_SEE_AT_STAGE0:
         architecture_input_voxels_here = np.prod(self.plans_per_stage[-1]['patch_size'], dtype=np.int64)

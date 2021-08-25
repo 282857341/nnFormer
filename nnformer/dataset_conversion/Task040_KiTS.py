@@ -21,7 +21,7 @@ import SimpleITK as sitk
 from multiprocessing import Pool
 from medpy.metric import dc
 import numpy as np
-from nnunet.paths import network_training_output_dir
+from nnformer.paths import network_training_output_dir
 from scipy.ndimage import label
 
 
@@ -110,9 +110,9 @@ def copy_npz_fom_valsets():
     :return:
     '''
     base = join(network_training_output_dir, "3d_lowres/Task048_KiTS_clean")
-    folders = ['nnUNetTrainerNewCandidate23_FabiansPreActResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23_FabiansResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23__nnUNetPlans']
+    folders = ['nnFormerTrainerNewCandidate23_FabiansPreActResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23_FabiansResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23__nnFormerPlans']
     for f in folders:
         out = join(base, f, 'crossval_npz')
         maybe_mkdir_p(out)
@@ -128,15 +128,15 @@ def copy_npz_fom_valsets():
                 shutil.copy(join(cur, corresponding_pkl), out)
 
 
-def ensemble(experiments=('nnUNetTrainerNewCandidate23_FabiansPreActResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23_FabiansResNet__nnUNetPlans'), out_dir="/media/fabian/Results/nnUNet/3d_lowres/Task048_KiTS_clean/ensemble_preactres_and_res"):
-    from nnunet.inference.ensemble_predictions import merge
+def ensemble(experiments=('nnFormerTrainerNewCandidate23_FabiansPreActResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23_FabiansResNet__nnFormerPlans'), out_dir="/media/fabian/Results/nnFormer/3d_lowres/Task048_KiTS_clean/ensemble_preactres_and_res"):
+    from nnformer.inference.ensemble_predictions import merge
     folders = [join(network_training_output_dir, "3d_lowres/Task048_KiTS_clean", i, 'crossval_npz') for i in experiments]
     merge(folders, out_dir, 8)
 
 
-def prepare_submission(fld= "/home/fabian/drives/datasets/results/nnUNet/test_sets/Task048_KiTS_clean/predicted_ens_3d_fullres_3d_cascade_fullres_postprocessed", # '/home/fabian/datasets_fabian/predicted_KiTS_nnUNetTrainerNewCandidate23_FabiansResNet',
-                       out='/home/fabian/drives/datasets/results/nnUNet/test_sets/Task048_KiTS_clean/submission'):
+def prepare_submission(fld= "/home/fabian/drives/datasets/results/nnFormer/test_sets/Task048_KiTS_clean/predicted_ens_3d_fullres_3d_cascade_fullres_postprocessed", # '/home/fabian/datasets_fabian/predicted_KiTS_nnFormerTrainerNewCandidate23_FabiansResNet',
+                       out='/home/fabian/drives/datasets/results/nnFormer/test_sets/Task048_KiTS_clean/submission'):
     nii = subfiles(fld, join=False, suffix='.nii.gz')
     maybe_mkdir_p(out)
     for n in nii:
@@ -144,9 +144,9 @@ def prepare_submission(fld= "/home/fabian/drives/datasets/results/nnUNet/test_se
         shutil.copy(join(fld, n), join(out, outfname))
 
 
-def pretent_to_be_nnUNetTrainer(base, folds=(0, 1, 2, 3, 4)):
+def pretent_to_be_nnFormerTrainer(base, folds=(0, 1, 2, 3, 4)):
     """
-    changes best checkpoint pickle nnunettrainer class name to nnUNetTrainer
+    changes best checkpoint pickle nnformertrainer class name to nnFormerTrainer
     :param experiments:
     :return:
     """
@@ -155,7 +155,7 @@ def pretent_to_be_nnUNetTrainer(base, folds=(0, 1, 2, 3, 4)):
         pkl_file = join(cur, 'model_best.model.pkl')
         a = load_pickle(pkl_file)
         a['name_old'] = deepcopy(a['name'])
-        a['name'] = 'nnUNetTrainer'
+        a['name'] = 'nnFormerTrainer'
         save_pickle(a, pkl_file)
 
 
@@ -169,25 +169,25 @@ def reset_trainerName(base, folds=(0, 1, 2, 3, 4)):
         save_pickle(a, pkl_file)
 
 
-def nnUNetTrainer_these(experiments=('nnUNetTrainerNewCandidate23_FabiansPreActResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23_FabiansResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23__nnUNetPlans')):
+def nnFormerTrainer_these(experiments=('nnFormerTrainerNewCandidate23_FabiansPreActResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23_FabiansResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23__nnFormerPlans')):
     """
-    changes best checkpoint pickle nnunettrainer class name to nnUNetTrainer
+    changes best checkpoint pickle nnformertrainer class name to nnFormerTrainer
     :param experiments:
     :return:
     """
     base = join(network_training_output_dir, "3d_lowres/Task048_KiTS_clean")
     for exp in experiments:
         cur = join(base, exp)
-        pretent_to_be_nnUNetTrainer(cur)
+        pretent_to_be_nnFormerTrainer(cur)
 
 
-def reset_trainerName_these(experiments=('nnUNetTrainerNewCandidate23_FabiansPreActResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23_FabiansResNet__nnUNetPlans',
-               'nnUNetTrainerNewCandidate23__nnUNetPlans')):
+def reset_trainerName_these(experiments=('nnFormerTrainerNewCandidate23_FabiansPreActResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23_FabiansResNet__nnFormerPlans',
+               'nnFormerTrainerNewCandidate23__nnFormerPlans')):
     """
-    changes best checkpoint pickle nnunettrainer class name to nnUNetTrainer
+    changes best checkpoint pickle nnformertrainer class name to nnFormerTrainer
     :param experiments:
     :return:
     """
@@ -199,7 +199,7 @@ def reset_trainerName_these(experiments=('nnUNetTrainerNewCandidate23_FabiansPre
 
 if __name__ == "__main__":
     base = "/media/fabian/My Book/datasets/KiTS2019_Challenge/kits19/data"
-    out = "/media/fabian/My Book/MedicalDecathlon/nnUNet_raw_splitted/Task040_KiTS"
+    out = "/media/fabian/My Book/MedicalDecathlon/nnFormer_raw_splitted/Task040_KiTS"
     cases = subdirs(base, join=False)
 
     maybe_mkdir_p(out)
@@ -219,7 +219,7 @@ if __name__ == "__main__":
     json_dict['name'] = "KiTS"
     json_dict['description'] = "kidney and kidney tumor segmentation"
     json_dict['tensorImageSize'] = "4D"
-    json_dict['reference'] = "KiTS data for nnunet"
+    json_dict['reference'] = "KiTS data for nnformer"
     json_dict['licence'] = ""
     json_dict['release'] = "0.0"
     json_dict['modality'] = {

@@ -19,15 +19,15 @@ from copy import deepcopy
 from multiprocessing.pool import Pool
 
 from batchgenerators.utilities.file_and_folder_operations import *
-from nnunet.dataset_conversion.Task056_VerSe2019 import check_if_all_in_good_orientation, \
+from nnformer.dataset_conversion.Task056_VerSe2019 import check_if_all_in_good_orientation, \
     print_unique_labels_and_their_volumes
-from nnunet.paths import nnUNet_raw_data, preprocessing_output_dir
-from nnunet.utilities.image_reorientation import reorient_all_images_in_folder_to_ras
+from nnformer.paths import nnFormer_raw_data, preprocessing_output_dir
+from nnformer.utilities.image_reorientation import reorient_all_images_in_folder_to_ras
 
 
 def manually_change_plans():
     pp_out_folder = join(preprocessing_output_dir, "Task083_VerSe2020")
-    original_plans = join(pp_out_folder, "nnUNetPlansv2.1_plans_3D.pkl")
+    original_plans = join(pp_out_folder, "nnFormerPlansv2.1_plans_3D.pkl")
     assert isfile(original_plans)
     original_plans = load_pickle(original_plans)
 
@@ -51,7 +51,7 @@ def manually_change_plans():
 
 
 if __name__ == "__main__":
-    ### First we create a nnunet dataset from verse. After this the images will be all willy nilly in their
+    ### First we create a nnformer dataset from verse. After this the images will be all willy nilly in their
     # orientation because that's how VerSe comes
     base = '/home/fabian/Downloads/osfstorage-archive/'
 
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     foldername = "Task%03.0d_%s" % (task_id, task_name)
 
-    out_base = join(nnUNet_raw_data, foldername)
+    out_base = join(nnFormer_raw_data, foldername)
     imagestr = join(out_base, "imagesTr")
     imagests = join(out_base, "imagesTs")
     labelstr = join(out_base, "labelsTr")
@@ -123,16 +123,16 @@ if __name__ == "__main__":
     # Now we are ready to run nnU-Net
 
     """# run this part of the code once training is done
-    folder_gt = "/media/fabian/My Book/MedicalDecathlon/nnUNet_raw_splitted/Task056_VerSe/labelsTr"
+    folder_gt = "/media/fabian/My Book/MedicalDecathlon/nnFormer_raw_splitted/Task056_VerSe/labelsTr"
 
-    folder_pred = "/home/fabian/drives/datasets/results/nnUNet/3d_fullres/Task056_VerSe/nnUNetTrainerV2__nnUNetPlansv2.1/cv_niftis_raw"
+    folder_pred = "/home/fabian/drives/datasets/results/nnFormer/3d_fullres/Task056_VerSe/nnFormerTrainerV2__nnFormerPlansv2.1/cv_niftis_raw"
     out_json = "/home/fabian/Task056_VerSe_3d_fullres_summary.json"
     evaluate_verse_folder(folder_pred, folder_gt, out_json)
 
-    folder_pred = "/home/fabian/drives/datasets/results/nnUNet/3d_lowres/Task056_VerSe/nnUNetTrainerV2__nnUNetPlansv2.1/cv_niftis_raw"
+    folder_pred = "/home/fabian/drives/datasets/results/nnFormer/3d_lowres/Task056_VerSe/nnFormerTrainerV2__nnFormerPlansv2.1/cv_niftis_raw"
     out_json = "/home/fabian/Task056_VerSe_3d_lowres_summary.json"
     evaluate_verse_folder(folder_pred, folder_gt, out_json)
 
-    folder_pred = "/home/fabian/drives/datasets/results/nnUNet/3d_cascade_fullres/Task056_VerSe/nnUNetTrainerV2CascadeFullRes__nnUNetPlansv2.1/cv_niftis_raw"
+    folder_pred = "/home/fabian/drives/datasets/results/nnFormer/3d_cascade_fullres/Task056_VerSe/nnFormerTrainerV2CascadeFullRes__nnFormerPlansv2.1/cv_niftis_raw"
     out_json = "/home/fabian/Task056_VerSe_3d_cascade_fullres_summary.json"
     evaluate_verse_folder(folder_pred, folder_gt, out_json)"""

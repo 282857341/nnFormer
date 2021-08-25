@@ -52,7 +52,7 @@ def load_pretrained_weights(network, fname, verbose=False):
         model_dict.update(pretrained_dict)
         print("################### Loading pretrained weights from file ", fname, '###################')
         if verbose:
-            print("Below is the list of overlapping blocks in pretrained model and nnUNet architecture:")
+            print("Below is the list of overlapping blocks in pretrained model and nnFormer architecture:")
             for key, _ in pretrained_dict.items():
                 print(key)
         print("################### Done ###################")
