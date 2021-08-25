@@ -1,4 +1,4 @@
-# nnFormer: Incorporating Convolution HelpsTransformer Outperform nnU-Net in VolumetricSegmentation
+# nnFormer: Incorporating Convolution Helps Transformer Outperform nnU-Net in Volumetric Segmentation
 
 Code for paper "nnFormer: Incorporating Convolution HelpsTransformer Outperform nnU-Net in VolumetricSegmentation". Please read our preprint at the following link: [paper_address](paper_address)
 
@@ -89,7 +89,7 @@ python ./nnformer/change_plan_swin.py 2
 ```
 #### 4 Training and Testing the models
 ##### A. Use the best model we have trained to infer the test set
-##### (1)、Put the downloaded the best training weights in the specified directory.
+##### (1).Put the downloaded the best training weights in the specified directory.
 the download link is 
 ```
 Link：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
@@ -104,7 +104,7 @@ the specified directory is
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_Synapse__nnFormerPlansv2.1/fold_0/model_best.model
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_Synapse__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 ```
-##### (2)、Evaluating the models
+##### (2).Evaluating the models
 - ACDC
 
 Inference
@@ -132,7 +132,7 @@ python ./nnformer/Synapse_dice_and_hd/inference.py
 The dice result will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
 
 ##### B. The complete process of retraining the model and inference
-##### (1)、Put the downloaded pre-training weights in the specified directory.
+##### (1).Put the downloaded pre-training weights in the specified directory.
 the download link is 
 ```
 Link：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
@@ -144,7 +144,7 @@ the specified directory is
 ../Pretrained_weight/pretrain_Synapse.model
 ```
 
-##### (2)、Training 
+##### (2).Training 
 - ACDC
 ```
 nnFormer_train 3d_fullres nnFormerTrainerV2_ACDC 1 0 
@@ -155,7 +155,7 @@ nnFormer_train 3d_fullres nnFormerTrainerV2_ACDC 1 0
 nnFormer_train 3d_fullres nnFormerTrainerV2_Synapse 2 0 
 ```
 
-##### (3)、Evaluating the models
+##### (3).Evaluating the models
 - ACDC
 
 Inference
