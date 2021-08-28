@@ -56,6 +56,8 @@ def restore_model(pkl_file, checkpoint=None, train=False, fp16=None):
     info = load_pickle(pkl_file)
     init = info['init']
     name = info['name']
+    if 'nnUNet' in name:
+        name=name.replace('nnUNet','nnFormer')
     if len(init)>10:
         init=list(init)
         del init[2]
