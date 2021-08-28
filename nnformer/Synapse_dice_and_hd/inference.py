@@ -51,7 +51,7 @@ def test(fold):
     file=path + 'inferTs/'+fold
     if not os.path.exists(file):
         os.makedirs(file)
-    fw = open(file+'/13dice_pre.txt', 'a')
+    fw = open(file+'/8dice_pre.txt', 'a')
     
     for label_path,infer_path in zip(label_list,infer_list):
         print(label_path.split('/')[-1])
