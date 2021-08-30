@@ -1,6 +1,8 @@
-# nnFormer: Incorporating Convolution Helps Transformer Outperform nnU-Net in Volumetric Segmentation
+# nnFormer: Interleaved Transformer for Volumetric Segmentation 
 
-Code for paper "nnFormer: Incorporating Convolution Helps Transformer Outperform nnU-Net in Volumetric Segmentation". Please read our preprint at the following link: [paper_address](paper_address)
+Parts of codes are borrowed from [nnU-Net](https://github.com/MIC-DKFZ/nnUNet)
+
+Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ". Please read our preprint at the following link: [paper_address](paper_address)
 
 ---
 ## Installation
