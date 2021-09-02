@@ -22,8 +22,8 @@
     },
     "name": "Brats2018",
     "numTest": 12,
-    #It seems that we use the whole data to train, but we will change training numbers when you running the change_plan_swin.py
     "numTraining": 30,
+    '''It seems that we use the whole data to train, but we will change training numbers when you running the change_plan_swin.py'''
     "reference": "see challenge website",
     "release": "0.0",
     "tensorImageSize": "4D",
