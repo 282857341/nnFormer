@@ -1,5 +1,4 @@
 {
-    "description": " Segmentation",
     "labels": {
         "0": "background",
         "1": "spleen",
@@ -20,10 +19,10 @@
     "modality": {
         "0": "CT"
     },
-    "name": "Brats2018",
+    "name": "Synapse",
     "numTest": 12,
     "numTraining": 30,
-    "It seems that we use the whole data to train, but we will change training numbers when you running the change_plan_swin"
+    "description": "It seems that we use the whole data to train, but we will change training numbers when you running the change_plan_swin",
     "reference": "see challenge website",
     "release": "0.0",
     "tensorImageSize": "4D",
