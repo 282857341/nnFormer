@@ -16,6 +16,13 @@ if __name__ == '__main__':
         a['plans_per_stage'][1]['conv_kernel_sizes']=[[3,3,3],[3,3,3],[3,3,3],[3,3,3],[3,3,3]]
         save_pickle(a, output_file)
         
+        split_file=input_file.replace('nnFormerPlansv2.1_plans_3D','splits_final')
+        b = load_pickle(split_file)
+        b[0]['train']=np.array(['img0006','img0007' ,'img0009', 'img0010', 'img0021' ,'img0023' ,'img0024','img0026' ,'img0027' ,'img0031', 'img0033' ,'img0034' \
+                                ,'img0039', 'img0040','img0005', 'img0028', 'img0030', 'img0037'])
+        b[0]['val']=np.array(['img0001', 'img0002', 'img0003', 'img0004', 'img0008', 'img0022','img0025', 'img0029', 'img0032', 'img0035', 'img0036', 'img0038'])
+        save_pickle(b,split_file)
+        
     elif args.task=='1':
         input_file = './DATASET/nnFormer_preprocessed/Task001_ACDC/nnFormerPlansv2.1_plans_3D.pkl'
         output_file = './DATASET/nnFormer_preprocessed/Task001_ACDC/nnFormerPlansv2.1_ACDC_plans_3D.pkl'
