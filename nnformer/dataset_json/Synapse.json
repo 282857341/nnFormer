@@ -23,7 +23,7 @@
     "name": "Brats2018",
     "numTest": 12,
     "numTraining": 30,
-    #"It seems that we use the whole data to train, but we will change training numbers when you running the change_plan_swin"
+    "It seems that we use the whole data to train, but we will change training numbers when you running the change_plan_swin"
     "reference": "see challenge website",
     "release": "0.0",
     "tensorImageSize": "4D",
