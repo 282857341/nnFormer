@@ -84,6 +84,14 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
   ├── nnFormer_trained_models/
   ├── nnFormer_preprocessed/
 ```
+
+After that, you can preprocess the data using:
+```
+nnFormer_convert_decathlon_task -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task01_ACDC
+nnFormer_convert_decathlon_task -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task02_Synapse
+nnFormer_plan_and_preprocess -t 1
+nnFormer_plan_and_preprocess -t 2
+```
 #### 3 Generating plan files of our network
 ```
 python ./nnformer/change_plan_swin.py 1
