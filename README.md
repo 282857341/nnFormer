@@ -1,6 +1,6 @@
 # nnFormer: Interleaved Transformer for Volumetric Segmentation 
 
-Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ". Please read our preprint at the following link: [paper_address](paper_address)
+Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ". Please read our preprint at the following link: [paper_address](https://arxiv.org/abs/2109.03201)
 
 Parts of codes are borrowed from [nn-UNet](https://github.com/MIC-DKFZ/nnUNet)
 
