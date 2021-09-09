@@ -1,8 +1,8 @@
 # nnFormer: Interleaved Transformer for Volumetric Segmentation 
 
-Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ". Please read our preprint at the following link: [paper_address](https://arxiv.org/abs/2109.03201)
+Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ". Please read our preprint at the following link: [paper_address](https://arxiv.org/abs/2109.03201).
 
-Parts of codes are borrowed from [nn-UNet](https://github.com/MIC-DKFZ/nnUNet)
+Parts of codes are borrowed from [nn-UNet](https://github.com/MIC-DKFZ/nnUNet).
 
 ---
 ## Installation
@@ -190,4 +190,4 @@ Calculate DICE
 python ./nnformer/Synapse_dice_and_hd/inference.py
 ```
 
-The dice result will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
+The dice results will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
