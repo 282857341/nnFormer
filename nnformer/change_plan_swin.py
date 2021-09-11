@@ -16,6 +16,7 @@ if __name__ == '__main__':
         a['plans_per_stage'][1]['conv_kernel_sizes']=[[3,3,3],[3,3,3],[3,3,3],[3,3,3],[3,3,3]]
         save_pickle(a, output_file)
         
+        # Here is to change the dataset division
         split_file=input_file.replace('nnFormerPlansv2.1_plans_3D','splits_final')
         b = load_pickle(split_file)
         b[0]['train']=np.array(['img0006','img0007' ,'img0009', 'img0010', 'img0021' ,'img0023' ,'img0024','img0026' ,'img0027' ,'img0031', 'img0033' ,'img0034' \
@@ -31,5 +32,7 @@ if __name__ == '__main__':
         a['plans_per_stage'][0]['patch_size']=np.array([14,160,160])
         a['plans_per_stage'][0]['pool_op_kernel_sizes']=[[1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2]]
         a['plans_per_stage'][0]['conv_kernel_sizes']=[[3,3,3],[3,3,3],[3,3,3],[3,3,3],[3,3,3]]
+        
+        # The train list and val list of the acdc dataset is long, so I put it in the list_acdc.txt, you can change the dataset division as the Synapse task
         save_pickle(a, output_file)
     print(output_file)
