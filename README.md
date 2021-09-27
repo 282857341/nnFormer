@@ -4,6 +4,8 @@ Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ".
 
 Parts of codes are borrowed from [nn-UNet](https://github.com/MIC-DKFZ/nnUNet).
 
+One piece of advice before you run nnFormer: When you are trying to reproduce results of nnFormer, we strongly suggest you to run nnFormer on ACDC ahead of Synapse as we found results on Synapse may have some variations due to unfixed random seeds of cuDNN (similar problems also happened in nn-UNet). In other words, if you would like to make some improvements on top of nnFormer and need an indicator dataset, we would suggest you to use ACDC as the indicator dataset, whose performance are more stable and reliable.
+
 ---
 ## Installation
 #### 1、System requirements
