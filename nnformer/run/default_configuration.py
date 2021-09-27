@@ -47,13 +47,6 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
         else: 
             plans_file = join(preprocessing_output_dir, task, plans_identifier + '_Synapse'+"_plans_3D.pkl")
             
-#_oneplan
-#_Swin_UNet_64_96 
-#_Swin_UNet_brats64_128_128       
-#'_Swin_UNet_brats64'
-#'_Swin_UNet_64_128_64_96'+
-#'_swinb_win_batch4'
-#'_swinb_win_batch8'
     plans = load_pickle(plans_file)
     possible_stages = list(plans['plans_per_stage'].keys())
 
