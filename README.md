@@ -92,12 +92,8 @@ nnFormer_convert_decathlon_task -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Tas
 nnFormer_plan_and_preprocess -t 1
 nnFormer_plan_and_preprocess -t 2
 ```
-#### 3 Generating plan files of our network
-```
-python ./nnformer/change_plan_swin.py 1
-python ./nnformer/change_plan_swin.py 2
-```
-#### 4 Training and Testing the models
+
+#### 3 Training and Testing the models
 ##### A. Use the best model we have trained to infer the test set
 ##### (1).Put the downloaded the best training weights in the specified directory.
 the download link is 
