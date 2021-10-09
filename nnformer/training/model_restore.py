@@ -18,6 +18,7 @@ from batchgenerators.utilities.file_and_folder_operations import *
 import importlib
 import pkgutil
 from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.training.network_training.nnFormerTrainer_synapse import nnFormerTrainer_synapse
 
 
 def recursive_find_python_class(folder, trainer_name, current_module):
@@ -81,8 +82,7 @@ def restore_model(pkl_file, checkpoint=None, train=False, fp16=None):
                            "is not located there, please move it or change the code of restore_model. Your model "
                            "trainer can be located in any directory within nnformer.trainig.network_training (search is recursive)."
                            "\nDebug info: \ncheckpoint file: %s\nName of trainer: %s " % (checkpoint, name))
-    assert issubclass(tr, nnFormerTrainer), "The network trainer was found but is not a subclass of nnFormerTrainer. " \
-                                          "Please make it so!"
+    assert issubclass(tr, nnFormerTrainer) or issubclass(tr, nnFormerTrainer_synapse), "The network trainer was found but is not a subclass of nnFormerTrainer.Please make it so!"
 
     # this is now deprecated
     """if len(init) == 7:
