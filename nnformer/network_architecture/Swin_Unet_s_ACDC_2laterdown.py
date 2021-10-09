@@ -253,9 +253,11 @@ class PatchMerging(nn.Module):
         super().__init__()
         self.dim = dim
         if tag==0:
-            self.reduction = nn.Conv3d(dim,dim*2,kernel_size=[1,2,2],stride=[1,2,2])
+            self.reduction = nn.Conv3d(dim,dim*2,kernel_size=[1,3,3],stride=[1,2,2],padding=[0,1,1])
+        elif tag==1:
+            self.reduction = nn.Conv3d(dim,dim*2,kernel_size=[3,3,3],stride=[2,2,2],padding=[1,1,1])
         else:
-            self.reduction = nn.Conv3d(dim,dim*2,kernel_size=[2,2,2],stride=[2,2,2])
+            self.reduction = nn.Conv3d(dim,dim*2,kernel_size=[3,3,3],stride=[2,2,2],padding=[0,1,1])
 
         self.norm = norm_layer(dim)
 
@@ -365,10 +367,15 @@ class BasicLayer(nn.Module):
 
         # patch merging layer
         if downsample is not None:
-            if i_layer==1 or i_layer==2:
+            
+            if i_layer==1:
                 self.downsample = downsample(dim=dim, norm_layer=norm_layer,tag=1)
+            elif i_layer==2:
+                self.downsample = downsample(dim=dim, norm_layer=norm_layer,tag=2)
+            elif i_layer==0:
+                self.downsample = downsample(dim=dim, norm_layer=norm_layer,tag=0)        
             else:
-                self.downsample = downsample(dim=dim, norm_layer=norm_layer,tag=0)                
+                self.downsample = None
         else:
             self.downsample = None
 
