@@ -18,7 +18,8 @@ from nnformer.paths import network_training_output_dir, preprocessing_output_dir
 from batchgenerators.utilities.file_and_folder_operations import *
 from nnformer.experiment_planning.summarize_plans import summarize_plans
 from nnformer.training.model_restore import recursive_find_python_class
-
+import numpy as np
+import pickle
 
 def get_configuration_from_output_folder(folder):
     # split off network_training_output_dir
@@ -42,12 +43,26 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
     if network == '2d':
         plans_file = join(preprocessing_output_dir, task, plans_identifier + "_plans_2D.pkl")
     else:
-        if task==1:
-            plans_file = join(preprocessing_output_dir, task, plans_identifier + '_ACDC'+"_plans_3D.pkl")
-        else: 
-            plans_file = join(preprocessing_output_dir, task, plans_identifier + '_Synapse'+"_plans_3D.pkl")
-            
+        plans_file = join(preprocessing_output_dir, task, plans_identifier + "_plans_3D.pkl")
+             
     plans = load_pickle(plans_file)
+    if task=='Task001_ACDC':
+        plans['plans_per_stage'][0]['batch_size']=4
+        plans['plans_per_stage'][0]['patch_size']=np.array([14,160,160])
+        plans['plans_per_stage'][0]['pool_op_kernel_sizes']=[[1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2]]
+        plans['plans_per_stage'][0]['conv_kernel_sizes']=[[3,3,3],[3,3,3],[3,3,3],[3,3,3],[3,3,3]]
+        pickle_file = open(plans_file,'wb')
+        pickle.dump(plans, pickle_file)
+        pickle_file.close()
+        
+    elif task=='Task002_Synapse':
+        plans['plans_per_stage'][1]['batch_size']=2
+        plans['plans_per_stage'][1]['patch_size']=np.array([64,128,128])
+        plans['plans_per_stage'][1]['pool_op_kernel_sizes']=[[2,2,2],[2,2,2],[2,2,2],[2,2,2]]
+        plans['plans_per_stage'][1]['conv_kernel_sizes']=[[3,3,3],[3,3,3],[3,3,3],[3,3,3],[3,3,3]]
+        pickle_file = open(plans_file,'wb')
+        pickle.dump(plans, pickle_file)
+        pickle_file.close()
     possible_stages = list(plans['plans_per_stage'].keys())
 
     if (network == '3d_cascade_fullres' or network == "3d_lowres") and len(possible_stages) == 1:
