@@ -28,7 +28,7 @@ from nnformer.network_architecture.neural_network import SegmentationNetwork
 from nnformer.training.data_augmentation.default_data_augmentation import default_2D_augmentation_params, \
     get_patch_size, default_3D_augmentation_params
 from nnformer.training.dataloading.dataset_loading import unpack_dataset
-from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.training.network_training.nnFormerTrainer_synapse import nnFormerTrainer_synapse
 from nnformer.utilities.nd_softmax import softmax_helper
 from sklearn.model_selection import KFold
 from torch import nn
@@ -37,7 +37,7 @@ from nnformer.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
 
 
-class nnFormerTrainerV2_Synapse(nnFormerTrainer):
+class nnFormerTrainerV2_Synapse(nnFormerTrainer_synapse):
     """
     Info for Fabian: same as internal nnFormerTrainerV2_2
     """
