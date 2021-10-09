@@ -278,7 +278,7 @@ class PatchMerging(nn.Module):
     def __init__(self, dim, norm_layer=nn.LayerNorm):
         super().__init__()
         self.dim = dim
-        self.reduction = nn.Conv3d(dim,dim*2,kernel_size=3,stride=2,padding=1)
+        self.reduction = nn.Conv3d(dim,dim*2,kernel_size=2,stride=2)
         self.norm = norm_layer(dim)
 
     def forward(self, x, S, H, W):
