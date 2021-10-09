@@ -213,7 +213,14 @@ def main():
                               args.plans_identifier)
     print("using model stored in ", model_folder_name)
     assert isdir(model_folder_name), "model output folder not found. Expected: %s" % model_folder_name
+    
+    import os
+    import shutil
+    if not os.path.exists(join(model_folder_name, "plans.pkl")):
 
+        plans_file = join(preprocessing_output_dir, task_name, args.plans_identifier + "_plans_3D.pkl")
+        
+        shutil.copy(plans_file, join(model_folder_name, "plans.pkl"))
     predict_from_folder(model_folder_name, input_folder, output_folder, folds, save_npz, num_threads_preprocessing,
                         num_threads_nifti_save, lowres_segmentations, part_id, num_parts, not disable_tta,
                         overwrite_existing=overwrite_existing, mode=mode, overwrite_all_in_gpu=all_in_gpu,
