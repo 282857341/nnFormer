@@ -20,6 +20,8 @@ from nnformer.paths import default_plans_identifier
 from nnformer.run.load_pretrained_weights import load_pretrained_weights
 from nnformer.training.cascade_stuff.predict_next_stage import predict_next_stage
 from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.training.network_training.nnFormerTrainer_synapse import nnFormerTrainer_synapse
+
 from nnformer.training.network_training.nnFormerTrainerCascadeFullRes import nnFormerTrainerCascadeFullRes
 from nnformer.training.network_training.nnFormerTrainerV2_CascadeFullRes import nnFormerTrainerV2CascadeFullRes
 from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
@@ -146,7 +148,7 @@ def main():
             "nnFormerTrainerCascadeFullRes"
     else:
         assert issubclass(trainer_class,
-                          nnFormerTrainer), "network_trainer was found but is not derived from nnFormerTrainer"
+                          nnFormerTrainer) or issubclass(trainer_class, nnFormerTrainer_synapse) , "network_trainer was found but is not derived from nnFormerTrainer"
 
     trainer = trainer_class(plans_file, fold, output_folder=output_folder_name, dataset_directory=dataset_directory,
                             batch_dice=batch_dice, stage=stage, unpack_data=decompress_data,
