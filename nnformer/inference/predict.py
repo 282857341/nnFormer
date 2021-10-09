@@ -29,6 +29,8 @@ from multiprocessing import Pool
 from nnformer.postprocessing.connected_components import load_remove_save, load_postprocessing
 from nnformer.training.model_restore import load_model_and_checkpoint_files
 from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
+from nnformer.training.network_training.nnFormerTrainer_synapse import nnFormerTrainer_synapse
+
 from nnformer.utilities.one_hot_encoding import to_one_hot
 
 
@@ -97,7 +99,7 @@ def preprocess_multithreaded(trainer, list_of_lists, output_files, num_processes
     num_processes = min(len(list_of_lists), num_processes)
 
     classes = list(range(1, trainer.num_classes))
-    assert isinstance(trainer, nnFormerTrainer)
+    assert isinstance(trainer, nnFormerTrainer) or isinstance(trainer, nnFormerTrainer_synapse)
     q = Queue(1)
     processes = []
     for i in range(num_processes):
