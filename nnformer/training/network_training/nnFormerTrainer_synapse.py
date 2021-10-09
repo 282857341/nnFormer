@@ -733,7 +733,7 @@ class nnFormerTrainer_synapse(NetworkTrainer):
         self.online_eval_fn = []
 
     def save_checkpoint(self, fname, save_optimizer=True):
-        super(nnFormerTrainer, self).save_checkpoint(fname, save_optimizer)
+        super(nnFormerTrainer_synapse, self).save_checkpoint(fname, save_optimizer)
         info = OrderedDict()
         info['init'] = self.init_args
         info['name'] = self.__class__.__name__
