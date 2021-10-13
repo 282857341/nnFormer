@@ -20,6 +20,7 @@ from nnformer.inference.predict import predict_from_folder
 from nnformer.paths import default_plans_identifier, network_training_output_dir, default_cascade_trainer, default_trainer
 from batchgenerators.utilities.file_and_folder_operations import join, isdir
 from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
+from nnformer.paths import network_training_output_dir, preprocessing_output_dir, default_plans_identifier
 
 
 def main():
