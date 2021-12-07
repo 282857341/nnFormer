@@ -54,7 +54,9 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
         pickle_file = open(plans_file,'wb')
         pickle.dump(plans, pickle_file)
         pickle_file.close()
-        
+    # I downsample the data four times in synapse but twice (z axis) in the ACDC
+    # if you want to design a new way, you should reassign the value of pool_op_kernel_sizes
+    # 2 represents downsample and 1 for not downsample, each list in the pool_op_kernel_sizes represents the stage
     elif task=='Task002_Synapse':
         plans['plans_per_stage'][1]['batch_size']=2
         plans['plans_per_stage'][1]['patch_size']=np.array([64,128,128])
