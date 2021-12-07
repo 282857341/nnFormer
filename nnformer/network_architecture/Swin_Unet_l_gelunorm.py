@@ -889,16 +889,7 @@ class final_patch_expanding(nn.Module):
                                          
 class swintransformer(SegmentationNetwork):
 
-    def __init__(self, input_channels, base_num_features, num_classes, num_pool, num_conv_per_stage=2,
-                 feat_map_mul_on_downscale=2, conv_op=nn.Conv2d,
-                 norm_op=nn.BatchNorm2d, norm_op_kwargs=None,
-                 dropout_op=nn.Dropout2d, dropout_op_kwargs=None,
-                 nonlin=nn.LeakyReLU, nonlin_kwargs=None, deep_supervision=True, dropout_in_localization=False,
-                 final_nonlin=softmax_helper, weightInitializer=InitWeights_He(1e-2), pool_op_kernel_sizes=None,
-                 conv_kernel_sizes=None,
-                 upscale_logits=False, convolutional_pooling=False, convolutional_upsampling=False,
-                 max_num_features=None, basic_block=None,
-                 seg_output_use_bias=False):
+    def __init__(self, input_channels, num_classes,  deep_supervision=True):
     
         super(swintransformer, self).__init__()
         
@@ -906,7 +897,7 @@ class swintransformer(SegmentationNetwork):
         self._deep_supervision = deep_supervision
         self.do_ds = deep_supervision
         self.num_classes=num_classes
-        self.conv_op=conv_op
+        self.conv_op=nn.Conv3d
        
         
         self.upscale_logits_ops = []
@@ -919,8 +910,10 @@ class swintransformer(SegmentationNetwork):
         depths=[2, 2, 2, 2]
         num_heads=[6, 12, 24, 48]
         patch_size=[2,4,4]
-        self.model_down=SwinTransformer(pretrain_img_size=[64,128,128],window_size=4,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=1)
-        self.encoder=encoder(pretrain_img_size=[64,128,128],embed_dim=embed_dim,window_size=4,patch_size=patch_size,num_heads=[24,12,6],depths=[2,2,2])
+        window_size=4
+        self.model_down=SwinTransformer(pretrain_img_size=[64,128,128],window_size=window_size,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=input_channels)
+        #for some reasons,the decoder is named with encoder
+        self.encoder=encoder(pretrain_img_size=[64,128,128],embed_dim=embed_dim,window_size=window_size,patch_size=patch_size,num_heads=num_heads[::-1][1:],depths=depths[::-1][1:])
    
         self.final=[]
         for i in range(len(depths)-1):
@@ -947,47 +940,4 @@ class swintransformer(SegmentationNetwork):
             
             return seg_outputs[-1]
         
-        
-        
-   
 
-    @staticmethod
-    def compute_approx_vram_consumption(patch_size, num_pool_per_axis, base_num_features, max_num_features,
-                                        num_modalities, num_classes, pool_op_kernel_sizes, deep_supervision=False,
-                                        conv_per_stage=2):
-        """
-        This only applies for num_conv_per_stage and convolutional_upsampling=True
-        not real vram consumption. just a constant term to which the vram consumption will be approx proportional
-        (+ offset for parameter storage)
-        :param deep_supervision:
-        :param patch_size:
-        :param num_pool_per_axis:
-        :param base_num_features:
-        :param max_num_features:
-        :param num_modalities:
-        :param num_classes:
-        :param pool_op_kernel_sizes:
-        :return:
-        """
-        if not isinstance(num_pool_per_axis, np.ndarray):
-            num_pool_per_axis = np.array(num_pool_per_axis)
-
-        npool = len(pool_op_kernel_sizes)
-
-        map_size = np.array(patch_size)
-        tmp = np.int64((conv_per_stage * 2 + 1) * np.prod(map_size, dtype=np.int64) * base_num_features +
-                       num_modalities * np.prod(map_size, dtype=np.int64) +
-                       num_classes * np.prod(map_size, dtype=np.int64))
-
-        num_feat = base_num_features
-
-        for p in range(npool):
-            for pi in range(len(num_pool_per_axis)):
-                map_size[pi] /= pool_op_kernel_sizes[p][pi]
-            num_feat = min(num_feat * 2, max_num_features)
-            num_blocks = (conv_per_stage * 2 + 1) if p < (npool - 1) else conv_per_stage  # conv_per_stage + conv_per_stage for the convs of encode/decode and 1 for transposed conv
-            tmp += num_blocks * np.prod(map_size, dtype=np.int64) * num_feat
-            if deep_supervision and p < (npool - 2):
-                tmp += np.prod(map_size, dtype=np.int64) * num_classes
-            # print(p, map_size, num_feat, tmp)
-        return tmp
