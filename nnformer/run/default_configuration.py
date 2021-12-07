@@ -57,6 +57,7 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
     # I downsample the data four times in synapse but twice (z axis) in the ACDC
     # if you want to design a new way, you should reassign the value of pool_op_kernel_sizes
     # 2 represents downsample and 1 for not downsample, each list in the pool_op_kernel_sizes represents the stage
+    # when you change the pool_op_kernel_sizes,make sure change the code in the network
     # conv_kernel_sizes is not important
     elif task=='Task002_Synapse':
         plans['plans_per_stage'][1]['batch_size']=2
