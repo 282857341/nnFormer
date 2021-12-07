@@ -879,7 +879,7 @@ class swintransformer(SegmentationNetwork):
         self._deep_supervision = deep_supervision
         self.do_ds = deep_supervision
         self.num_classes=num_classes
-        self.conv_op=conv_op
+        self.conv_op=nn.Conv3d
        
         
         self.upscale_logits_ops = []
@@ -894,6 +894,7 @@ class swintransformer(SegmentationNetwork):
         patch_size=[1,4,4]
         window_size=[3,5,5]
         self.model_down=SwinTransformer(pretrain_img_size=[14,160,160],window_size=window_size,embed_dim=embed_dim,patch_size=patch_size,depths=depths,num_heads=num_heads,in_chans=input_channels)
+        # for some reasons, the decoder is named as encoder
         self.encoder=encoder(pretrain_img_size=[14,160,160],embed_dim=embed_dim,window_size=window_size,patch_size=patch_size,num_heads=num_heads[::-1][1:],depths=depths[::-1][1:])
    
         self.final=[]
