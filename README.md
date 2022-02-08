@@ -135,7 +135,7 @@ bash single.sh -c 0 -n nnformer_acdc -t 1
 ```
 You need to adjust the path for yourself
 
-the inference.py is located at nnFormer/nnformer
+the inference.py is located at nnFormer/nnformer and single.sh is located at nnFormer
 
 more detail about the command:[train](https://github.com/MIC-DKFZ/nnUNet#3d-full-resolution-u-net) [inference](https://github.com/MIC-DKFZ/nnUNet#run-inference)
 
