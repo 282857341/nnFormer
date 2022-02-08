@@ -81,6 +81,12 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
               ├── labelsTr/
               ├── labelsTs/
               ├── dataset.json
+          ├── Task03_tumor/
+              ├── imagesTr/
+              ├── imagesTs/
+              ├── labelsTr/
+              ├── labelsTs/
+              ├── dataset.json
       ├── nnFormer_cropped_data/
   ├── nnFormer_trained_models/
   ├── nnFormer_preprocessed/
@@ -90,8 +96,11 @@ After that, you can preprocess the data using:
 ```
 nnFormer_convert_decathlon_task -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task01_ACDC
 nnFormer_convert_decathlon_task -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task02_Synapse
+nnFormer_convert_decathlon_task -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task03_tumor
+
 nnFormer_plan_and_preprocess -t 1
 nnFormer_plan_and_preprocess -t 2
+nnFormer_plan_and_preprocess -t 3
 ```
 
 #### 3 Training and Testing the models
@@ -99,96 +108,44 @@ nnFormer_plan_and_preprocess -t 2
 ##### (1).Put the downloaded the best training weights in the specified directory.
 the download link is 
 ```
-Link：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
-Extraction code：yimv
+soon will upload
 ```
 The Google Drive link is as follows：
 ```
-Link：https://drive.google.com/drive/folders/16y1QYOQD4vjrR2hh8TpPB-tq5EYX--Az?usp=sharing
+soon will upload
 ```
 
 the specified directory is
 ```
-../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_ACDC__nnFormerPlansv2.1/fold_0/model_best.model
-../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_ACDC__nnFormerPlansv2.1/fold_0/model_best.model.pkl
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 
-../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_Synapse__nnFormerPlansv2.1/fold_0/model_best.model
-../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_Synapse__nnFormerPlansv2.1/fold_0/model_best.model.pkl
-```
-##### (2).Evaluating the models
-- ACDC
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_synapse__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_synapse__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 
-Inference
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 ```
-nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnFormerTrainerV2_ACDC
+##### (2).Training and inference
 ```
+bash single.sh -c 0 -n nnformer_acdc -t 1
+#-c means the id of the cuda
+#-n means the suffix of the trainer
+#-t means the id of the task
+# You need to adjust the path for yourself
 
-Calculate DICE
+more detail about the command:[train](https://github.com/MIC-DKFZ/nnUNet#3d-full-resolution-u-net) [inference](https://github.com/MIC-DKFZ/nnUNet#run-inference)
 
-```
-python ./nnformer/ACDC_dice/inference.py
-```
-
-- The Synapse multi-organ CT dataset
-
-Inference
-```
-nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnFormerTrainerV2_Synapse
-```
-Calculate DICE
-```
-python ./nnformer/Synapse_dice_and_hd/inference.py
 ```
 
-The dice result will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
 
 ##### B. The complete process of retraining the model and inference
 ##### (1).Put the downloaded pre-training weights in the specified directory.
 the download link is 
 ```
-Link：https://pan.baidu.com/s/1h1h8_DKvve8enyTiIyzfHw 
-Extraction code：yimv
+soon will upload
 ```
 the specified directory is
 ```
-../Pretrained_weight/pretrain_ACDC.model
 ../Pretrained_weight/pretrain_Synapse.model
 ```
-
-##### (2).Training 
-- ACDC
-```
-nnFormer_train 3d_fullres nnFormerTrainerV2_ACDC 1 0 
-```
-
-- The Synapse multi-organ CT dataset
-```
-nnFormer_train 3d_fullres nnFormerTrainerV2_Synapse 2 0 
-```
-
-##### (3).Evaluating the models
-- ACDC
-
-Inference
-```
-nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task001_ACDC/inferTs/output -m 3d_fullres -f 0 -t 1 -chk model_best -tr nnFormerTrainerV2_ACDC
-```
-
-Calculate DICE
-
-```
-python ./nnformer/ACDC_dice/inference.py
-```
-
-- The Synapse multi-organ CT dataset
-
-Inference
-```
-nnFormer_predict -i ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/imagesTs -o ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output -m 3d_fullres -f 0 -t 2 -chk model_best -tr nnFormerTrainerV2_Synapse
-```
-Calculate DICE
-```
-python ./nnformer/Synapse_dice_and_hd/inference.py
-```
-
-The dice results will be saved in ../DATASET/nnFormer_raw/nnFormer_raw_data/Task002_Synapse/inferTs/output
