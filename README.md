@@ -132,12 +132,12 @@ bash single.sh -c 0 -n nnformer_acdc -t 1
 #-c means the id of the cuda
 #-n means the suffix of the trainer
 #-t means the id of the task
-# You need to adjust the path for yourself
+```
+You need to adjust the path for yourself
+
+the inference.py is located at nnFormer/nnformer
 
 more detail about the command:[train](https://github.com/MIC-DKFZ/nnUNet#3d-full-resolution-u-net) [inference](https://github.com/MIC-DKFZ/nnUNet#run-inference)
-
-```
-
 
 ##### B. The complete process of retraining the model and inference
 ##### (1).Put the downloaded pre-training weights in the specified directory.
