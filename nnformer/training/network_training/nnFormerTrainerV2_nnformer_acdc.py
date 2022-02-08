@@ -18,11 +18,10 @@ from typing import Tuple
 
 import numpy as np
 import torch
-from nnformer.training.data_augmentation.data_augmentation_moreDA import get_moreDA_augmentation
+from nnformer.training.data_augmentation.data_augmentation_moreDA_real import get_moreDA_augmentation
 from nnformer.training.loss_functions.deep_supervision import MultipleOutputLoss2
 from nnformer.utilities.to_torch import maybe_to_torch, to_cuda
-from nnformer.network_architecture.generic_UNet import Generic_UNet
-from nnformer.network_architecture.Swin_Unet_s_ACDC_2laterdown import swintransformer
+from nnformer.network_architecture.nnFormer_synapse import nnFormer
 from nnformer.network_architecture.initialization import InitWeights_He
 from nnformer.network_architecture.neural_network import SegmentationNetwork
 from nnformer.training.data_augmentation.default_data_augmentation import default_2D_augmentation_params, \
@@ -37,9 +36,10 @@ from nnformer.training.learning_rate.poly_lr import poly_lr
 from batchgenerators.utilities.file_and_folder_operations import *
 
 
-class nnFormerTrainerV2_ACDC(nnFormerTrainer):
+    
+class nnFormerTrainerV2_nnformer_acdc(nnFormerTrainer):
     """
-    Info for Fabian: same as internal nnFormerTrainerV2_2
+    Info for Fabian: same as internal nnUNetTrainerV2_2
     """
 
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
@@ -50,9 +50,28 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
         self.initial_lr = 1e-2
         self.deep_supervision_scales = None
         self.ds_loss_weights = None
-
         self.pin_memory = True
-
+        self.load_pretrain_weight=False
+        
+        self.load_plans_file()    
+        
+        if len(self.plans['plans_per_stage'])==2:
+            Stage=1
+        else:
+            Stage=0
+            
+        self.crop_size=self.plans['plans_per_stage'][Stage]['patch_size']
+        self.input_channels=self.plans['num_modalities']
+        self.num_classes=self.plans['num_classes'] + 1
+        self.conv_op=nn.Conv3d
+        
+        self.embedding_dim=96
+        self.depths=[2, 2, 2, 2]
+        self.num_heads=[3, 6, 12, 24]
+        self.embedding_patch_size=[1,4,4]
+        self.window_size=[[3,5,5],[3,5,5],[7,10,10],[3,5,5]]
+        self.down_stride=[[1,4,4],[1,8,8],[2,16,16],[4,32,32]]
+        self.deep_supervision=False
     def initialize(self, training=True, force_load_plans=False):
         """
         - replaced get_default_augmentation with get_moreDA_augmentation
@@ -68,30 +87,32 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
 
             if force_load_plans or (self.plans is None):
                 self.load_plans_file()
-
+            
             self.process_plans(self.plans)
 
             self.setup_DA_params()
+            if self.deep_supervision:
+                ################# Here we wrap the loss for deep supervision ############
+                # we need to know the number of outputs of the network
+                net_numpool = len(self.net_num_pool_op_kernel_sizes)
 
-            ################# Here we wrap the loss for deep supervision ############
-            # we need to know the number of outputs of the network
-            net_numpool = len(self.net_num_pool_op_kernel_sizes)
+                # we give each output a weight which decreases exponentially (division by 2) as the resolution decreases
+                # this gives higher resolution outputs more weight in the loss
+                weights = np.array([1 / (2 ** i) for i in range(net_numpool)])
 
-            # we give each output a weight which decreases exponentially (division by 2) as the resolution decreases
-            # this gives higher resolution outputs more weight in the loss
-            weights = np.array([1 / (2 ** i) for i in range(net_numpool)])
-
-            # we don't use the lowest 2 outputs. Normalize weights so that they sum to 1
-            mask = np.array([True] + [True if i < net_numpool - 1 else False for i in range(1, net_numpool)])
-            weights[~mask] = 0
-            weights = weights / weights.sum()
-            self.ds_loss_weights = weights
-            # now wrap the loss
-            self.loss = MultipleOutputLoss2(self.loss, self.ds_loss_weights)
-            ################# END ###################
-
-            self.folder_with_preprocessed_data = join(self.dataset_directory, self.plans['data_identifier'] +
-                                                      "_stage%d" % self.stage)
+                # we don't use the lowest 2 outputs. Normalize weights so that they sum to 1
+                #mask = np.array([True] + [True if i < net_numpool - 1 else False for i in range(1, net_numpool)])
+                #weights[~mask] = 0
+                weights = weights / weights.sum()
+                print(weights)
+                self.ds_loss_weights = weights
+                # now wrap the loss
+                self.loss = MultipleOutputLoss2(self.loss, self.ds_loss_weights)
+                ################# END ###################
+            
+            self.folder_with_preprocessed_data = join(self.dataset_directory, self.plans['data_identifier'] +"_stage%d" % self.stage)
+            seeds_train = np.random.random_integers(0, 99999, self.data_aug_params.get('num_threads'))
+            seeds_val = np.random.random_integers(0, 99999, max(self.data_aug_params.get('num_threads') // 2, 1))                         
             if training:
                 self.dl_tr, self.dl_val = self.get_basic_generators()
                 if self.unpack_data:
@@ -108,9 +129,11 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
                     self.data_aug_params[
                         'patch_size_for_spatialtransform'],
                     self.data_aug_params,
-                    deep_supervision_scales=self.deep_supervision_scales,
+                    deep_supervision_scales=self.deep_supervision_scales if self.deep_supervision else None,
                     pin_memory=self.pin_memory,
-                    use_nondetMultiThreadedAugmenter=False
+                    use_nondetMultiThreadedAugmenter=False,
+                    seeds_train=seeds_train,
+                    seeds_val=seeds_val
                 )
                 self.print_to_log_file("TRAINING KEYS:\n %s" % (str(self.dataset_tr.keys())),
                                        also_print_to_console=False)
@@ -138,30 +161,30 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
         Known issue: forgot to set neg_slope=0 in InitWeights_He; should not make a difference though
         :return:
         """
-        if self.threeD:
-            conv_op = nn.Conv3d
-            dropout_op = nn.Dropout3d
-            norm_op = nn.InstanceNorm3d
-
-        else:
-            conv_op = nn.Conv2d
-            dropout_op = nn.Dropout2d
-            norm_op = nn.InstanceNorm2d
-
-        norm_op_kwargs = {'eps': 1e-5, 'affine': True}
-        dropout_op_kwargs = {'p': 0, 'inplace': True}
-        net_nonlin = nn.LeakyReLU
-        net_nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-    
-        self.network = swintransformer(self.num_input_channels, self.num_classes,True)
-        checkpoint = torch.load("../Pretrained_weight/pretrain_ACDC.model", map_location='cuda')
-        self.network.load_state_dict(checkpoint['state_dict'])
-        print('I am using the pre_train weight!!')                                      
-                           
+  
+      
+        
+        self.network=nnFormer(crop_size=self.crop_size,
+                                embedding_dim=self.embedding_dim,
+                                input_channels=self.input_channels,
+                                num_classes=self.num_classes,
+                                conv_op=self.conv_op,
+                                depths=self.depths,
+                                num_heads=self.num_heads,
+                                patch_size=self.embedding_patch_size,
+                                window_size=self.window_size,
+                                down_stride=self.down_stride,
+                                deep_supervision=self.deep_supervision)
+        if self.load_pretrain_weight:
+            checkpoint = torch.load('/home/xychen/jsguo/weight/gelunorm_former_skip_global_shift.model', map_location='cpu')
+            self.network.load_state_dict(checkpoint['state_dict'])
+            print('I am using the pre_train weight!!')   
+        
+     
         if torch.cuda.is_available():
             self.network.cuda()
         self.network.inference_apply_nonlin = softmax_helper
-
+        
     def initialize_optimizer_and_scheduler(self):
         assert self.network is not None, "self.initialize_network must be called first"
         self.optimizer = torch.optim.SGD(self.network.parameters(), self.initial_lr, weight_decay=self.weight_decay,
@@ -176,8 +199,12 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
         :param target:
         :return:
         """
-        target = target[0]
-        output = output[0]
+        if self.deep_supervision:
+            target = target[0]
+            output = output[0]
+        else:
+            target = target
+            output = output
         return super().run_online_evaluation(output, target)
 
     def validate(self, do_mirroring: bool = True, use_sliding_window: bool = True,
@@ -247,6 +274,7 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
             with autocast():
                 output = self.network(data)
                 del data
+                
                 l = self.loss(output, target)
 
             if do_backprop:
@@ -307,7 +335,8 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
                 self.print_to_log_file("Using splits from existing split file:", splits_file)
                 splits = load_pickle(splits_file)
                 self.print_to_log_file("The split file contains %d splits." % len(splits))
-                
+
+            self.print_to_log_file("Desired fold for training: %d" % self.fold)
             splits[self.fold]['train']=np.array(['patient001_frame01', 'patient001_frame12', 'patient004_frame01',
        'patient004_frame15', 'patient005_frame01', 'patient005_frame13',
        'patient006_frame01', 'patient006_frame16', 'patient007_frame01',
@@ -362,7 +391,6 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
        'patient097_frame01', 'patient097_frame11', 'patient098_frame01',
        'patient098_frame09', 'patient099_frame01', 'patient099_frame09',
        'patient100_frame01', 'patient100_frame13'])
-            self.print_to_log_file("Desired fold for training: %d" % self.fold)
             if self.fold < len(splits):
                 tr_keys = splits[self.fold]['train']
                 val_keys = splits[self.fold]['val']
@@ -470,7 +498,7 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
         super().on_epoch_end()
         continue_training = self.epoch < self.max_num_epochs
 
-        # it can rarely happen that the momentum of nnFormerTrainerV2 is too high for some dataset. If at epoch 100 the
+        # it can rarely happen that the momentum of nnUNetTrainerV2 is too high for some dataset. If at epoch 100 the
         # estimated validation Dice is still 0 then we reduce the momentum from 0.99 to 0.95
         if self.epoch == 100:
             if self.all_val_eval_metrics[-1] == 0:
@@ -493,7 +521,10 @@ class nnFormerTrainerV2_ACDC(nnFormerTrainer):
         self.maybe_update_lr(self.epoch)  # if we dont overwrite epoch then self.epoch+1 is used which is not what we
         # want at the start of the training
         ds = self.network.do_ds
-        self.network.do_ds = True
+        if self.deep_supervision:
+            self.network.do_ds = True
+        else:
+            self.network.do_ds = False
         ret = super().run_training()
         self.network.do_ds = ds
         return ret
