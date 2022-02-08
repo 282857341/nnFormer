@@ -60,6 +60,12 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
         pickle_file = open(plans_file,'wb')
         pickle.dump(plans, pickle_file)
         pickle_file.close()
+    elif task=='Task003_tumor':
+        plans['plans_per_stage'][0]['batch_size']=2
+        plans['plans_per_stage'][0]['patch_size']=np.array([128,128,128])
+        pickle_file = open(plans_file,'wb')
+        pickle.dump(plans, pickle_file)
+        pickle_file.close()
     possible_stages = list(plans['plans_per_stage'].keys())
 
     if (network == '3d_cascade_fullres' or network == "3d_lowres") and len(possible_stages) == 1:
