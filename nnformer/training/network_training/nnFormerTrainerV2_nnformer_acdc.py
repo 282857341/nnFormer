@@ -51,7 +51,7 @@ class nnFormerTrainerV2_nnformer_acdc(nnFormerTrainer):
         self.deep_supervision_scales = None
         self.ds_loss_weights = None
         self.pin_memory = True
-        self.load_pretrain_weight=False
+        self.load_pretrain_weight=True
         
         self.load_plans_file()    
         
@@ -59,7 +59,7 @@ class nnFormerTrainerV2_nnformer_acdc(nnFormerTrainer):
             Stage=1
         else:
             Stage=0
-            
+        
         self.crop_size=self.plans['plans_per_stage'][Stage]['patch_size']
         self.input_channels=self.plans['num_modalities']
         self.num_classes=self.plans['num_classes'] + 1
