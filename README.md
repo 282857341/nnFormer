@@ -136,6 +136,26 @@ the inference.py is located at nnFormer/nnformer
 train_inference.sh is located at nnFormer
 
 more detail about the command: [train](https://github.com/MIC-DKFZ/nnUNet#3d-full-resolution-u-net) and [inference](https://github.com/MIC-DKFZ/nnUNet#run-inference)
+
+- Adjust some parameter to train your own network
+  - nnFormer/nnformer/training/network_training/network_trainer.py 
+  
+    - self.val_eval_criterion_alpha：
+    
+      if this is too low then the moving average will be too noisy and the training may terminate early. If it is too high the training will take forever
+      
+    - self.num_batches_per_epoch： 
+    
+      the iteration numbers of each epoch duiring the training
+    
+    - self.num_val_batches_per_epoch： 
+    
+      the iteration numbers of each epoch duiring the validation
+     
+  - nnFormer/nnformer/run/default_configuration.py
+  
+    - adjust the crop size and batch size for each task
+      
 ##### A. Download the best model we have trained to infer the test set
 
 The Google Drive link is as follows：
@@ -162,11 +182,4 @@ The Google Drive link is as follows：
 ```
 soon will upload
 ```
-Don't forget to change self.load_pretrain_weight in the trainer
 
-Put the pretrain weight in the specified directory:
-```
-../Pretrained_weight/pretrain_Synapse.model
-../Pretrained_weight/pretrain_ACDC.model
-../Pretrained_weight/pretrain_tumor.model
-```
