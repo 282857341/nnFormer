@@ -51,7 +51,7 @@ class nnFormerTrainerV2_nnformer_synapse(nnFormerTrainer_synapse):
         self.deep_supervision_scales = None
         self.ds_loss_weights = None
         self.pin_memory = True
-        self.load_pretrain_weight=False
+        self.load_pretrain_weight=true
         
         self.load_plans_file()    
         
