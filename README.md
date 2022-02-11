@@ -1,5 +1,4 @@
 # nnFormer: Interleaved Transformer for Volumetric Segmentation 
-# (The new version of code is uploading)
 
 Code for paper "nnFormer: Interleaved Transformer for Volumetric Segmentation ". Please read our preprint at the following link: [paper_address](https://arxiv.org/abs/2109.03201).
 
@@ -23,27 +22,41 @@ pip install -e .
 ```
 
 #### 3、The main downloaded file directory description 
-- ACDC_dice:
-Calculate dice of ACDC dataset
+- Evaluate:
 
-- Synapse_dice_and_hd:
-Calulate dice of the Synapse dataset
+  - nnFormer/nnformer/inference_acdc.py
+  
+  - nnFormer/nnformer/inference_synapse.py
+  
+  - nnFormer/nnformer/inference_tumor.py
 
-- dataset_json:
-About how to divide the training and test set
+- Data split:
 
+  - nnFormer/nnformer/dataset_json/
+  
 - inference:
-The entry program of the infernece.
+
+  - nnFormer/nnformer/inference/predict_simple.py
 
 - network_architecture:
-The models are stored here.
 
-- run:
-The entry program of the training.
+  - nnFormer/nnformer/network_architecture/nnFormer_acdc.py
+  
+  - nnFormer/nnformer/network_architecture/nnFormer_synapse.py.py
+  
+  - nnFormer/nnformer/network_architecture/nnFormer_tumor.py.py
 
-- training:
-The trainers are stored here, the training of the network is conducted by the trainer.
+- train:
 
+  - nnFormer/nnformer/run/run_training.py
+ 
+- trainer:
+
+  - nnFormer/nnformer/training/network_training/nnFormerTrainerV2_nnformer_acdc.py
+
+  - nnFormer/nnformer/training/network_training/nnFormerTrainerV2_nnformer_synapse.py.py
+  
+  - nnFormer/nnformer/training/network_training/nnFormerTrainerV2_nnformer_tumor.py.py
 ---
 
 ## Training
@@ -57,6 +70,9 @@ And the division of the dataset can be seen in the files in the ./dataset_json/
 
 **Dataset II**
 [The Synapse multi-organ CT dataset](https://www.synapse.org/#!Synapse:syn3193805/wiki/217789)
+
+**Dataset III**
+[Brain_tumor](http://medicaldecathlon.com/)
 
 #### 2、Setting up the datasets
 While we provide code to load data for training a deep-learning model, you will first need to download images from the above repositories. Regarding the format setting and related preprocessing of the dataset, we operate based on nnFormer, so I won’t go into details here. You can see [nnUNet](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_conversion.md) for specific operations. 
@@ -91,6 +107,7 @@ Regarding the downloaded data, I will not introduce too much here, you can go to
   ├── nnFormer_trained_models/
   ├── nnFormer_preprocessed/
 ```
+You can use the dataset.json in the file nnFormer/nnformer/dataset_json/
 
 After that, you can preprocess the data using:
 ```
@@ -104,18 +121,29 @@ nnFormer_plan_and_preprocess -t 3
 ```
 
 #### 3 Training and Testing the models
-##### A. Use the best model we have trained to infer the test set
-##### (1).Put the downloaded the best training weights in the specified directory.
-the download link is 
+- Command
+
 ```
-soon will upload
+bash train_inference.sh -c 0 -n nnformer_acdc -t 1 
+#-c means the id of the cuda device
+#-n means the suffix of the trainer located at nnFormer/nnformer/training/network_training/
+#-t means the id of the task
 ```
+You need to adjust the path for yourself
+
+the inference.py is located at nnFormer/nnformer 
+
+train_inference.sh is located at nnFormer
+
+more detail about the command: [train](https://github.com/MIC-DKFZ/nnUNet#3d-full-resolution-u-net) and [inference](https://github.com/MIC-DKFZ/nnUNet#run-inference)
+##### A. Download the best model we have trained to infer the test set
+
 The Google Drive link is as follows：
 ```
 soon will upload
 ```
 
-the specified directory is
+Put the downloaded the best training weights in the specified directory:
 ```
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model.pkl
@@ -123,29 +151,22 @@ the specified directory is
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_synapse__nnFormerPlansv2.1/fold_0/model_best.model
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_synapse__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 
-../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1/fold_0/model_best.model
-../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task002_Synapse/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1/fold_0/model_best.model.pkl
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task003_tumor/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task003_tumor/nnFormerTrainerV2_nnformer_tumor__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 ```
-##### (2).Training and inference
-```
-bash train_inference.sh -c 0 -n nnformer_acdc -t 1
-#-c means the id of the cuda
-#-n means the suffix of the trainer
-#-t means the id of the task
-```
-You need to adjust the path for yourself
 
-the inference.py is located at nnFormer/nnformer and train_inference.sh is located at nnFormer
+##### B. Download the pretrained weights for retraining the model and inference
 
-more detail about the command:[train](https://github.com/MIC-DKFZ/nnUNet#3d-full-resolution-u-net) [inference](https://github.com/MIC-DKFZ/nnUNet#run-inference)
+The Google Drive link is as follows：
 
-##### B. The complete process of retraining the model and inference
-##### (1).Put the downloaded pre-training weights in the specified directory.
-the download link is 
 ```
 soon will upload
 ```
-the specified directory is
+Don't forget to change self.load_pretrain_weight in the trainer
+
+Put the pretrain weight in the specified directory:
 ```
 ../Pretrained_weight/pretrain_Synapse.model
+../Pretrained_weight/pretrain_ACDC.model
+../Pretrained_weight/pretrain_tumor.model
 ```
