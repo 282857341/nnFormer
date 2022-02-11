@@ -52,7 +52,7 @@ class nnFormerTrainerV2_nnformer_tumor(nnFormerTrainer):
         self.deep_supervision_scales = None
         self.ds_loss_weights = None
         self.pin_memory = True
-        self.load_pretrain_weight=False
+        self.load_pretrain_weight=True
         
         self.load_plans_file()    
         
