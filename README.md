@@ -1,6 +1,6 @@
 # nnFormer: Volumetric Medical Image Segmentation via a 3D Transformer
 
-At 2022/02/11, we rebuilt the code of nnFormer to match the performance reported in the latest draft [paper](https://arxiv.org/abs/2109.03201). The results produced by new codes are more stable and thus easier to reproduce. 
+At 2022/02/11, we rebuilt the code of nnFormer to match the performance reported in the latest [draft](https://arxiv.org/abs/2109.03201). The results produced by new codes are more stable and thus easier to reproduce! 
 
 ---
 ## Installation
@@ -119,4 +119,3 @@ bash train_inference.sh -c 0 -n nnformer_acdc -t 1
 #-n denotes the suffix of the trainer located at nnFormer/nnformer/training/network_training/
 #-t denotes the task index
 ```
-Feel free to use your own paths.
