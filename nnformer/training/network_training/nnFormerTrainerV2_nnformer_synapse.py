@@ -175,7 +175,7 @@ class nnFormerTrainerV2_nnformer_synapse(nnFormerTrainer_synapse):
                                 deep_supervision=self.deep_supervision)
         if self.load_pretrain_weight:
             checkpoint = torch.load('/home/xychen/jsguo/weight/gelunorm_former_skip_global_shift.model', map_location='cpu')
-            self.network.load_state_dict(checkpoint['state_dict'])
+            self.network.load_state_dict(checkpoint)
             print('I am using the pre_train weight!!')   
         
      
