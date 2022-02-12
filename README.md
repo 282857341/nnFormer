@@ -52,7 +52,7 @@ pip install -e .
 ---
 
 ## Training
-#### 1、Dataset download
+#### 1. Dataset download
 Datasets can be acquired via following links:
 
 **Dataset I**
@@ -66,7 +66,7 @@ Datasets can be acquired via following links:
 
 The splits of all three datasets are available in ``nnFormer/nnformer/dataset_json/``.
 
-#### 2、Setting up the datasets
+#### 2. Setting up the datasets
 After you have downloaded the datasets, you can follow the settings in [nnUNet](https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/dataset_conversion.md) for path configurations and preprocessing procedures. Finally, your folders should be organized as follows:
 
 ```
@@ -110,7 +110,7 @@ nnFormer_plan_and_preprocess -t 2
 nnFormer_plan_and_preprocess -t 3
 ```
 
-#### 3 Training and Testing
+#### 3. Training and Testing
 - Commands for training and testing:
 
 ```
