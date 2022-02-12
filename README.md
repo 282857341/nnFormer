@@ -119,3 +119,10 @@ bash train_inference.sh -c 0 -n nnformer_acdc -t 1
 #-n denotes the suffix of the trainer located at nnFormer/nnformer/training/network_training/
 #-t denotes the task index
 ```
+- Donwload the pretrain weight or our best trained model:
+```
+Goggle Drive Link：https://drive.google.com/drive/folders/1yvqlkeRq1qr5RxH-EzFyZEFsJsGFEc78?usp=sharing
+```
+
+
+
