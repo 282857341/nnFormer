@@ -123,6 +123,14 @@ bash train_inference.sh -c 0 -n nnformer_acdc -t 1
 ```
 Goggle Drive Link：https://drive.google.com/drive/folders/1yvqlkeRq1qr5RxH-EzFyZEFsJsGFEc78?usp=sharing
 ```
+Put the best model we trained in the specified directory:
+```
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model
+../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model.pkl
+```
 
-
-
+#### 4. Frequently Asked Questions
+```
+input feature has wrong size
+```
+if you encounter this problem, please check the code in the nnFormer/nnformer/run/default_configuration.py. I set the crop size(patch size) and batch size for each dataset here, you can chenge the crop size to fit your dataset.
