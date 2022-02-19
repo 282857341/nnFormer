@@ -18,7 +18,7 @@ from typing import Tuple
 
 import numpy as np
 import torch
-from nnformer.training.data_augmentation.data_augmentation_moreDA_real import get_moreDA_augmentation
+from nnformer.training.data_augmentation.data_augmentation_moreDA import get_moreDA_augmentation
 from nnformer.training.loss_functions.deep_supervision import MultipleOutputLoss2
 from nnformer.utilities.to_torch import maybe_to_torch, to_cuda
 from nnformer.network_architecture.nnFormer_synapse import nnFormer
