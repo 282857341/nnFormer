@@ -4,12 +4,12 @@ At 2022/02/11, we rebuilt the code of nnFormer to match the performance reported
 
 ---
 ## Installation
-#### 1、System requirements
+#### 1. System requirements
 We run nnFormer on a system running Ubuntu 18.01, with Python 3.6, PyTorch 1.8.1, and CUDA 10.1. For a full list of software packages and version numbers, see the Conda environment file `environment.yml`. 
 
 This software leverages graphical processing units (GPUs) to accelerate neural network training and evaluation. Thus, systems lacking a suitable GPU would likely take an extremely long time to train or evaluate models. The software was tested with the NVIDIA RTX 2080 TI GPU, though we anticipate that other GPUs will also work, provided that the unit offers sufficient memory. 
 
-#### 2、Installation guide
+#### 2. Installation guide
 We recommend installation of the required packages using the conda package manager, available through the Anaconda Python distribution. Anaconda is available free of charge for non-commercial use through [Anaconda Inc](https://www.anaconda.com/products/individual). After installing Anaconda and cloning this repository, For use as integrative framework：
 ```
 git clone https://github.com/282857341/nnFormer.git
@@ -19,7 +19,7 @@ source activate nnFormer
 pip install -e .
 ```
 
-#### 3、Functions of scripts and folders
+#### 3. Functions of scripts and folders
 - **For evaluation:**
   - ``nnFormer/nnformer/inference_acdc.py``
   
@@ -119,22 +119,17 @@ bash train_inference.sh -c 0 -n nnformer_acdc -t 1
 #-n denotes the suffix of the trainer located at nnFormer/nnformer/training/network_training/
 #-t denotes the task index
 ```
-- Donwload the pretrain weight or our best trained model:
-```
-Goggle Drive Link：https://drive.google.com/drive/folders/1yvqlkeRq1qr5RxH-EzFyZEFsJsGFEc78?usp=sharing
-```
-Put the best model we trained in the specified directory:
+- You can download our pretrained model weights via this [link](https://drive.google.com/drive/folders/1yvqlkeRq1qr5RxH-EzFyZEFsJsGFEc78?usp=sharing). Then, you can put model weights and their associated files in corresponding directories. For instance, on ACDC dataset, they should be like this:
 ```
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 ```
-#### 4. Visualization
-```
-Link:https://drive.google.com/file/d/1Lb4rIkwIpuJS3tomBiKl7FBtNF2dv_6M/view?usp=sharing
-```
-This link contains the visualizations for nnformer, nnunet and unetr. 
-#### 5. Frequently Asked Questions
+#### 4. Visualization Results
+
+You can download the visualization results of nnFormer, nnUNet and UNETR from this [link](https://drive.google.com/file/d/1Lb4rIkwIpuJS3tomBiKl7FBtNF2dv_6M/view?usp=sharing).
+
+#### 5. One Frequently Asked Problem
 ```
 input feature has wrong size
 ```
-if you encounter this problem, please check the code in the nnFormer/nnformer/run/default_configuration.py. I set the crop size(patch size) and batch size for each dataset here, you can chenge the crop size to fit your dataset.
+If you encounter this problem during your implementation, please check the code in ``nnFormer/nnformer/run/default_configuration.py``. I have set independent crop size (i.e., patch size) for each dataset. You may need to modify the crop size based on your own need.
