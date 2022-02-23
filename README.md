@@ -128,8 +128,12 @@ Put the best model we trained in the specified directory:
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model.pkl
 ```
-
-#### 4. Frequently Asked Questions
+#### 4. Visualization
+```
+Link:https://drive.google.com/file/d/1Lb4rIkwIpuJS3tomBiKl7FBtNF2dv_6M/view?usp=sharing
+```
+This link contains the visualizations for nnformer, nnunet and unetr. 
+#### 5. Frequently Asked Questions
 ```
 input feature has wrong size
 ```
