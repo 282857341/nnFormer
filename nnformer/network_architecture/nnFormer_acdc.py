@@ -918,11 +918,13 @@ class nnFormer(SegmentationNetwork):
 
         else:
             self.final.append(final_patch_expanding(embed_dim,num_classes,patch_size=patch_size))
+    
         self.final=nn.ModuleList(self.final)
-
+    
 
     def forward(self, x):
       
+            
         seg_outputs=[]
         skips = self.model_down(x)
         neck=skips[-1]
@@ -931,15 +933,15 @@ class nnFormer(SegmentationNetwork):
         
        
             
-        if self._deep_supervision and self.do_ds:
-        
+        if self.do_ds:
             for i in range(len(out)):  
                 seg_outputs.append(self.final[-(i+1)](out[i]))
+        
+          
             return seg_outputs[::-1]
         else:
-            seg_outputs=self.final[-1](out[-1])
-            
-            return seg_outputs
+            seg_outputs.append(self.final[0](out[-1]))
+            return seg_outputs[-1]
         
         
         
