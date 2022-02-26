@@ -2,7 +2,7 @@
 
 At 2022/02/11, we rebuilt the code of nnFormer to match the performance reported in the latest [draft](https://arxiv.org/abs/2109.03201). The results produced by new codes are more stable and thus easier to reproduce! 
 
-At 2022/02/26, we add seed in the file nnformer/run_training.py and set torch.backends.cudnn.benchmark and torch.backends.cudnn.enabled as true.
+At 2022/02/26, we add seed in the file nnformer/run_training.py and set torch.backends.cudnn.benchmark and torch.backends.cudnn.enabled as true to improve efficiency.
 
 ---
 ## Installation
