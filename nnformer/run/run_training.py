@@ -26,6 +26,20 @@ from nnformer.training.network_training.nnFormerTrainerCascadeFullRes import nnF
 from nnformer.training.network_training.nnFormerTrainerV2_CascadeFullRes import nnFormerTrainerV2CascadeFullRes
 from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
 
+import random
+#seed=random.randint(0,100)
+seed=42
+#seed = int(seed)
+np.random.seed(seed)
+os.environ['PYTHONHASHSEED'] = str(seed)
+np.random.seed(seed)
+torch.manual_seed(seed)
+torch.cuda.manual_seed(seed)
+torch.cuda.manual_seed_all(seed)
+torch.backends.cudnn.deterministic = False
+torch.backends.cudnn.benchmark = True
+torch.backends.cudnn.enabled = True
+#to improve the efficiency set the last two true
 
 def main():
     parser = argparse.ArgumentParser()
