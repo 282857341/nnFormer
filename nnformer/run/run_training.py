@@ -27,9 +27,7 @@ from nnformer.training.network_training.nnFormerTrainerV2_CascadeFullRes import 
 from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
 
 import random
-#seed=random.randint(0,100)
 seed=42
-#seed = int(seed)
 np.random.seed(seed)
 os.environ['PYTHONHASHSEED'] = str(seed)
 np.random.seed(seed)
