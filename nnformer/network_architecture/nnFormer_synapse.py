@@ -926,10 +926,11 @@ class nnFormer(SegmentationNetwork):
             
             for i in range(len(depths)-1):
                 self.final.append(final_patch_expanding(embed_dim*2**i,num_classes,patch_size=patch_size))
-            self.final=nn.ModuleList(self.final)
 
         else:
-            self.final=final_patch_expanding(embed_dim,num_classes,patch_size=patch_size)
+            self.final.append(final_patch_expanding(embed_dim,num_classes,patch_size=patch_size))
+    
+        self.final=nn.ModuleList(self.final)
     
 
     def forward(self, x):
@@ -943,16 +944,15 @@ class nnFormer(SegmentationNetwork):
         
        
             
-        if self._deep_supervision and self.do_ds:
-            #return tuple([seg_outputs[-1]] + [i(j) for i, j in
-                                              #zip(list(self.upscale_logits_ops)[::-1], seg_outputs[:-1][::-1])])
+        if self.do_ds:
             for i in range(len(out)):  
                 seg_outputs.append(self.final[-(i+1)](out[i]))
+        
+          
             return seg_outputs[::-1]
         else:
-            seg_outputs=self.final(out[-1])
-            
-            return seg_outputs
+            seg_outputs.append(self.final[0](out[-1]))
+            return seg_outputs[-1]
         
         
         
