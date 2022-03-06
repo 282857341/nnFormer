@@ -25,7 +25,8 @@ from nnformer.training.network_training.nnFormerTrainer_synapse import nnFormerT
 from nnformer.training.network_training.nnFormerTrainerCascadeFullRes import nnFormerTrainerCascadeFullRes
 from nnformer.training.network_training.nnFormerTrainerV2_CascadeFullRes import nnFormerTrainerV2CascadeFullRes
 from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
-
+import numpy as no
+import torch
 import random
 seed=42
 np.random.seed(seed)
