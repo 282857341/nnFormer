@@ -46,23 +46,28 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
         plans_file = join(preprocessing_output_dir, task, plans_identifier + "_plans_3D.pkl")
              
     plans = load_pickle(plans_file)
+    # Maybe have two kinds of plans,choose the later one 
+    if len(plans['plans_per_stage'])==2:
+            Stage=1
+        else:
+            Stage=0
     if task=='Task001_ACDC':
-        plans['plans_per_stage'][0]['batch_size']=4
-        plans['plans_per_stage'][0]['patch_size']=np.array([14,160,160])
+        plans['plans_per_stage'][Stage]['batch_size']=4
+        plans['plans_per_stage'][Stage]['patch_size']=np.array([14,160,160])
         pickle_file = open(plans_file,'wb')
         pickle.dump(plans, pickle_file)
         pickle_file.close()
 
     elif task=='Task002_Synapse':
-        plans['plans_per_stage'][1]['batch_size']=2
-        plans['plans_per_stage'][1]['patch_size']=np.array([64,128,128])
-        plans['plans_per_stage'][1]['pool_op_kernel_sizes']=[[2,2,2],[2,2,2],[2,2,2]] # for deep supervision
+        plans['plans_per_stage'][Stage]['batch_size']=2
+        plans['plans_per_stage'][Stage]['patch_size']=np.array([64,128,128])
+        plans['plans_per_stage'][Stage]['pool_op_kernel_sizes']=[[2,2,2],[2,2,2],[2,2,2]] # for deep supervision
         pickle_file = open(plans_file,'wb')
         pickle.dump(plans, pickle_file)
         pickle_file.close()
     elif task=='Task003_tumor':
-        plans['plans_per_stage'][0]['batch_size']=2
-        plans['plans_per_stage'][0]['patch_size']=np.array([128,128,128])
+        plans['plans_per_stage'][Stage]['batch_size']=2
+        plans['plans_per_stage'][Stage]['patch_size']=np.array([128,128,128])
         pickle_file = open(plans_file,'wb')
         pickle.dump(plans, pickle_file)
         pickle_file.close()
