@@ -121,6 +121,8 @@ bash train_inference.sh -c 0 -n nnformer_acdc -t 1
 #-n denotes the suffix of the trainer located at nnFormer/nnformer/training/network_training/
 #-t denotes the task index
 ```
+If you want use your own data, please create a new trainer file in the path ```nnformer/training/network_training``` and make sure the class name in the trainer file is the same as the trainer file. Some hyperparameters could be adjust in the trainer file, but the batch size and crop size should be adjust in the file```nnformer/run/default_configuration.py```.
+ 
 - You can download our pretrained model weights via this [link](https://drive.google.com/drive/folders/1yvqlkeRq1qr5RxH-EzFyZEFsJsGFEc78?usp=sharing). Then, you can put model weights and their associated files in corresponding directories. For instance, on ACDC dataset, they should be like this:
 ```
 ../DATASET/nnFormer_trained_models/nnFormer/3d_fullres/Task001_ACDC/nnFormerTrainerV2_nnformer_acdc__nnFormerPlansv2.1/fold_0/model_best.model
