@@ -48,9 +48,9 @@ def get_default_configuration(network, task, network_trainer, plans_identifier=d
     plans = load_pickle(plans_file)
     # Maybe have two kinds of plans,choose the later one 
     if len(plans['plans_per_stage'])==2:
-            Stage=1
-        else:
-            Stage=0
+        Stage=1
+    else:
+        Stage=0
     if task=='Task001_ACDC':
         plans['plans_per_stage'][Stage]['batch_size']=4
         plans['plans_per_stage'][Stage]['patch_size']=np.array([14,160,160])
