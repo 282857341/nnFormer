@@ -21,6 +21,7 @@ from nnformer.paths import default_plans_identifier, network_training_output_dir
 from batchgenerators.utilities.file_and_folder_operations import join, isdir
 from nnformer.utilities.task_name_id_conversion import convert_id_to_task_name
 from nnformer.paths import network_training_output_dir, preprocessing_output_dir, default_plans_identifier
+from nnformer.run.default_configuration import get_default_configuration
 
 
 def main():
@@ -222,6 +223,9 @@ def main():
         plans_file = join(preprocessing_output_dir, task_name, args.plans_identifier + "_plans_3D.pkl")
         
         shutil.copy(plans_file, join(model_folder_name, "plans.pkl"))
+    
+    _=get_default_configuration(model, task_name, trainer_class_name, args.plans_identifier)
+
     predict_from_folder(model_folder_name, input_folder, output_folder, folds, save_npz, num_threads_preprocessing,
                         num_threads_nifti_save, lowres_segmentations, part_id, num_parts, not disable_tta,
                         overwrite_existing=overwrite_existing, mode=mode, overwrite_all_in_gpu=all_in_gpu,
