@@ -19,7 +19,7 @@ import importlib
 import pkgutil
 from nnformer.training.network_training.nnFormerTrainer import nnFormerTrainer
 from nnformer.training.network_training.nnFormerTrainer_synapse import nnFormerTrainer_synapse
-
+from nnformer.paths import network_training_output_dir, preprocessing_output_dir, default_plans_identifier
 
 def recursive_find_python_class(folder, trainer_name, current_module):
     tr = None
@@ -42,7 +42,7 @@ def recursive_find_python_class(folder, trainer_name, current_module):
     return tr
 
 
-def restore_model(pkl_file, checkpoint=None, train=False, fp16=None):
+def restore_model(pkl_file, checkpoint=None, train=False, fp16=None,folder=None):
     """
     This is a utility function to load any nnFormer trainer from a pkl. It will recursively search
     nnformer.trainig.network_training for the file that contains the trainer and instantiate it with the arguments saved in the pkl file. If checkpoint
@@ -54,9 +54,24 @@ def restore_model(pkl_file, checkpoint=None, train=False, fp16=None):
     :param fp16: if None then we take no action. If True/False we overwrite what the model has in its init
     :return:
     """
+    
     info = load_pickle(pkl_file)
     init = info['init']
     name = info['name']
+    '''
+    update on 2022.6.23.
+    For the model_best.model can be shared in different machines.
+    '''
+    task=folder.split('/')[-2]
+    network = folder.split('/')[-3]
+    if network == '2d':
+        plans_file = join(preprocessing_output_dir, task, default_plans_identifier + "_plans_2D.pkl")
+    else:
+        plans_file = join(preprocessing_output_dir, task, default_plans_identifier + "_plans_3D.pkl")
+    info['init'] = list(info['init'])
+    info['init'][0]=plans_file
+    info['init'] = tuple(info['init'])
+    
     if 'nnUNet' in name:
         name=name.replace('nnUNet','nnFormer')
     if len(init)>10:
@@ -143,7 +158,7 @@ def load_model_and_checkpoint_files(folder, folds=None, mixed_precision=None, ch
     else:
         raise ValueError("Unknown value for folds. Type: %s. Expected: list of int, int, str or None", str(type(folds)))
 
-    trainer = restore_model(join(folds[0], "%s.model.pkl" % checkpoint_name), fp16=mixed_precision)
+    trainer = restore_model(join(folds[0], "%s.model.pkl" % checkpoint_name), fp16=mixed_precision,folder=folder)
     trainer.output_folder = folder
     trainer.output_folder_base = folder
     trainer.update_fold(0)
