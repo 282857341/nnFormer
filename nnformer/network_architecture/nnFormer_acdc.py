@@ -172,8 +172,8 @@ class WindowAttention_kv(nn.Module):
         relative_coords[:, :, 2] += self.window_size[2] - 1
 
 
-        relative_coords[:, :, 0] *= 3 * self.window_size[1] - 1
-        relative_coords[:, :, 1] *= 2 * self.window_size[1] - 1
+        relative_coords[:, :, 0] *= (2 * self.window_size[1] - 1)*(2 * self.window_size[2] - 1)
+        relative_coords[:, :, 1] *= 2 * self.window_size[2] - 1
 
         relative_position_index = relative_coords.sum(-1)  
         self.register_buffer("relative_position_index", relative_position_index)
@@ -943,7 +943,7 @@ class nnFormer(SegmentationNetwork):
             seg_outputs.append(self.final[0](out[-1]))
             return seg_outputs[-1]
         
-        
+
         
    
 
